@@ -123,8 +123,8 @@
                                 <th class="p-3">Descripción (ES)</th>
                                 <th class="p-3 text-center w-20">Cant.</th>
                                 <th class="p-3 text-center w-20">Unid.</th>
-                                <th class="p-3 text-right w-32">Costo ($)</th>
-                                <th class="p-3 text-right w-32">Venta ($)</th>
+                                <th class="p-3 text-right w-32">Costo Unit. ($)</th>
+                                <th class="p-3 text-right w-32">Venta Unit. ($)</th>
                                 <th class="p-3 text-center w-12"><i class="fa-solid fa-gear"></i></th>
                             </tr>
                         </thead>
@@ -288,16 +288,16 @@
                     <input type="text" placeholder="Descripción en español" class="item-desc-es w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="1" min="1" value="1" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="1" min="1" value="1" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
                     <input type="text" value="PCS" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="0.01" min="0" value="0.00" data-unit="0.00" oninput="actualizarUnitario(this, 'costo'); calcularFila(this)" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="0.01" min="0" value="0.00" data-unit="0.00" oninput="actualizarUnitario(this, 'venta'); calcularFila(this)" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2 text-center">
                     <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
@@ -311,13 +311,6 @@
             actualizarTotales();
         }
 
-        function actualizarUnitario(input, tipo) {
-            const tr = input.closest('tr');
-            const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 1;
-            const val = parseFloat(input.value) || 0;
-            input.dataset.unit = (val / cant).toFixed(4);
-        }
-
         function procesarTextoExcel(text) {
             const lines = text.trim().split(/\r\n|\n/);
             const tbody = document.getElementById('tabla-items-body');
@@ -327,8 +320,7 @@
                 if (!line.trim()) return;
                 const cols = line.split('\t');
 
-                // Mapeo directo para las 6 columnas indicadas:
-                // Col 0: Desc EN | Col 1: Desc ES | Col 2: Cantidad | Col 3: Unidad | Col 4: Costo Unit/Tot | Col 5: Venta Unit/Tot
+                // Mapeo directo de columnas desde Excel
                 const descEn = cols[0] ? cols[0].trim() : '';
                 const descEs = cols[1] ? cols[1].trim() : '';
                 const cant = limpiarNumero(cols[2]) || 1;
@@ -350,16 +342,16 @@
                         <input type="text" value="${descEs}" class="item-desc-es w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="1" min="1" value="${cant}" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="1" min="1" value="${cant}" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
                         <input type="text" value="${medida}" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${costoVal.toFixed(2)}" data-unit="${(costoVal / cant).toFixed(4)}" oninput="actualizarUnitario(this, 'costo'); calcularFila(this)" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${costoVal.toFixed(2)}" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${ventaVal.toFixed(2)}" data-unit="${(ventaVal / cant).toFixed(4)}" oninput="actualizarUnitario(this, 'venta'); calcularFila(this)" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${ventaVal.toFixed(2)}" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2 text-center">
                         <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
@@ -372,25 +364,6 @@
             });
 
             reindexarFilas();
-            actualizarTotales();
-        }
-
-        function calcularFila(input) {
-            const tr = input.closest('tr');
-            const cantInput = tr.querySelector('.item-cantidad');
-            const costoInput = tr.querySelector('.item-costo');
-            const ventaInput = tr.querySelector('.item-venta');
-
-            const cant = parseFloat(cantInput.value) || 0;
-
-            if (input === cantInput) {
-                const costoUnit = parseFloat(costoInput.dataset.unit) || 0;
-                const ventaUnit = parseFloat(ventaInput.dataset.unit) || 0;
-                
-                costoInput.value = (cant * costoUnit).toFixed(2);
-                ventaInput.value = (cant * ventaUnit).toFixed(2);
-            }
-
             actualizarTotales();
         }
 
@@ -417,11 +390,13 @@
             let acumuladoVenta = 0;
 
             rows.forEach(tr => {
-                const costoVal = parseFloat(tr.querySelector('.item-costo').value) || 0;
-                const ventaVal = parseFloat(tr.querySelector('.item-venta').value) || 0;
+                const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
+                const costoUnit = parseFloat(tr.querySelector('.item-costo').value) || 0;
+                const ventaUnit = parseFloat(tr.querySelector('.item-venta').value) || 0;
 
-                acumuladoCosto += costoVal;
-                acumuladoVenta += ventaVal;
+                // Fórmulas solicitadas: Costo = (Costo Unit * Cant), Venta = (Venta Unit * Cant)
+                acumuladoCosto += (costoUnit * cant);
+                acumuladoVenta += (ventaUnit * cant);
             });
 
             const utilidad = acumuladoVenta - acumuladoCosto;
@@ -487,10 +462,13 @@
                 const descEs = tr.querySelector('.item-desc-es').value || '-';
                 const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
                 const medida = tr.querySelector('.item-medida').value || 'PCS';
-                const itemCosto = parseFloat(tr.querySelector('.item-costo').value) || 0;
-                const itemVenta = parseFloat(tr.querySelector('.item-venta').value) || 0;
+                const costoUnit = parseFloat(tr.querySelector('.item-costo').value) || 0;
+                const ventaUnit = parseFloat(tr.querySelector('.item-venta').value) || 0;
 
-                totalVentaPreview += itemVenta;
+                const itemCostoTotal = costoUnit * cant;
+                const itemVentaTotal = ventaUnit * cant;
+
+                totalVentaPreview += itemVentaTotal;
 
                 const prevRow = document.createElement('tr');
                 prevRow.className = 'hover:bg-slate-50';
@@ -500,17 +478,15 @@
                     <td class="p-2.5 text-slate-600">${descEs}</td>
                     <td class="p-2.5 text-center font-semibold">${cant}</td>
                     <td class="p-2.5 text-center text-slate-500">${medida}</td>
-                    <td class="p-2.5 text-right font-medium text-slate-600">$ ${itemCosto.toFixed(2)}</td>
-                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${itemVenta.toFixed(2)}</td>
+                    <td class="p-2.5 text-right font-medium text-slate-600">$ ${itemCostoTotal.toFixed(2)}</td>
+                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${itemVentaTotal.toFixed(2)}</td>
                 `;
                 previewTbody.appendChild(prevRow);
             });
 
             document.getElementById('preview-total-venta').textContent = `$ ${totalVentaPreview.toFixed(2)}`;
-            
-            const cardResultado = document.getElementById('card-resultado-cotizacion');
-            cardResultado.classList.remove('hidden');
-            cardResultado.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('card-resultado-cotizacion').classList.remove('hidden');
+            document.getElementById('card-resultado-cotizacion').scrollIntoView({ behavior: 'smooth' });
         }
 
         function cerrarVistaPrevia() {
