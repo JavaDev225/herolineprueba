@@ -377,6 +377,7 @@
                         </button>
                     </td>
                 `;
+
                 tbody.appendChild(tr);
             });
 
@@ -384,142 +385,142 @@
             actualizarTotales();
         }
 
+        function calcularFila(input) {
+            const tr = input.closest('tr');
+            const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
+            const costoUnit = parseFloat(tr.querySelector('.item-costo-unit').value) || 0;
+            const ventaUnit = parseFloat(tr.querySelector('.item-venta-unit').value) || 0;
+
+            const totalCosto = cant * costoUnit;
+            const totalVenta = cant * ventaUnit;
+
+            tr.querySelector('.item-total-costo').textContent = `$ ${totalCosto.toFixed(2)}`;
+            tr.querySelector('.item-total-venta').textContent = `$ ${totalVenta.toFixed(2)}`;
+
+            actualizarTotales();
+        }
+
         function eliminarFila(rowId) {
-            const row = document.getElementById(rowId);
-            if (row) {
-                row.remove();
+            const tr = document.getElementById(rowId);
+            if (tr) {
+                tr.remove();
                 reindexarFilas();
                 actualizarTotales();
             }
         }
 
         function reindexarFilas() {
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
-            rows.forEach((row, index) => {
-                const numCell = row.querySelector('.row-number');
-                if (numCell) numCell.innerText = index + 1;
+            const rows = document.querySelectorAll('#tabla-items-body tr');
+            rows.forEach((tr, index) => {
+                const cell = tr.querySelector('.row-number');
+                if (cell) cell.textContent = index + 1;
             });
-        }
-
-        function calcularFila(input) {
-            const row = input.closest('tr');
-            if (!row) return;
-
-            const cant = limpiarNumero(row.querySelector('.item-cantidad').value);
-            const costoUnit = limpiarNumero(row.querySelector('.item-costo-unit').value);
-            const ventaUnit = limpiarNumero(row.querySelector('.item-venta-unit').value);
-
-            const totalCosto = cant * costoUnit;
-            const totalVenta = cant * ventaUnit;
-
-            row.querySelector('.item-total-costo').innerText = `$ ${totalCosto.toFixed(2)}`;
-            row.querySelector('.item-total-venta').innerText = `$ ${totalVenta.toFixed(2)}`;
-
-            actualizarTotales();
         }
 
         function actualizarTotales() {
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
-            let sumCosto = 0;
-            let sumVenta = 0;
+            const rows = document.querySelectorAll('#tabla-items-body tr');
+            let acumuladoCosto = 0;
+            let acumuladoVenta = 0;
 
-            rows.forEach(row => {
-                const cant = limpiarNumero(row.querySelector('.item-cantidad').value);
-                const costoUnit = limpiarNumero(row.querySelector('.item-costo-unit').value);
-                const ventaUnit = limpiarNumero(row.querySelector('.item-venta-unit').value);
+            rows.forEach(tr => {
+                const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
+                const costoUnit = parseFloat(tr.querySelector('.item-costo-unit').value) || 0;
+                const ventaUnit = parseFloat(tr.querySelector('.item-venta-unit').value) || 0;
 
-                sumCosto += cant * costoUnit;
-                sumVenta += cant * ventaUnit;
+                acumuladoCosto += cant * costoUnit;
+                acumuladoVenta += cant * ventaUnit;
             });
 
-            const utilidad = sumVenta - sumCosto;
-            const porcentajeUtilidad = sumVenta > 0 ? ((utilidad / sumVenta) * 100).toFixed(1) : '0.0';
+            const utilidad = acumuladoVenta - acumuladoCosto;
+            const porcentaje = acumuladoVenta > 0 ? (utilidad / acumuladoVenta) * 100 : 0;
 
-            document.getElementById('resumen-cant-items').innerText = rows.length;
-            document.getElementById('resumen-total-costo').innerText = `$ ${sumCosto.toFixed(2)}`;
-            document.getElementById('resumen-total-venta').innerText = `$ ${sumVenta.toFixed(2)}`;
-            document.getElementById('resumen-utilidad').innerText = `$ ${utilidad.toFixed(2)} (${porcentajeUtilidad}%)`;
+            document.getElementById('resumen-cant-items').textContent = rows.length;
+            document.getElementById('resumen-total-costo').textContent = `$ ${acumuladoCosto.toFixed(2)}`;
+            document.getElementById('resumen-total-venta').textContent = `$ ${acumuladoVenta.toFixed(2)}`;
+            
+            const utilidadEl = document.getElementById('resumen-utilidad');
+            utilidadEl.textContent = `$ ${utilidad.toFixed(2)} (${porcentaje.toFixed(1)}%)`;
+            
+            if (utilidad < 0) {
+                utilidadEl.className = 'text-sm font-bold text-red-500';
+            } else {
+                utilidadEl.className = 'text-sm font-bold text-celeste-600';
+            }
         }
 
         function limpiarFormulario() {
-            document.getElementById('nombre_buque').value = '';
-            document.getElementById('codigo_requisicion').value = '';
-            document.getElementById('condicion_pago').value = '100%';
-            document.getElementById('observaciones').value = '';
-            document.getElementById('tabla-items-body').innerHTML = '';
-            agregarFilaVacia();
-            cerrarVistaPrevia();
+            if (confirm("¿Está seguro de que desea limpiar todos los datos del formulario?")) {
+                document.getElementById('nombre_buque').value = '';
+                document.getElementById('codigo_requisicion').value = '';
+                document.getElementById('observaciones').value = '';
+                document.getElementById('condicion_pago').selectedIndex = 0;
+                
+                document.getElementById('tabla-items-body').innerHTML = '';
+                agregarFilaVacia();
+                cerrarVistaPrevia();
+            }
         }
 
         function guardarCotizacion() {
             const buque = document.getElementById('nombre_buque').value.trim();
             const codigo = document.getElementById('codigo_requisicion').value.trim();
             const condicion = document.getElementById('condicion_pago').value;
-            const observaciones = document.getElementById('observaciones').value.trim() || 'Sin observaciones adicionales.';
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
+            const obs = document.getElementById('observaciones').value.trim();
+            const rows = document.querySelectorAll('#tabla-items-body tr');
 
             if (!buque || !codigo) {
-                alert('Por favor completa el nombre del buque y el código de requisición.');
+                alert("Por favor complete al menos el Nombre del Buque y el Código de Requisición.");
                 return;
             }
 
             if (rows.length === 0) {
-                alert('Debes incluir al menos un ítem en la cotización.');
+                alert("Debe incluir al menos un ítem en la cotización.");
                 return;
             }
 
-            const items = [];
-            let previewTableHtml = '';
+            // Actualizar Vista Previa
+            document.getElementById('preview-titulo-buque').textContent = buque.toUpperCase();
+            document.getElementById('preview-badge-cod').textContent = codigo.toUpperCase();
+            document.getElementById('preview-condicion-pago').textContent = condicion;
+            document.getElementById('preview-observaciones').textContent = obs || 'Sin observaciones.';
+            document.getElementById('preview-fecha').textContent = `Generado el: ${new Date().toLocaleDateString('es-ES')} - ${new Date().toLocaleTimeString('es-ES')}`;
 
-            rows.forEach((row, idx) => {
-                const cant = limpiarNumero(row.querySelector('.item-cantidad').value);
-                const costoUnit = limpiarNumero(row.querySelector('.item-costo-unit').value);
-                const ventaUnit = limpiarNumero(row.querySelector('.item-venta-unit').value);
-                const descEn = row.querySelector('.item-desc-en').value || '-';
-                const descEs = row.querySelector('.item-desc-es').value || '-';
-                const medida = normalizarUnidad(row.querySelector('.item-medida').value);
+            const previewTbody = document.getElementById('preview-tabla-items');
+            previewTbody.innerHTML = '';
 
-                const totalCosto = cant * costoUnit;
-                const totalVenta = cant * ventaUnit;
+            let totalVentaPreview = 0;
 
-                items.push({
-                    secuencia: idx + 1,
-                    desc_en: descEn,
-                    desc_es: descEs,
-                    cantidad: cant,
-                    medida: medida,
-                    costo_unit: costoUnit,
-                    total_costo: totalCosto,
-                    venta_unit: ventaUnit,
-                    total_venta: totalVenta
-                });
+            rows.forEach((tr, idx) => {
+                const descEn = tr.querySelector('.item-desc-en').value || '-';
+                const descEs = tr.querySelector('.item-desc-es').value || '-';
+                const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
+                const medida = tr.querySelector('.item-medida').value || 'PCS';
+                const costoUnit = parseFloat(tr.querySelector('.item-costo-unit').value) || 0;
+                const ventaUnit = parseFloat(tr.querySelector('.item-venta-unit').value) || 0;
 
-                previewTableHtml += `
-                    <tr class="hover:bg-slate-50 border-b border-slate-100">
-                        <td class="p-2.5 text-center font-semibold text-slate-500">${idx + 1}</td>
-                        <td class="p-2.5 font-medium text-navy-900">${descEn}</td>
-                        <td class="p-2.5 text-slate-600">${descEs}</td>
-                        <td class="p-2.5 text-center font-bold">${cant}</td>
-                        <td class="p-2.5 text-center text-slate-500">${medida}</td>
-                        <td class="p-2.5 text-right font-medium text-slate-700">$ ${totalCosto.toFixed(2)}</td>
-                        <td class="p-2.5 text-right font-bold text-celeste-600">$ ${totalVenta.toFixed(2)}</td>
-                    </tr>
+                const tCosto = cant * costoUnit;
+                const tVenta = cant * ventaUnit;
+                totalVentaPreview += tVenta;
+
+                const ptr = document.createElement('tr');
+                ptr.className = 'hover:bg-slate-50';
+                ptr.innerHTML = `
+                    <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
+                    <td class="p-2.5 text-slate-800 font-medium">${descEn}</td>
+                    <td class="p-2.5 text-slate-600">${descEs}</td>
+                    <td class="p-2.5 text-center font-semibold">${cant}</td>
+                    <td class="p-2.5 text-center text-slate-500 uppercase">${medida}</td>
+                    <td class="p-2.5 text-right text-slate-600">$ ${tCosto.toFixed(2)}</td>
+                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${tVenta.toFixed(2)}</td>
                 `;
+                previewTbody.appendChild(ptr);
             });
 
-            const totalVentaGral = items.reduce((acc, curr) => acc + curr.total_venta, 0);
+            document.getElementById('preview-total-venta').textContent = `$ ${totalVentaPreview.toFixed(2)}`;
 
-            document.getElementById('preview-titulo-buque').innerText = buque.toUpperCase();
-            document.getElementById('preview-badge-cod').innerText = codigo.toUpperCase();
-            document.getElementById('preview-fecha').innerText = `Fecha: ${new Date().toLocaleDateString('es-ES')}`;
-            document.getElementById('preview-condicion-pago').innerText = condicion;
-            document.getElementById('preview-observaciones').innerText = observaciones;
-            document.getElementById('preview-total-venta').innerText = `$ ${totalVentaGral.toFixed(2)}`;
-            document.getElementById('preview-tabla-items').innerHTML = previewTableHtml;
-
-            const card = document.getElementById('card-resultado-cotizacion');
-            card.classList.remove('hidden');
-            card.scrollIntoView({ behavior: 'smooth' });
+            const cardPreview = document.getElementById('card-resultado-cotizacion');
+            cardPreview.classList.remove('hidden');
+            cardPreview.scrollIntoView({ behavior: 'smooth' });
         }
 
         function cerrarVistaPrevia() {
