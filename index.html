@@ -1,679 +1,263 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quotations - Maritime Agency</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#0f2942',
-                            900: '#0a192f',
-                            950: '#060d19'
-                        },
-                        maritime: {
-                            blue: '#0d4182',
-                            midblue: '#0f61a9',
-                            cyan: '#108dc8',
-                            gray: '#cbd5e1',
-                            lightgray: '#f8fafc'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Supabase JS Client v2 -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #060d19; color: #f8fafc; }
-        .glass-navy { background: rgba(13, 65, 130, 0.45); backdrop-filter: blur(14px); border: 1px solid rgba(16, 141, 200, 0.3); }
-        .glass-white { background: #ffffff; color: #0a192f; }
-        input, select, textarea { background-color: #0a192f !important; border-color: #108dc8 !important; color: #ffffff !important; }
-        input:focus, select:focus, textarea:focus { border-color: #38bdf8 !important; outline: none; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.35); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QUOTATIONS PANEL | Heroline Shipping</title>
+  <!-- Tipografía profesional de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --azul-marino: #0b2545;
+      --azul-marino-hover: #134074;
+      --azul-celeste: #0077b6;
+      --azul-celeste-claro: #e0f2fe;
+      --blanco: #ffffff;
+      --gris-fondo: #f4f7f6;
+      --gris-borde: #e2e8f0;
+      --texto-oscuro: #1e293b;
+      --texto-suave: #64748b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--gris-fondo);
+      color: var(--texto-oscuro);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Sidebar / Navegación */
+    .sidebar {
+      width: 260px;
+      background-color: var(--azul-marino);
+      color: var(--blanco);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      background-color: var(--blanco);
+      border-radius: 8px;
+      padding: 4px;
+    }
+
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      font-size: 0.75rem;
+      color: var(--azul-celeste);
+      font-weight: 500;
+    }
+
+    .nav-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 6px;
+      display: block;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item.active a, .nav-item a:hover {
+      background-color: var(--azul-celeste);
+      color: var(--blanco);
+    }
+
+    /* Contenido Principal */
+    .main-content {
+      flex: 1;
+      padding: 2.5rem;
+      overflow-y: auto;
+    }
+
+    .header-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: var(--blanco);
+      padding: 1.5rem 2rem;
+      border-radius: 12px;
+      border-left: 5px solid var(--azul-celeste);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+    }
+
+    .header-panel h1 {
+      color: var(--azul-marino);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .status-badge {
+      background-color: var(--azul-celeste-claro);
+      color: var(--azul-celeste);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Tarjetas / Módulo */
+    .card {
+      background-color: var(--blanco);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid var(--gris-borde);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      color: var(--azul-marino);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    /* Botones corporativos */
+    .btn-primary {
+      background-color: var(--azul-marino);
+      color: var(--blanco);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--azul-marino-hover);
+    }
+
+    /* Contenedor de salida / Consola de pruebas */
+    pre#output {
+      background-color: #0f172a;
+      color: #38bdf8;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      font-family: monospace;
+      font-size: 0.85rem;
+      overflow-x: auto;
+    }
+  </style>
 </head>
-<body class="min-h-screen p-3 md:p-6 lg:p-8 text-slate-100">
+<body>
 
-    <!-- TOP HEADER BAR -->
-    <header class="max-w-7xl mx-auto mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 glass-navy p-5 rounded-2xl shadow-2xl border-l-4 border-l-sky-400">
-        <div class="flex items-center gap-4">
-            <div class="p-1.5 bg-white rounded-xl border border-sky-300 shadow-md">
-                <svg viewBox="0 0 100 110" class="w-12 h-12 rounded-lg" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="5" y="5" width="28" height="100" rx="8" fill="#0d4182"/>
-                    <rect x="36" y="20" width="28" height="85" rx="4" fill="#0f61a9"/>
-                    <rect x="67" y="5" width="28" height="100" rx="8" fill="#108dc8"/>
-                    <path d="M 40 22 C 40 18, 60 18, 60 22 L 60 27 L 40 27 Z" fill="#ffffff"/>
-                    <path d="M 28 58 L 50 42 L 72 58 L 65 65 L 50 54 L 35 65 Z" fill="#ffffff"/>
-                    <circle cx="34" cy="67" r="2.5" fill="#ffffff"/>
-                    <circle cx="42" cy="67" r="2.5" fill="#ffffff"/>
-                    <circle cx="50" cy="67" r="2.5" fill="#ffffff"/>
-                    <circle cx="58" cy="67" r="2.5" fill="#ffffff"/>
-                    <circle cx="66" cy="67" r="2.5" fill="#ffffff"/>
-                    <path d="M 28 72 L 50 88 L 72 72 L 64 100 C 58 103, 42 103, 36 100 Z" fill="#ffffff"/>
-                    <polygon points="50,92 42,80 58,80" fill="#0d4182"/>
-                </svg>
-            </div>
-            <div>
-                <h1 class="text-3xl font-extrabold tracking-tight text-white">Quotations</h1>
-            </div>
-        </div>
-
-        <div class="flex items-center gap-3 bg-navy-900/90 px-4 py-2.5 rounded-xl border border-sky-500/30">
-            <div id="connection-indicator" class="w-3 h-3 rounded-full bg-amber-400 animate-pulse"></div>
-            <span id="connection-status-text" class="text-xs font-semibold text-slate-200">Modo Local / Configurar Supabase</span>
-            <button onclick="toggleConfigModal()" class="text-xs bg-white hover:bg-sky-50 text-navy-950 font-bold px-3 py-1.5 rounded-lg transition shadow-md border border-sky-200">
-                <i class="fa-solid fa-gear mr-1 text-sky-600"></i> Config
-            </button>
-        </div>
-    </header>
-
-    <!-- MAIN FORM CONTAINER -->
-    <main class="max-w-7xl mx-auto space-y-6">
-        <div class="glass-navy rounded-2xl p-6 shadow-2xl relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-64 h-64 bg-sky-400/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
-
-            <!-- SECTION 1: HEADER INFO -->
-            <div class="border-b border-sky-500/20 pb-6 mb-6">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2 mb-4">
-                    <i class="fa-solid fa-anchor text-sky-400 bg-navy-900 p-2 rounded-lg text-sm border border-sky-500/30"></i> Información General de Cotización del Buque
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-ship text-maritime-cyan mr-1"></i> Nombre del Buque *
-                        </label>
-                        <input type="text" id="nombre_buque" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold transition bg-navy-900 border" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-barcode text-maritime-cyan mr-1"></i> Código de Requisición *
-                        </label>
-                        <input type="text" id="codigo_requisicion" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-semibold transition bg-navy-900 border" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-credit-card text-maritime-cyan mr-1"></i> Condición de Pago *
-                        </label>
-                        <select id="condicion_pago" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-medium transition bg-navy-900 border">
-                            <option value="100%">100%</option>
-                            <option value="50%">50%</option>
-                            <option value="Crédito">Crédito</option>
-                        </select>
-                    </div>
-                    <div class="md:col-span-3">
-                        <label class="block text-xs font-bold text-slate-200 uppercase tracking-wider mb-2">
-                            <i class="fa-solid fa-circle-info text-maritime-cyan mr-1"></i> Información Adicional
-                        </label>
-                        <textarea id="observaciones" rows="2" class="w-full px-3.5 py-2.5 rounded-xl text-sm font-normal transition bg-navy-900 border resize-none"></textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SECTION 2: DYNAMIC PRODUCT / SERVICE ITEMS -->
-            <div class="mb-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <div>
-                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-sky-400"></i> Detalle de Ítems Solicitados
-                        </h2>
-                        <p class="text-xs text-sky-200/80">Pega directamente tu tabla de ítems copiada desde Microsoft Excel.</p>
-                    </div>
-                    <button type="button" onclick="pegarDesdeExcel()" class="bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs px-5 py-2.5 rounded-xl shadow-lg transition flex items-center justify-center gap-2 border border-sky-300">
-                        <i class="fa-solid fa-paste text-sm text-white"></i> Pegar desde Excel
-                    </button>
-                </div>
-
-                <div class="overflow-x-auto rounded-xl border border-sky-500/30 shadow-lg">
-                    <table class="w-full text-left text-xs text-slate-200 min-w-[1000px]">
-                        <thead class="bg-navy-900 uppercase font-bold text-sky-200 border-b border-sky-500/30">
-                            <tr>
-                                <th class="p-3 text-center w-12"># ID</th>
-                                <th class="p-3 w-52">Descripción (Inglés)</th>
-                                <th class="p-3 w-52">Descripción (Español)</th>
-                                <th class="p-3 w-24 text-center">Cantidad</th>
-                                <th class="p-3 w-28 text-center">Medida</th>
-                                <th class="p-3 w-28 text-right">Costo Unit ($)</th>
-                                <th class="p-3 w-28 text-right text-emerald-400">Total Costo</th>
-                                <th class="p-3 w-28 text-right">Venta Unit ($)</th>
-                                <th class="p-3 w-28 text-right text-sky-300">Total Venta</th>
-                                <th class="p-3 text-center w-12">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabla-items-body" class="divide-y divide-navy-800 bg-navy-950/80"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- SECTION 3: RESUMEN Y CALCULOS GLOBALES -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-navy-950/90 rounded-2xl border border-slate-700 mb-6">
-                <div class="p-3 rounded-xl bg-navy-900 border border-slate-700">
-                    <span class="text-[11px] text-slate-400 block font-semibold uppercase">Total de Ítems</span>
-                    <span id="resumen-cant-items" class="text-xl font-extrabold text-white">0</span>
-                </div>
-                <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30">
-                    <span class="text-[11px] text-emerald-400 block font-semibold uppercase">Costo Total Global</span>
-                    <span id="resumen-total-costo" class="text-xl font-extrabold text-emerald-300">$ 0.00</span>
-                </div>
-                <div class="p-3 rounded-xl bg-sky-950/40 border border-maritime-cyan/40">
-                    <span class="text-[11px] text-maritime-cyan block font-semibold uppercase">Venta Total Global</span>
-                    <span id="resumen-total-venta" class="text-xl font-extrabold text-sky-200">$ 0.00</span>
-                </div>
-                <div class="p-3 rounded-xl bg-purple-950/30 border border-purple-500/30">
-                    <span class="text-[11px] text-purple-300 block font-semibold uppercase">Utilidad Estimada</span>
-                    <span id="resumen-utilidad" class="text-xl font-extrabold text-purple-200">$ 0.00 (0%)</span>
-                </div>
-            </div>
-
-            <!-- ACTIONS -->
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-slate-700">
-                <p class="text-xs text-slate-400 italic">
-                    <i class="fa-solid fa-shield-halved text-maritime-cyan mr-1"></i> Verifica las cantidades y montos antes de registrar la cotización final.
-                </p>
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <button type="button" onclick="limpiarFormulario()" class="px-5 py-3 rounded-xl border border-slate-700 bg-navy-900 hover:bg-slate-800 text-slate-300 text-xs font-bold transition">
-                        <i class="fa-solid fa-eraser mr-1"></i> Limpiar
-                    </button>
-                    <button type="button" onclick="guardarCotizacion()" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white hover:bg-slate-100 text-navy-950 text-sm font-extrabold transition shadow-xl flex items-center justify-center gap-2 border border-slate-300">
-                        <i class="fa-solid fa-floppy-disk text-base text-maritime-blue"></i> Guardar Cotización
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- LIVE PREVIEW CARD -->
-        <div id="card-resultado-cotizacion" class="glass-white rounded-2xl p-6 shadow-2xl hidden transition-all duration-500 border-4 border-maritime-blue">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-4 mb-4 gap-3">
-                <div class="flex items-center gap-3">
-                    <div class="p-3 bg-navy-900 text-white rounded-xl font-black text-xl">
-                        <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                    </div>
-                    <div>
-                        <span class="text-xs font-bold uppercase tracking-wider text-maritime-blue">Cotización Registrada con Éxito</span>
-                        <h3 id="preview-titulo-buque" class="text-2xl font-black text-navy-900">-</h3>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <span id="preview-badge-cod" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-navy-900 text-white mb-1">-</span>
-                    <p id="preview-fecha" class="text-xs font-semibold text-slate-500">Fecha: -</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-slate-100 rounded-xl border border-slate-200">
-                <div>
-                    <span class="text-[11px] font-bold text-slate-500 uppercase block">Condición de Pago</span>
-                    <p id="preview-condicion-pago" class="text-sm font-bold text-navy-900">-</p>
-                </div>
-                <div>
-                    <span class="text-[11px] font-bold text-slate-500 uppercase block">Estado</span>
-                    <span id="preview-estado" class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 inline-block">Guardada</span>
-                </div>
-                <div>
-                    <span class="text-[11px] font-bold text-slate-500 uppercase block">Total Venta Cotizado</span>
-                    <p id="preview-total-venta" class="text-lg font-black text-maritime-blue">$ 0.00</p>
-                </div>
-                <div class="md:col-span-3">
-                    <span class="text-[11px] font-bold text-slate-500 uppercase block">Observaciones</span>
-                    <p id="preview-observaciones" class="text-xs text-slate-700 font-medium italic">-</p>
-                </div>
-            </div>
-
-            <h4 class="text-xs font-extrabold uppercase text-navy-900 mb-3 flex items-center gap-1.5">
-                <i class="fa-solid fa-boxes-packing text-maritime-blue"></i> Ítems Registrados
-            </h4>
-            <div class="overflow-x-auto rounded-xl border border-slate-200 mb-4">
-                <table class="w-full text-left text-xs text-slate-800">
-                    <thead class="bg-navy-900 text-white uppercase font-bold text-[11px]">
-                        <tr>
-                            <th class="p-2.5 text-center"># ID</th>
-                            <th class="p-2.5">Descripción Inglés</th>
-                            <th class="p-2.5">Descripción Español</th>
-                            <th class="p-2.5 text-center">Cant</th>
-                            <th class="p-2.5 text-center">Medida</th>
-                            <th class="p-2.5 text-right">Costo Total ($)</th>
-                            <th class="p-2.5 text-right">Venta Total ($)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="preview-tabla-items" class="divide-y divide-slate-200 bg-white"></tbody>
-                </table>
-            </div>
-
-            <div class="flex justify-end">
-                <button onclick="cerrarVistaPrevia()" class="px-5 py-2 rounded-xl bg-navy-900 hover:bg-navy-800 text-white text-xs font-bold transition">
-                    <i class="fa-solid fa-xmark mr-1"></i> Cerrar Vista Previa
-                </button>
-            </div>
-        </div>
-    </main>
-
-    <!-- SUPABASE CONFIGURATION MODAL -->
-    <div id="modal-config" class="fixed inset-0 bg-navy-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-navy w-full max-w-md p-6 rounded-2xl border border-slate-600 shadow-2xl">
-            <h3 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-plug text-maritime-cyan"></i> Conexión Directa Supabase
-            </h3>
-            <div class="space-y-3 mb-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">SUPABASE URL</label>
-                    <input type="text" id="cfg-supa-url" placeholder="https://xyz.supabase.co" class="w-full px-3 py-2 rounded-lg text-xs bg-navy-900 border">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-1">SUPABASE ANON KEY</label>
-                    <input type="text" id="cfg-supa-key" placeholder="eyJhbGciOi..." class="w-full px-3 py-2 rounded-lg text-xs bg-navy-900 border">
-                </div>
-            </div>
-            <div class="flex justify-end gap-2">
-                <button onclick="toggleConfigModal()" class="px-4 py-2 rounded-xl bg-navy-900 text-xs text-slate-300">Cancelar</button>
-                <button onclick="guardarConfigSupabase()" class="px-4 py-2 rounded-xl bg-sky-500 text-xs text-white font-bold">Guardar</button>
-            </div>
-        </div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand-header">
+      <!-- Tu logo cargado mediante SVG vectorial integrado (mantiene nitidez total) -->
+      <svg class="brand-logo" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0H140V500H0V0Z" fill="#0B2545"/>
+        <path d="M360 0H500V500H360V0Z" fill="#0077B6"/>
+        <path d="M140 100H360V500H140V100Z" fill="#005A9E"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M250 115C222.386 115 200 137.386 200 165V210H300V165C300 137.386 277.614 115 250 115ZM115 285L250 205L385 285V345L250 265L115 345V285ZM250 365L175 490H325L250 365Z" fill="white"/>
+        <circle cx="150" cy="320" r="15" fill="white"/>
+        <circle cx="216" cy="320" r="15" fill="white"/>
+        <circle cx="284" cy="320" r="15" fill="white"/>
+        <circle cx="350" cy="320" r="15" fill="white"/>
+      </svg>
+      <div>
+        <div class="brand-title">HEROLINE</div>
+        <div class="brand-subtitle">Agenciamiento</div>
+      </div>
     </div>
 
-    <!-- MODAL EXCEL -->
-    <div id="modal-excel" class="fixed inset-0 bg-navy-950/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="glass-navy w-full max-w-2xl p-6 rounded-2xl border border-sky-400/40 shadow-2xl">
-            <h3 class="text-lg font-bold text-white mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-file-excel text-sky-400 text-xl"></i> Pegar Tabla desde Microsoft Excel
-            </h3>
-            <p class="text-xs text-slate-300 mb-3">
-                Copia las celdas en Excel y pégalas (`Ctrl + V`) en la caja inferior.<br>
-                <span class="text-sky-300 font-semibold">Columnas esperadas:</span> [Descripción EN] | [Descripción ES] | [Cantidad] | [Unidad] | [Costo Unit] | [Venta Unit]
-            </p>
-            <textarea id="input-excel-paste" rows="8" class="w-full px-3 py-2.5 rounded-xl text-xs font-mono bg-navy-900 border border-sky-500/40 focus:border-sky-400 text-white resize-none mb-4"></textarea>
-            <div class="flex justify-end gap-2">
-                <button onclick="cerrarModalExcel()" class="px-4 py-2 rounded-xl bg-navy-900 text-xs text-slate-300 border border-slate-700">Cancelar</button>
-                <button onclick="procesarPegadoModalExcel()" class="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-xs font-bold border border-sky-300 flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-import"></i> Procesar e Importar
-                </button>
-            </div>
-        </div>
+    <ul class="nav-menu">
+      <li class="nav-item active"><a href="#">QUOTATIONS PANEL</a></li>
+      <li class="nav-item"><a href="#">Operaciones</a></li>
+      <li class="nav-item"><a href="#">Inventario</a></li>
+      <li class="nav-item"><a href="#">Configuración</a></li>
+    </ul>
+  </aside>
+
+  <!-- Área de trabajo -->
+  <main class="main-content">
+    <div class="header-panel">
+      <h1>QUOTATIONS PANEL</h1>
+      <span class="status-badge">● Sistema en Línea</span>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        let supabaseClient = null;
-        let itemCounter = 0;
+    <section class="card">
+      <h2 class="card-title">Módulo de Cotizaciones y Operaciones</h2>
+      <p style="color: var(--texto-suave); margin-bottom: 1.5rem; font-size: 0.95rem;">
+        Conexión directa activa con Supabase. Utilice el botón inferior para validar el intercambio de datos.
+      </p>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initSupabaseFromStorage();
-            mostrarEstadoTablaVacia();
-        });
+      <button id="btn-test" class="btn-primary">Probar Conexión a Supabase</button>
+      <pre id="output">Estado: Listo para realizar pruebas.</pre>
+    </section>
+  </main>
 
-        function initSupabaseFromStorage() {
-            const savedUrl = localStorage.getItem('supa_url');
-            const savedKey = localStorage.getItem('supa_key');
-            const indicator = document.getElementById('connection-indicator');
-            const statusText = document.getElementById('connection-status-text');
+  <script>
+    // Configuración cliente de Supabase
+    const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
+    const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
 
-            if (savedUrl && savedKey && window.supabase) {
-                try {
-                    supabaseClient = window.supabase.createClient(savedUrl, savedKey);
-                    indicator.className = "w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]";
-                    statusText.innerText = "Conectado a Supabase";
-                } catch (e) {
-                    indicator.className = "w-3 h-3 rounded-full bg-rose-500";
-                    statusText.innerText = "Error en Credenciales";
-                }
-            }
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('btn-test').addEventListener('click', async () => {
+      const output = document.getElementById('output');
+      output.textContent = 'Enviando petición a Supabase...';
+
+      try {
+        const { data, error } = await supabase
+          .from('tu_tabla')
+          .select('*')
+          .limit(5);
+
+        if (error) {
+          output.textContent = 'Error Supabase: ' + error.message;
+        } else {
+          output.textContent = JSON.stringify(data, null, 2);
         }
-
-        function guardarConfigSupabase() {
-            const url = document.getElementById('cfg-supa-url').value.trim();
-            const key = document.getElementById('cfg-supa-key').value.trim();
-            if (url && key) {
-                localStorage.setItem('supa_url', url);
-                localStorage.setItem('supa_key', key);
-                initSupabaseFromStorage();
-                toggleConfigModal();
-            }
-        }
-
-        function toggleConfigModal() {
-            document.getElementById('modal-config').classList.toggle('hidden');
-        }
-
-        function mostrarEstadoTablaVacia() {
-            const tbody = document.getElementById('tabla-items-body');
-            tbody.innerHTML = `
-                <tr id="row-empty-state">
-                    <td colspan="10" class="p-8 text-center text-slate-400 font-medium">
-                        <i class="fa-solid fa-file-excel text-sky-400 text-3xl mb-2 block"></i>
-                        No hay ítems cargados. Haz clic en <strong class="text-sky-300">"Pegar desde Excel"</strong> para importar la lista automáticamente.
-                    </td>
-                </tr>
-            `;
-            actualizarTotales();
-        }
-
-        function eliminarFila(rowId) {
-            const tbody = document.getElementById('tabla-items-body');
-            const row = document.getElementById(rowId);
-            if (row) {
-                row.remove();
-                if (tbody.querySelectorAll('tr.row-item').length === 0) {
-                    mostrarEstadoTablaVacia();
-                } else {
-                    reindexarFilas();
-                    actualizarTotales();
-                }
-            }
-        }
-
-        function reindexarFilas() {
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
-            rows.forEach((row, idx) => {
-                const seqCell = row.querySelector('.row-sequence');
-                if (seqCell) seqCell.innerText = idx + 1;
-            });
-            document.getElementById('resumen-cant-items').innerText = rows.length;
-        }
-
-        async function pegarDesdeExcel() {
-            try {
-                if (navigator.clipboard && navigator.clipboard.readText) {
-                    const clipboardText = await navigator.clipboard.readText();
-                    if (clipboardText && clipboardText.trim().length > 0) {
-                        procesarTextoExcel(clipboardText);
-                        return;
-                    }
-                }
-                abrirModalExcel();
-            } catch (err) {
-                abrirModalExcel();
-            }
-        }
-
-        function abrirModalExcel() {
-            document.getElementById('input-excel-paste').value = '';
-            document.getElementById('modal-excel').classList.remove('hidden');
-        }
-
-        function cerrarModalExcel() {
-            document.getElementById('modal-excel').classList.add('hidden');
-        }
-
-        function procesarPegadoModalExcel() {
-            const rawText = document.getElementById('input-excel-paste').value;
-            if (rawText && rawText.trim()) {
-                procesarTextoExcel(rawText);
-                cerrarModalExcel();
-            } else {
-                alert("Por favor pega primero las celdas en el cuadro de texto.");
-            }
-        }
-
-        function procesarTextoExcel(text) {
-            const lineas = text.trim().split(/\r?\n/);
-            if (lineas.length === 0) return;
-
-            const tbody = document.getElementById('tabla-items-body');
-            const emptyState = document.getElementById('row-empty-state');
-            if (emptyState) tbody.innerHTML = '';
-
-            lineas.forEach(linea => {
-                if (!linea.trim()) return;
-                const cols = linea.split('\t');
-
-                const descEn = (cols[0] || '').trim();
-                const descEs = (cols[1] || '').trim();
-                const cant = parseFloat((cols[2] || '1').replace(',', '.')) || 1;
-                const medida = (cols[3] || 'UND').trim().toUpperCase();
-                const costoUnit = parseFloat((cols[4] || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-                const ventaUnit = parseFloat((cols[5] || '0').replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-
-                itemCounter++;
-                const tr = document.createElement('tr');
-                tr.className = "row-item transition hover:bg-navy-900/60";
-                tr.id = `row-item-${itemCounter}`;
-
-                const unidadesValidas = ['UND', 'PIEZA', 'MTR', 'KG', 'LTR', 'TON', 'LOTE', 'SERVICIOS', 'BOX', 'PKT'];
-                const medidaFinal = unidadesValidas.includes(medida) ? medida : 'UND';
-
-                const totalCosto = cant * costoUnit;
-                const totalVenta = cant * ventaUnit;
-
-                tr.innerHTML = `
-                    <td class="p-2 text-center font-bold text-sky-400 row-sequence">
-                        ${tbody.querySelectorAll('tr.row-item').length + 1}
-                    </td>
-                    <td class="p-2">
-                        <input type="text" value="${descEn}" class="item-desc-en w-full px-2.5 py-1.5 rounded-lg text-xs font-medium">
-                    </td>
-                    <td class="p-2">
-                        <input type="text" value="${descEs}" class="item-desc-es w-full px-2.5 py-1.5 rounded-lg text-xs font-medium">
-                    </td>
-                    <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${cant}" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded-lg text-xs font-bold text-center">
-                    </td>
-                    <td class="p-2">
-                        <select class="item-medida w-full px-1.5 py-1.5 rounded-lg text-xs font-semibold text-center">
-                            <option value="UND" ${medidaFinal === 'UND' ? 'selected' : ''}>UND</option>
-                            <option value="PKT" ${medidaFinal === 'PKT' ? 'selected' : ''}>PKT</option>
-                            <option value="BOX" ${medidaFinal === 'BOX' ? 'selected' : ''}>BOX</option>
-                            <option value="PIEZA" ${medidaFinal === 'PIEZA' ? 'selected' : ''}>PIEZA</option>
-                            <option value="MTR" ${medidaFinal === 'MTR' ? 'selected' : ''}>MTR</option>
-                            <option value="KG" ${medidaFinal === 'KG' ? 'selected' : ''}>KG</option>
-                            <option value="LTR" ${medidaFinal === 'LTR' ? 'selected' : ''}>LTR</option>
-
-                            <option value="TON" ${medidaFinal === 'TON' ? 'selected' : ''}>TON</option>
-                            <option value="LOTE" ${medidaFinal === 'LOTE' ? 'selected' : ''}>LOTE</option>
-                            <option value="SERVICIOS" ${medidaFinal === 'SERVICIOS' ? 'selected' : ''}>SERVICIOS</option>
-                        </select>
-                    </td>
-                    <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${costoUnit.toFixed(2)}" oninput="calcularFila(this)" class="item-costo-unit w-full px-2 py-1.5 rounded-lg text-xs text-right">
-                    </td>
-                    <td class="p-2 font-bold text-emerald-400 text-right pr-2 item-total-costo-text">
-                        $ ${totalCosto.toFixed(2)}
-                    </td>
-                    <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${ventaUnit.toFixed(2)}" oninput="calcularFila(this)" class="item-venta-unit w-full px-2 py-1.5 rounded-lg text-xs text-right">
-                    </td>
-                    <td class="p-2 font-bold text-sky-400 text-right pr-2 item-total-venta-text">
-                        $ ${totalVenta.toFixed(2)}
-                    </td>
-                    <td class="p-2 text-center">
-                        <button type="button" onclick="eliminarFila('${tr.id}')" class="text-rose-400 hover:text-rose-300 p-1.5 transition">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            reindexarFilas();
-            actualizarTotales();
-        }
-
-        function calcularFila(element) {
-            const tr = element.closest('tr');
-            const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
-            const costoUnit = parseFloat(tr.querySelector('.item-costo-unit').value) || 0;
-            const ventaUnit = parseFloat(tr.querySelector('.item-venta-unit').value) || 0;
-
-            const totalCosto = cant * costoUnit;
-            const totalVenta = cant * ventaUnit;
-
-            tr.querySelector('.item-total-costo-text').innerText = `$ ${totalCosto.toFixed(2)}`;
-            tr.querySelector('.item-total-venta-text').innerText = `$ ${totalVenta.toFixed(2)}`;
-
-            actualizarTotales();
-        }
-
-        function actualizarTotales() {
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
-            let globalCosto = 0;
-            let globalVenta = 0;
-
-            rows.forEach(row => {
-                const cant = parseFloat(row.querySelector('.item-cantidad').value) || 0;
-                const costoUnit = parseFloat(row.querySelector('.item-costo-unit').value) || 0;
-                const ventaUnit = parseFloat(row.querySelector('.item-venta-unit').value) || 0;
-
-                globalCosto += (cant * costoUnit);
-                globalVenta += (cant * ventaUnit);
-            });
-
-            const utilidad = globalVenta - globalCosto;
-            const margenPct = globalVenta > 0 ? ((utilidad / globalVenta) * 100).toFixed(1) : 0;
-
-            document.getElementById('resumen-cant-items').innerText = rows.length;
-            document.getElementById('resumen-total-costo').innerText = `$ ${globalCosto.toFixed(2)}`;
-            document.getElementById('resumen-total-venta').innerText = `$ ${globalVenta.toFixed(2)}`;
-            document.getElementById('resumen-utilidad').innerText = `$ ${utilidad.toFixed(2)} (${margenPct}%)`;
-        }
-
-        function limpiarFormulario() {
-            document.getElementById('nombre_buque').value = '';
-            document.getElementById('codigo_requisicion').value = '';
-            document.getElementById('condicion_pago').selectedIndex = 0;
-            document.getElementById('observaciones').value = '';
-            itemCounter = 0;
-            mostrarEstadoTablaVacia();
-        }
-
-        async function guardarCotizacion() {
-            const buque = document.getElementById('nombre_buque').value.trim();
-            const requisicion = document.getElementById('codigo_requisicion').value.trim();
-            const condicionPago = document.getElementById('condicion_pago').value;
-            const observaciones = document.getElementById('observaciones').value.trim();
-
-            if (!buque || !requisicion) {
-                alert("Por favor completa los campos obligatorios: Nombre del Buque y Código de Requisición.");
-                return;
-            }
-
-            const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
-            if (rows.length === 0) {
-                alert("Por favor pega o carga al menos un ítem desde Excel antes de guardar.");
-                return;
-            }
-
-            const detalles = [];
-            let sumTotalCosto = 0;
-            let sumTotalVenta = 0;
-
-            rows.forEach((row, idx) => {
-                const descEn = row.querySelector('.item-desc-en').value.trim() || `Item ${idx + 1}`;
-                const descEs = row.querySelector('.item-desc-es').value.trim() || `Ítem ${idx + 1}`;
-                const cant = parseFloat(row.querySelector('.item-cantidad').value) || 0;
-                const medida = row.querySelector('.item-medida').value;
-                const costoUnit = parseFloat(row.querySelector('.item-costo-unit').value) || 0;
-                const ventaUnit = parseFloat(row.querySelector('.item-venta-unit').value) || 0;
-
-                const cTotal = cant * costoUnit;
-                const vTotal = cant * ventaUnit;
-
-                sumTotalCosto += cTotal;
-                sumTotalVenta += vTotal;
-
-                detalles.push({
-                    id_secuencia: idx + 1,
-                    descripcion_en: descEn,
-                    descripcion_es: descEs,
-                    cantidad: cant,
-                    unidad_medida: medida,
-                    costo_unitario: costoUnit,
-                    costo_total: cTotal,
-                    precio_venta: ventaUnit,
-                    venta_total: vTotal
-                });
-            });
-
-            const nuevaCotizacion = {
-                nombre_buque: buque,
-                codigo_requisicion: requisicion,
-                condicion_pago: condicionPago,
-                observaciones: observaciones,
-                subtotal: sumTotalVenta,
-                total: sumTotalVenta,
-                fecha_emision: new Date().toISOString().split('T')[0],
-                detalles: detalles
-            };
-
-            if (supabaseClient) {
-                try {
-                    const { data: cotData, error: cotErr } = await supabaseClient
-                        .from('cotizaciones')
-                        .insert([{
-                            nombre_buque: buque,
-                            codigo_requisicion: requisicion,
-                            cliente: condicionPago,
-                            observaciones: observaciones,
-                            subtotal: sumTotalVenta,
-                            total: sumTotalVenta,
-                            estado: 'Enviada'
-                        }])
-                        .select();
-
-                    if (cotErr) throw cotErr;
-
-                    const cotId = cotData[0].id;
-                    const detallesBD = detalles.map(d => ({
-                        cotizacion_id: cotId,
-                        descripcion_en: d.descripcion_en,
-                        descripcion_es: d.descripcion_es,
-                        cantidad: d.cantidad,
-                        unidad_medida: d.unidad_medida,
-                        costo_unitario: d.costo_unitario,
-                        costo_total: d.costo_total,
-                        precio_venta: d.precio_venta,
-                        venta_total: d.venta_total
-                    }));
-
-                    await supabaseClient.from('cotizacion_detalles').insert(detallesBD);
-
-                } catch (err) {
-                    console.error("Error al guardar en Supabase:", err);
-                }
-            }
-
-            mostrarVistaPrevia(nuevaCotizacion);
-            limpiarFormulario();
-        }
-
-        function mostrarVistaPrevia(cot) {
-            const card = document.getElementById('card-resultado-cotizacion');
-            document.getElementById('preview-titulo-buque').innerText = cot.nombre_buque;
-            document.getElementById('preview-badge-cod').innerText = cot.codigo_requisicion;
-            document.getElementById('preview-fecha').innerText = `Fecha: ${cot.fecha_emision || 'Hoy'}`;
-            document.getElementById('preview-condicion-pago').innerText = cot.condicion_pago;
-            document.getElementById('preview-total-venta').innerText = `$ ${cot.total.toFixed(2)}`;
-            document.getElementById('preview-observaciones').innerText = cot.observaciones || 'Sin observaciones registradas.';
-
-            const tbody = document.getElementById('preview-tabla-items');
-            tbody.innerHTML = '';
-
-            cot.detalles.forEach(d => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="p-2 text-center font-bold text-slate-500">${d.id_secuencia}</td>
-                    <td class="p-2 font-medium">${d.descripcion_en}</td>
-                    <td class="p-2 font-medium text-slate-600">${d.descripcion_es}</td>
-                    <td class="p-2 text-center font-bold">${d.cantidad}</td>
-                    <td class="p-2 text-center text-slate-500">${d.unidad_medida}</td>
-                    <td class="p-2 text-right text-emerald-700 font-semibold">$ ${(d.costo_total || 0).toFixed(2)}</td>
-                    <td class="p-2 text-right text-maritime-blue font-bold">$ ${(d.venta_total || 0).toFixed(2)}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            card.classList.remove('hidden');
-            card.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function cerrarVistaPrevia() {
-            document.getElementById('card-resultado-cotizacion').classList.add('hidden');
-        }
-    </script>
+      } catch (err) {
+        output.textContent = 'Error de ejecución: ' + err.message;
+      }
+    });
+  </script>
 </body>
 </html>
