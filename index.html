@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QUOTATIONS PANEL | Heroline Shipping</title>
-  <!-- Tipografía profesional de Google Fonts -->
+  <title>QUOTATIONS PANEL</title>
+  <!-- Tipografía limpia para estilo empresarial -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Supabase JS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -16,181 +16,131 @@
       --azul-marino: #0b2545;
       --azul-marino-hover: #134074;
       --azul-celeste: #0077b6;
-      --azul-celeste-claro: #e0f2fe;
+      --azul-celeste-suave: #e0f2fe;
       --blanco: #ffffff;
-      --gris-fondo: #f4f7f6;
+      --gris-fondo: #f8fafc;
       --gris-borde: #e2e8f0;
-      --texto-oscuro: #1e293b;
-      --texto-suave: #64748b;
+      --texto-principal: #0f172a;
+      --texto-secundario: #475569;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     body {
       background-color: var(--gris-fondo);
-      color: var(--texto-oscuro);
+      color: var(--texto-principal);
+      padding: 2rem;
       display: flex;
-      min-height: 100vh;
+      justify-content: center;
     }
 
-    /* Sidebar / Navegación */
-    .sidebar {
-      width: 260px;
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background-color: var(--blanco);
+      border-radius: 12px;
+      border: 1px solid var(--gris-borde);
+      box-shadow: 0 10px 25px -5px rgba(11, 37, 69, 0.08);
+      overflow: hidden;
+    }
+
+    /* Encabezado Corporativo */
+    .header {
       background-color: var(--azul-marino);
       color: var(--blanco);
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-    }
-
-    .brand-header {
+      padding: 1.75rem 2rem;
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 2rem;
+      gap: 1.25rem;
+      border-bottom: 4px solid var(--azul-celeste);
     }
 
-    .brand-logo {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
+    .logo {
+      width: 52px;
+      height: 52px;
       background-color: var(--blanco);
       border-radius: 8px;
       padding: 4px;
+      object-fit: contain;
+      flex-shrink: 0;
     }
 
-    .brand-title {
-      font-size: 1rem;
+    .header-text h1 {
+      font-size: 1.4rem;
       font-weight: 700;
       letter-spacing: 0.5px;
-      line-height: 1.2;
-    }
-
-    .brand-subtitle {
-      font-size: 0.75rem;
-      color: var(--azul-celeste);
-      font-weight: 500;
-    }
-
-    .nav-menu {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .nav-item a {
-      color: rgba(255, 255, 255, 0.8);
-      text-decoration: none;
-      padding: 12px 16px;
-      border-radius: 6px;
-      display: block;
-      font-weight: 500;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item.active a, .nav-item a:hover {
-      background-color: var(--azul-celeste);
       color: var(--blanco);
     }
 
-    /* Contenido Principal */
-    .main-content {
-      flex: 1;
-      padding: 2.5rem;
-      overflow-y: auto;
+    .header-text p {
+      font-size: 0.85rem;
+      color: var(--azul-celeste-suave);
+      font-weight: 500;
     }
 
-    .header-panel {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: var(--blanco);
-      padding: 1.5rem 2rem;
-      border-radius: 12px;
-      border-left: 5px solid var(--azul-celeste);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-      margin-bottom: 2rem;
-    }
-
-    .header-panel h1 {
-      color: var(--azul-marino);
-      font-size: 1.5rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-
-    .status-badge {
-      background-color: var(--azul-celeste-claro);
-      color: var(--azul-celeste);
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    /* Tarjetas / Módulo */
-    .card {
-      background-color: var(--blanco);
-      border-radius: 12px;
+    /* Contenido */
+    .content {
       padding: 2rem;
-      border: 1px solid var(--gris-borde);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
     }
 
     .card-title {
-      font-size: 1.1rem;
       color: var(--azul-marino);
+      font-size: 1.1rem;
       font-weight: 600;
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.75rem;
     }
 
-    /* Botones corporativos */
-    .btn-primary {
+    .description {
+      color: var(--texto-secundario);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    /* Botón Empresarial */
+    #btn-test {
       background-color: var(--azul-marino);
       color: var(--blanco);
       border: none;
       padding: 12px 24px;
       border-radius: 6px;
+      font-size: 0.95rem;
       font-weight: 600;
-      font-size: 0.9rem;
       cursor: pointer;
-      transition: background-color 0.2s ease;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .btn-primary:hover {
+    #btn-test:hover {
       background-color: var(--azul-marino-hover);
+      border-color: var(--azul-celeste);
     }
 
-    /* Contenedor de salida / Consola de pruebas */
-    pre#output {
+    /* Consola / Salida */
+    #output {
       background-color: #0f172a;
       color: #38bdf8;
-      padding: 1rem;
+      padding: 1.25rem;
       border-radius: 8px;
       margin-top: 1.5rem;
-      font-family: monospace;
+      font-family: 'Courier New', Courier, monospace;
       font-size: 0.85rem;
       overflow-x: auto;
+      border-left: 4px solid var(--azul-celeste);
     }
   </style>
 </head>
 <body>
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand-header">
-      <!-- Tu logo cargado mediante SVG vectorial integrado (mantiene nitidez total) -->
-      <svg class="brand-logo" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <div class="container">
+    <!-- Encabezado con Logo y QUOTATIONS PANEL -->
+    <header class="header">
+      <svg class="logo" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M0 0H140V500H0V0Z" fill="#0B2545"/>
         <path d="M360 0H500V500H360V0Z" fill="#0077B6"/>
         <path d="M140 100H360V500H140V100Z" fill="#005A9E"/>
@@ -200,40 +150,23 @@
         <circle cx="284" cy="320" r="15" fill="white"/>
         <circle cx="350" cy="320" r="15" fill="white"/>
       </svg>
-      <div>
-        <div class="brand-title">HEROLINE</div>
-        <div class="brand-subtitle">Agenciamiento</div>
+      <div class="header-text">
+        <h1>QUOTATIONS PANEL</h1>
+        <p>Heroline Shipping - Sistema Módulo 1</p>
       </div>
-    </div>
+    </header>
 
-    <ul class="nav-menu">
-      <li class="nav-item active"><a href="#">QUOTATIONS PANEL</a></li>
-      <li class="nav-item"><a href="#">Operaciones</a></li>
-      <li class="nav-item"><a href="#">Inventario</a></li>
-      <li class="nav-item"><a href="#">Configuración</a></li>
-    </ul>
-  </aside>
+    <!-- Área principal de pruebas -->
+    <main class="content">
+      <h2 class="card-title">Prueba de Conexión a Supabase</h2>
+      <p class="description">Haz clic en el botón inferior para verificar la respuesta del backend en Vercel.</p>
 
-  <!-- Área de trabajo -->
-  <main class="main-content">
-    <div class="header-panel">
-      <h1>QUOTATIONS PANEL</h1>
-      <span class="status-badge">● Sistema en Línea</span>
-    </div>
-
-    <section class="card">
-      <h2 class="card-title">Módulo de Cotizaciones y Operaciones</h2>
-      <p style="color: var(--texto-suave); margin-bottom: 1.5rem; font-size: 0.95rem;">
-        Conexión directa activa con Supabase. Utilice el botón inferior para validar el intercambio de datos.
-      </p>
-
-      <button id="btn-test" class="btn-primary">Probar Conexión a Supabase</button>
-      <pre id="output">Estado: Listo para realizar pruebas.</pre>
-    </section>
-  </main>
+      <button id="btn-test">Probar consulta a Supabase</button>
+      <pre id="output">Esperando acción...</pre>
+    </main>
+  </div>
 
   <script>
-    // Configuración cliente de Supabase
     const SUPABASE_URL = 'https://TU-PROYECTO.supabase.co';
     const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
 
@@ -241,7 +174,7 @@
 
     document.getElementById('btn-test').addEventListener('click', async () => {
       const output = document.getElementById('output');
-      output.textContent = 'Enviando petición a Supabase...';
+      output.textContent = 'Consultando datos...';
 
       try {
         const { data, error } = await supabase
@@ -250,12 +183,12 @@
           .limit(5);
 
         if (error) {
-          output.textContent = 'Error Supabase: ' + error.message;
+          output.textContent = 'Error: ' + error.message;
         } else {
           output.textContent = JSON.stringify(data, null, 2);
         }
       } catch (err) {
-        output.textContent = 'Error de ejecución: ' + err.message;
+        output.textContent = 'Error inesperado: ' + err.message;
       }
     });
   </script>
