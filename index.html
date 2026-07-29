@@ -223,6 +223,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             agregarFilaVacia();
 
+            // Atajo con teclado (Ctrl + V / Cmd + V)
             document.addEventListener('paste', (e) => {
                 const activeEl = document.activeElement;
                 const isFormInput = activeEl && (activeEl.id === 'nombre_buque' || activeEl.id === 'codigo_requisicion' || activeEl.id === 'observaciones');
@@ -235,6 +236,21 @@
                 }
             });
         });
+
+        // Función invocada por el botón "Pegar desde Excel"
+        async function pegarDesdeExcel() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (!text || !text.trim()) {
+                    alert("El portapapeles está vacío o no contiene texto válido.");
+                    return;
+                }
+                procesarTextoExcel(text);
+            } catch (err) {
+                alert("Para pegar haciendo clic en el botón, el navegador requiere permiso de acceso al portapapeles. Si el navegador no lo permite, por favor usa el comando teclado 'Ctrl + V'.");
+                console.error("Error al leer del portapapeles: ", err);
+            }
+        }
 
         function limpiarNumero(valor) {
             if (typeof valor === 'number') return valor;
@@ -311,16 +327,14 @@
                 if (!line.trim()) return;
                 const cols = line.split('\t');
 
+                // Mapeo directo para las 6 columnas indicadas:
+                // Col 0: Desc EN | Col 1: Desc ES | Col 2: Cantidad | Col 3: Unidad | Col 4: Costo Unit/Tot | Col 5: Venta Unit/Tot
                 const descEn = cols[0] ? cols[0].trim() : '';
                 const descEs = cols[1] ? cols[1].trim() : '';
                 const cant = limpiarNumero(cols[2]) || 1;
                 const medida = normalizarUnidad(cols[3]);
-                const costoUnit = limpiarNumero(cols[4]);
-                const ventaUnit = limpiarNumero(cols[5]);
-
-                // Cálculo: Costo = CostoU * Cant, Venta = VentaU * Cant
-                const totalCosto = cant * costoUnit;
-                const totalVenta = cant * ventaUnit;
+                const costoVal = limpiarNumero(cols[4]);
+                const ventaVal = limpiarNumero(cols[5]);
 
                 itemCounter++;
                 const tr = document.createElement('tr');
@@ -342,10 +356,10 @@
                         <input type="text" value="${medida}" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${totalCosto.toFixed(2)}" data-unit="${costoUnit}" oninput="actualizarUnitario(this, 'costo'); calcularFila(this)" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${costoVal.toFixed(2)}" data-unit="${(costoVal / cant).toFixed(4)}" oninput="actualizarUnitario(this, 'costo'); calcularFila(this)" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${totalVenta.toFixed(2)}" data-unit="${ventaUnit}" oninput="actualizarUnitario(this, 'venta'); calcularFila(this)" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${ventaVal.toFixed(2)}" data-unit="${(ventaVal / cant).toFixed(4)}" oninput="actualizarUnitario(this, 'venta'); calcularFila(this)" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2 text-center">
                         <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
@@ -361,7 +375,6 @@
             actualizarTotales();
         }
 
-        // Fórmulas principales por fila (Costo = CostoUnit * Cant, Venta = VentaUnit * Cant)
         function calcularFila(input) {
             const tr = input.closest('tr');
             const cantInput = tr.querySelector('.item-cantidad');
@@ -370,7 +383,6 @@
 
             const cant = parseFloat(cantInput.value) || 0;
 
-            // Si el cambio proviene directamente de la cantidad, recalculamos Costo y Venta según unitarios
             if (input === cantInput) {
                 const costoUnit = parseFloat(costoInput.dataset.unit) || 0;
                 const ventaUnit = parseFloat(ventaInput.dataset.unit) || 0;
@@ -459,7 +471,6 @@
                 return;
             }
 
-            // Actualizar Vista Previa
             document.getElementById('preview-titulo-buque').textContent = buque.toUpperCase();
             document.getElementById('preview-badge-cod').textContent = codigo.toUpperCase();
             document.getElementById('preview-condicion-pago').textContent = condicion;
