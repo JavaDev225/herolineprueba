@@ -36,16 +36,15 @@
 </head>
 <body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar (Cabecera cambiada a Azul Celeste con gradiente y contraste optimizado) -->
+    <!-- Top Navigation Bar -->
     <header class="bg-gradient-to-r from-celeste-600 via-celeste-500 to-celeste-600 text-white shadow-md border-b border-celeste-400/40 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-navy-950 text-celeste-400 p-2 rounded-lg font-bold shadow-sm">
+            <!-- Icono a la izquierda junto al texto QUOTATIONS PANEL -->
+            <div class="flex items-center gap-2.5">
+                <div class="bg-navy-950 text-celeste-400 p-2 rounded-lg font-bold shadow-sm flex items-center justify-center">
                     <i class="fa-solid fa-ship text-lg"></i>
                 </div>
-                <div>
-                    <h1 class="font-extrabold tracking-wider text-lg text-white leading-none">QUOTATIONS PANEL</h1>
-                </div>
+                <h1 class="font-extrabold tracking-wider text-lg text-white leading-none">QUOTATIONS PANEL</h1>
             </div>
             <div class="flex items-center gap-4 text-xs font-semibold">
                 <span class="bg-navy-950/80 border border-white/20 px-3 py-1.5 rounded-full text-white shadow-sm backdrop-blur-sm">
@@ -58,7 +57,7 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
 
-        <!-- Banner Visual / Header Hero -->
+        <!-- Banner Visual / Header Hero con la nueva imagen -->
         <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-navy-900 text-white">
             <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSoVOovA_BIyQDPCJLJmXAPcz6ule3MQ5Qs6gjb0yu4QkDnws_U8OyGI6bwSXyURqBhwhdR5PYfylibsOI" alt="Maritime Shipping" class="absolute inset-0 w-full h-full object-cover object-center opacity-30">
             <div class="relative z-10 p-6 md:p-8 bg-gradient-to-r from-navy-950 via-navy-900/90 to-transparent">
@@ -394,7 +393,6 @@
                 const costoUnit = parseFloat(tr.querySelector('.item-costo').value) || 0;
                 const ventaUnit = parseFloat(tr.querySelector('.item-venta').value) || 0;
 
-                // Fórmulas solicitadas: Costo = (Costo Unit * Cant), Venta = (Venta Unit * Cant)
                 acumuladoCosto += (costoUnit * cant);
                 acumuladoVenta += (ventaUnit * cant);
             });
