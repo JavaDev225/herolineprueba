@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -79,6 +79,14 @@
                 <h3 class="text-white font-semibold text-sm flex items-center gap-2">
                     <i class="fa-solid fa-file-pen text-celeste-400"></i> Registro de Cotización
                 </h3>
+                <div class="flex gap-2">
+                    <button type="button" onclick="pegarDesdeExcel()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-file-excel text-sm"></i> Pegar desde Excel
+                    </button>
+                    <button type="button" onclick="agregarFilaVacia()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-navy-800 hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700">
+                        <i class="fa-solid fa-plus text-celeste-400"></i> Agregar Ítem
+                    </button>
+                </div>
             </div>
             
             <div class="p-6 space-y-6">
@@ -214,7 +222,6 @@
 
     <script>
         let itemCounter = 0;
-        let supabaseClient = null;
 
         // Inicializar con una fila vacía por defecto
         document.addEventListener('DOMContentLoaded', () => {
@@ -264,6 +271,81 @@
             tbody.appendChild(tr);
             reindexarFilas();
             actualizarTotales();
+        }
+
+        async function pegarDesdeExcel() {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (!text.trim()) {
+                    alert("El portapapeles está vacío o no contiene datos válidos.");
+                    return;
+                }
+
+                const lines = text.trim().split(/\r\n|\n/);
+                const tbody = document.getElementById('tabla-items-body');
+                tbody.innerHTML = ''; // Limpia la tabla existente
+
+                lines.forEach(line => {
+                    if (!line.trim()) return;
+                    const cols = line.split('\t');
+
+                    // Mapeo flexible según columnas copiadas de Excel
+                    const descEn = cols[0] ? cols[0].trim() : '';
+                    const descEs = cols[1] ? cols[1].trim() : '';
+                    const cant = parseFloat(cols[2]) || 1;
+                    const medida = cols[3] ? cols[3].trim().toUpperCase() : 'PCS';
+                    const costoUnit = parseFloat(cols[4]) || 0;
+                    const ventaUnit = parseFloat(cols[5]) || 0;
+
+                    const totalCosto = cant * costoUnit;
+                    const totalVenta = cant * ventaUnit;
+
+                    itemCounter++;
+                    const tr = document.createElement('tr');
+                    tr.id = `row-item-${itemCounter}`;
+                    tr.className = 'row-item hover:bg-slate-50 transition';
+
+                    tr.innerHTML = `
+                        <td class="p-2 text-center font-bold text-slate-400 row-number"></td>
+                        <td class="p-2">
+                            <input type="text" value="${descEn}" class="item-desc-en w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2">
+                            <input type="text" value="${descEs}" class="item-desc-es w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2">
+                            <input type="number" step="1" min="1" value="${cant}" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2">
+                            <input type="text" value="${medida}" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2">
+                            <input type="number" step="0.01" min="0" value="${costoUnit.toFixed(2)}" oninput="calcularFila(this)" class="item-costo-unit w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2 text-right font-medium text-slate-600">
+                            <span class="item-total-costo font-bold block">$ ${totalCosto.toFixed(2)}</span>
+                        </td>
+                        <td class="p-2">
+                            <input type="number" step="0.01" min="0" value="${ventaUnit.toFixed(2)}" oninput="calcularFila(this)" class="item-venta-unit w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        </td>
+                        <td class="p-2 text-right font-bold text-celeste-600">
+                            <span class="item-total-venta block">$ ${totalVenta.toFixed(2)}</span>
+                        </td>
+                        <td class="p-2 text-center">
+                            <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-rose-500 hover:text-rose-700 font-bold p-1 transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                reindexarFilas();
+                actualizarTotales();
+            } catch (err) {
+                console.error("Error al acceder al portapapeles:", err);
+                alert("Para usar esta función, permite el acceso al portapapeles cuando el navegador lo solicite.");
+            }
         }
 
         function eliminarFila(rowId) {
