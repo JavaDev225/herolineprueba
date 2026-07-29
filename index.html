@@ -222,11 +222,9 @@
     <script>
         let itemCounter = 0;
 
-        // Inicializar con una fila vacía por defecto
         document.addEventListener('DOMContentLoaded', () => {
             agregarFilaVacia();
 
-            // Evento Global de pegado (Ctrl + V)
             document.addEventListener('paste', (e) => {
                 const activeEl = document.activeElement;
                 const isFormInput = activeEl && (activeEl.id === 'nombre_buque' || activeEl.id === 'codigo_requisicion' || activeEl.id === 'observaciones');
@@ -240,20 +238,18 @@
             });
         });
 
-        // Limpia montos numéricos provenientes de Excel (elimina $, comas, espacios)
         function limpiarNumero(valor) {
             if (typeof valor === 'number') return valor;
             if (!valor) return 0;
             let limpio = valor.toString().replace(/[$€Bs\s]/g, '');
             if (limpio.includes(',') && limpio.includes('.')) {
-                limpio = limpio.replace(/,/g, ''); // Formato EE.UU: 1,250.00 -> 1250.00
+                limpio = limpio.replace(/,/g, ''); 
             } else if (limpio.includes(',') && !limpio.includes('.')) {
-                limpio = limpio.replace(',', '.'); // Formato ES: 1250,00 -> 1250.00
+                limpio = limpio.replace(',', '.'); 
             }
             return parseFloat(limpio) || 0;
         }
 
-        // Normalizador de unidades estándar
         function normalizarUnidad(unid) {
             if (!unid) return 'PCS';
             const u = unid.trim().toUpperCase();
@@ -337,6 +333,7 @@
                 const costoUnit = limpiarNumero(cols[4]);
                 const ventaUnit = limpiarNumero(cols[5]);
 
+                // Fórmulas requeridas
                 const totalCosto = cant * costoUnit;
                 const totalVenta = cant * ventaUnit;
 
@@ -385,6 +382,7 @@
             actualizarTotales();
         }
 
+        // Fórmulas principales por fila
         function calcularFila(input) {
             const tr = input.closest('tr');
             const cant = parseFloat(tr.querySelector('.item-cantidad').value) || 0;
@@ -498,29 +496,30 @@
                 const costoUnit = parseFloat(tr.querySelector('.item-costo-unit').value) || 0;
                 const ventaUnit = parseFloat(tr.querySelector('.item-venta-unit').value) || 0;
 
-                const tCosto = cant * costoUnit;
-                const tVenta = cant * ventaUnit;
-                totalVentaPreview += tVenta;
+                const itemTotalCosto = cant * costoUnit;
+                const itemTotalVenta = cant * ventaUnit;
 
-                const ptr = document.createElement('tr');
-                ptr.className = 'hover:bg-slate-50';
-                ptr.innerHTML = `
+                totalVentaPreview += itemTotalVenta;
+
+                const prevRow = document.createElement('tr');
+                prevRow.className = 'hover:bg-slate-50';
+                prevRow.innerHTML = `
                     <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
-                    <td class="p-2.5 text-slate-800 font-medium">${descEn}</td>
+                    <td class="p-2.5 font-medium text-slate-800">${descEn}</td>
                     <td class="p-2.5 text-slate-600">${descEs}</td>
                     <td class="p-2.5 text-center font-semibold">${cant}</td>
-                    <td class="p-2.5 text-center text-slate-500 uppercase">${medida}</td>
-                    <td class="p-2.5 text-right text-slate-600">$ ${tCosto.toFixed(2)}</td>
-                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${tVenta.toFixed(2)}</td>
+                    <td class="p-2.5 text-center text-slate-500">${medida}</td>
+                    <td class="p-2.5 text-right font-medium text-slate-600">$ ${itemTotalCosto.toFixed(2)}</td>
+                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${itemTotalVenta.toFixed(2)}</td>
                 `;
-                previewTbody.appendChild(ptr);
+                previewTbody.appendChild(prevRow);
             });
 
             document.getElementById('preview-total-venta').textContent = `$ ${totalVentaPreview.toFixed(2)}`;
-
-            const cardPreview = document.getElementById('card-resultado-cotizacion');
-            cardPreview.classList.remove('hidden');
-            cardPreview.scrollIntoView({ behavior: 'smooth' });
+            
+            const cardResultado = document.getElementById('card-resultado-cotizacion');
+            cardResultado.classList.remove('hidden');
+            cardResultado.scrollIntoView({ behavior: 'smooth' });
         }
 
         function cerrarVistaPrevia() {
