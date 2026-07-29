@@ -44,13 +44,12 @@
                     <i class="fa-solid fa-ship text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold tracking-wider text-lg text-white">QUOTATIONS PANEL</h1>
-                    <p class="text-[10px] text-celeste-400 font-medium tracking-wider uppercase">Maritime Agency Operations</p>
+                    <h1 class="font-extrabold tracking-wider text-lg text-white leading-none">QUOTATIONS PANEL</h1>
                 </div>
             </div>
             <div class="flex items-center gap-4 text-xs font-semibold">
-                <span class="bg-navy-900 border border-slate-700 px-3 py-1.5 rounded-full text-slate-300">
-                    <i class="fa-solid fa-circle text-emerald-400 text-[9px] mr-1"></i> Sistema Activo
+                <span class="bg-navy-900 border border-celeste-500/30 px-3 py-1.5 rounded-full text-white">
+                    <i class="fa-solid fa-circle text-celeste-400 text-[9px] mr-1"></i> Sistema Activo
                 </span>
             </div>
         </div>
@@ -80,10 +79,10 @@
                     <i class="fa-solid fa-file-pen text-celeste-400"></i> Registro de Cotización
                 </h3>
                 <div class="flex gap-2">
-                    <button type="button" onclick="pegarDesdeExcel()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition flex items-center gap-1.5 shadow-sm" title="Puedes hacer clic o presionar Ctrl+V">
+                    <button type="button" onclick="pegarDesdeExcel()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-celeste-600 hover:bg-celeste-500 transition flex items-center gap-1.5 shadow-sm" title="Puedes hacer clic o presionar Ctrl+V">
                         <i class="fa-solid fa-file-excel text-sm"></i> Pegar desde Excel
                     </button>
-                    <button type="button" onclick="agregarFilaVacia()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-navy-800 hover:bg-slate-700 transition flex items-center gap-1.5 border border-slate-700">
+                    <button type="button" onclick="agregarFilaVacia()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-navy-800 hover:bg-navy-950 transition flex items-center gap-1.5 border border-celeste-500/30">
                         <i class="fa-solid fa-plus text-celeste-400"></i> Agregar Ítem
                     </button>
                 </div>
@@ -145,7 +144,7 @@
                     </div>
                     <div>
                         <span class="text-slate-500 block uppercase text-[10px] font-bold">Total Costo Estimado:</span>
-                        <span id="resumen-total-costo" class="text-sm font-bold text-slate-700">$ 0.00</span>
+                        <span id="resumen-total-costo" class="text-sm font-bold text-navy-800">$ 0.00</span>
                     </div>
                     <div>
                         <span class="text-slate-500 block uppercase text-[10px] font-bold">Total Venta Cotizada:</span>
@@ -153,7 +152,7 @@
                     </div>
                     <div>
                         <span class="text-slate-500 block uppercase text-[10px] font-bold">Utilidad Bruta Estimada:</span>
-                        <span id="resumen-utilidad" class="text-sm font-bold text-emerald-600">$ 0.00 (0.0%)</span>
+                        <span id="resumen-utilidad" class="text-sm font-bold text-celeste-600">$ 0.00 (0.0%)</span>
                     </div>
                 </div>
 
@@ -297,7 +296,7 @@
                     <span class="item-total-venta block">$ 0.00</span>
                 </td>
                 <td class="p-2 text-center">
-                    <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-rose-500 hover:text-rose-700 font-bold p-1 transition">
+                    <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </td>
@@ -373,7 +372,7 @@
                         <span class="item-total-venta block">$ ${totalVenta.toFixed(2)}</span>
                     </td>
                     <td class="p-2 text-center">
-                        <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-rose-500 hover:text-rose-700 font-bold p-1 transition">
+                        <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -497,32 +496,30 @@
 
                 previewTableHtml += `
                     <tr class="hover:bg-slate-50 border-b border-slate-100">
-                        <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
-                        <td class="p-2.5 text-slate-800 font-medium">${descEn}</td>
+                        <td class="p-2.5 text-center font-semibold text-slate-500">${idx + 1}</td>
+                        <td class="p-2.5 font-medium text-navy-900">${descEn}</td>
                         <td class="p-2.5 text-slate-600">${descEs}</td>
-                        <td class="p-2.5 text-center font-semibold">${cant}</td>
-                        <td class="p-2.5 text-center"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono text-[10px]">${medida}</span></td>
-                        <td class="p-2.5 text-right font-medium text-slate-600">$ ${totalCosto.toFixed(2)}</td>
+                        <td class="p-2.5 text-center font-bold">${cant}</td>
+                        <td class="p-2.5 text-center text-slate-500">${medida}</td>
+                        <td class="p-2.5 text-right font-medium text-slate-700">$ ${totalCosto.toFixed(2)}</td>
                         <td class="p-2.5 text-right font-bold text-celeste-600">$ ${totalVenta.toFixed(2)}</td>
                     </tr>
                 `;
             });
 
-            const totalVenta = items.reduce((acc, item) => acc + item.total_venta, 0);
+            const totalVentaGral = items.reduce((acc, curr) => acc + curr.total_venta, 0);
 
-            // Renderizado del resumen (Vista Previa Card)
-            document.getElementById('preview-titulo-buque').innerText = buque;
-            document.getElementById('preview-badge-cod').innerText = codigo;
-            document.getElementById('preview-fecha').innerText = `Fecha: ${new Date().toLocaleDateString()}`;
+            document.getElementById('preview-titulo-buque').innerText = buque.toUpperCase();
+            document.getElementById('preview-badge-cod').innerText = codigo.toUpperCase();
+            document.getElementById('preview-fecha').innerText = `Fecha: ${new Date().toLocaleDateString('es-ES')}`;
             document.getElementById('preview-condicion-pago').innerText = condicion;
-            document.getElementById('preview-total-venta').innerText = `$ ${totalVenta.toFixed(2)}`;
             document.getElementById('preview-observaciones').innerText = observaciones;
+            document.getElementById('preview-total-venta').innerText = `$ ${totalVentaGral.toFixed(2)}`;
             document.getElementById('preview-tabla-items').innerHTML = previewTableHtml;
 
-            // Mostrar el panel de vista previa y scroll suave hacia él
-            const cardResultado = document.getElementById('card-resultado-cotizacion');
-            cardResultado.classList.remove('hidden');
-            cardResultado.scrollIntoView({ behavior: 'smooth' });
+            const card = document.getElementById('card-resultado-cotizacion');
+            card.classList.remove('hidden');
+            card.scrollIntoView({ behavior: 'smooth' });
         }
 
         function cerrarVistaPrevia() {
