@@ -229,7 +229,6 @@
 
             // Evento Global de pegado (Ctrl + V)
             document.addEventListener('paste', (e) => {
-                // Si el usuario no está enfocado en un campo de texto genérico (excepto la tabla)
                 const activeEl = document.activeElement;
                 const isFormInput = activeEl && (activeEl.id === 'nombre_buque' || activeEl.id === 'codigo_requisicion' || activeEl.id === 'observaciones');
                 if (isFormInput) return;
@@ -242,11 +241,10 @@
             });
         });
 
-        // Función para limpiar montos numéricos provenientes de Excel (elimina $, comas, espacios)
+        // Limpia montos numéricos provenientes de Excel (elimina $, comas, espacios)
         function limpiarNumero(valor) {
             if (typeof valor === 'number') return valor;
             if (!valor) return 0;
-            // Eliminar símbolos de moneda, espacios y ajustar comas/puntos decimales
             let limpio = valor.toString().replace(/[$€Bs\s]/g, '');
             if (limpio.includes(',') && limpio.includes('.')) {
                 limpio = limpio.replace(/,/g, ''); // Formato EE.UU: 1,250.00 -> 1250.00
@@ -260,8 +258,8 @@
         function normalizarUnidad(unid) {
             if (!unid) return 'PCS';
             const u = unid.trim().toUpperCase();
-            if (u === 'PK' || u === 'PACK' || u === 'PAQUETE') return 'PKT'; //
-            if (u === 'BOXES' || u === 'CAJA' || u === 'CAJAS') return 'BOX'; //
+            if (u === 'PK' || u === 'PACK' || u === 'PAQUETE' || u === 'PKT') return 'PKT';
+            if (u === 'BOXES' || u === 'CAJA' || u === 'CAJAS' || u === 'BOX') return 'BOX';
             return u;
         }
 
@@ -284,7 +282,7 @@
                     <input type="number" step="1" min="1" value="1" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="text" value="PCS" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="text" value="PCS" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
                 </td>
                 <td class="p-2">
                     <input type="number" step="0.01" min="0" value="0.00" oninput="calcularFila(this)" class="item-costo-unit w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
@@ -327,17 +325,16 @@
         function procesarTextoExcel(text) {
             const lines = text.trim().split(/\r\n|\n/);
             const tbody = document.getElementById('tabla-items-body');
-            tbody.innerHTML = ''; // Limpia la tabla existente
+            tbody.innerHTML = ''; 
 
             lines.forEach(line => {
                 if (!line.trim()) return;
                 const cols = line.split('\t');
 
-                // Mapeo con saneamiento automático de números y símbolos
                 const descEn = cols[0] ? cols[0].trim() : '';
                 const descEs = cols[1] ? cols[1].trim() : '';
                 const cant = limpiarNumero(cols[2]) || 1;
-                const medida = normalizarUnidad(cols[3]); // Normaliza PKT, BOX, PCS, etc.
+                const medida = normalizarUnidad(cols[3]);
                 const costoUnit = limpiarNumero(cols[4]);
                 const ventaUnit = limpiarNumero(cols[5]);
 
@@ -361,7 +358,7 @@
                         <input type="number" step="1" min="1" value="${cant}" oninput="calcularFila(this)" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="text" value="${medida}" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="text" value="${medida}" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
                     </td>
                     <td class="p-2">
                         <input type="number" step="0.01" min="0" value="${costoUnit.toFixed(2)}" oninput="calcularFila(this)" class="item-costo-unit w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
@@ -455,11 +452,11 @@
             cerrarVistaPrevia();
         }
 
-        async function guardarCotizacion() {
+        function guardarCotizacion() {
             const buque = document.getElementById('nombre_buque').value.trim();
             const codigo = document.getElementById('codigo_requisicion').value.trim();
             const condicion = document.getElementById('condicion_pago').value;
-            const observaciones = document.getElementById('observaciones').value.trim();
+            const observaciones = document.getElementById('observaciones').value.trim() || 'Sin observaciones adicionales.';
             const rows = document.querySelectorAll('#tabla-items-body tr.row-item');
 
             if (!buque || !codigo) {
@@ -473,22 +470,42 @@
             }
 
             const items = [];
+            let previewTableHtml = '';
+
             rows.forEach((row, idx) => {
                 const cant = limpiarNumero(row.querySelector('.item-cantidad').value);
                 const costoUnit = limpiarNumero(row.querySelector('.item-costo-unit').value);
                 const ventaUnit = limpiarNumero(row.querySelector('.item-venta-unit').value);
+                const descEn = row.querySelector('.item-desc-en').value || '-';
+                const descEs = row.querySelector('.item-desc-es').value || '-';
+                const medida = normalizarUnidad(row.querySelector('.item-medida').value);
+
+                const totalCosto = cant * costoUnit;
+                const totalVenta = cant * ventaUnit;
 
                 items.push({
                     secuencia: idx + 1,
-                    desc_en: row.querySelector('.item-desc-en').value,
-                    desc_es: row.querySelector('.item-desc-es').value,
+                    desc_en: descEn,
+                    desc_es: descEs,
                     cantidad: cant,
-                    medida: normalizarUnidad(row.querySelector('.item-medida').value),
+                    medida: medida,
                     costo_unit: costoUnit,
-                    total_costo: cant * costoUnit,
+                    total_costo: totalCosto,
                     venta_unit: ventaUnit,
-                    total_venta: cant * ventaUnit
+                    total_venta: totalVenta
                 });
+
+                previewTableHtml += `
+                    <tr class="hover:bg-slate-50 border-b border-slate-100">
+                        <td class="p-2.5 text-center font-bold text-slate-400">${idx + 1}</td>
+                        <td class="p-2.5 text-slate-800 font-medium">${descEn}</td>
+                        <td class="p-2.5 text-slate-600">${descEs}</td>
+                        <td class="p-2.5 text-center font-semibold">${cant}</td>
+                        <td class="p-2.5 text-center"><span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono text-[10px]">${medida}</span></td>
+                        <td class="p-2.5 text-right font-medium text-slate-600">$ ${totalCosto.toFixed(2)}</td>
+                        <td class="p-2.5 text-right font-bold text-celeste-600">$ ${totalVenta.toFixed(2)}</td>
+                    </tr>
+                `;
             });
 
             const totalVenta = items.reduce((acc, item) => acc + item.total_venta, 0);
@@ -499,27 +516,13 @@
             document.getElementById('preview-fecha').innerText = `Fecha: ${new Date().toLocaleDateString()}`;
             document.getElementById('preview-condicion-pago').innerText = condicion;
             document.getElementById('preview-total-venta').innerText = `$ ${totalVenta.toFixed(2)}`;
-            document.getElementById('preview-observaciones').innerText = observaciones || 'Sin observaciones.';
+            document.getElementById('preview-observaciones').innerText = observaciones;
+            document.getElementById('preview-tabla-items').innerHTML = previewTableHtml;
 
-            const previewTbody = document.getElementById('preview-tabla-items');
-            previewTbody.innerHTML = '';
-            items.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 transition';
-                tr.innerHTML = `
-                    <td class="p-2.5 text-center font-bold text-navy-900">${item.secuencia}</td>
-                    <td class="p-2.5 font-medium">${item.desc_en || '-'}</td>
-                    <td class="p-2.5 font-medium">${item.desc_es || '-'}</td>
-                    <td class="p-2.5 text-center font-bold">${item.cantidad}</td>
-                    <td class="p-2.5 text-center">${item.medida}</td>
-                    <td class="p-2.5 text-right text-slate-700 font-semibold">$ ${item.total_costo.toFixed(2)}</td>
-                    <td class="p-2.5 text-right text-celeste-600 font-bold">$ ${item.total_venta.toFixed(2)}</td>
-                `;
-                previewTbody.appendChild(tr);
-            });
-
-            document.getElementById('card-resultado-cotizacion').classList.remove('hidden');
-            document.getElementById('card-resultado-cotizacion').scrollIntoView({ behavior: 'smooth' });
+            // Mostrar el panel de vista previa y scroll suave hacia él
+            const cardResultado = document.getElementById('card-resultado-cotizacion');
+            cardResultado.classList.remove('hidden');
+            cardResultado.scrollIntoView({ behavior: 'smooth' });
         }
 
         function cerrarVistaPrevia() {
