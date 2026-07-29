@@ -11,15 +11,35 @@
             theme: {
                 extend: {
                     colors: {
-                        navy: {
-                            800: '#1E293B',
-                            900: '#0F172A',
-                            950: '#0B132B'
-                        },
-                        celeste: {
+                        brand: {
+                            50: '#F0F9FF',
+                            100: '#E0F2FE',
+                            200: '#BAE6FD',
+                            300: '#7DD3FC',
                             400: '#38BDF8',
                             500: '#0EA5E9',
-                            600: '#0284C7'
+                            600: '#0284C7',
+                            700: '#0369A1',
+                            800: '#075985',
+                            900: '#0C4A6E',
+                        },
+                        hero: {
+                            start: '#D2E8FA',
+                            end: '#CCE3F9',
+                            badge: '#B2D8FA',
+                            accent: '#0D9488'
+                        },
+                        slate: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A'
                         }
                     }
                 }
@@ -29,26 +49,38 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-[#F6F9FC] text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-gradient-to-r from-celeste-600 via-celeste-500 to-celeste-600 text-white shadow-md border-b border-celeste-400/40 sticky top-0 z-50">
+    <!-- Top Navigation Bar (Estilo Heroline Shipping) -->
+    <header class="bg-white text-slate-800 shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <!-- Icono a la izquierda junto al texto QUOTATIONS PANEL -->
-            <div class="flex items-center gap-2.5">
-                <div class="bg-navy-950 text-celeste-400 p-2 rounded-lg font-bold shadow-sm flex items-center justify-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-brand-50 text-brand-600 p-2 rounded-xl font-bold border border-brand-100 flex items-center justify-center">
                     <i class="fa-solid fa-ship text-lg"></i>
                 </div>
-                <h1 class="font-extrabold tracking-wider text-lg text-white leading-none">QUOTATIONS PANEL</h1>
+                <div>
+                    <h1 class="font-bold tracking-tight text-base text-slate-900 leading-none">QUOTATIONS PANEL</h1>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Agenciamiento Marítimo</p>
+                </div>
             </div>
-            <div class="flex items-center gap-4 text-xs font-semibold">
-                <span class="bg-navy-950/80 border border-white/20 px-3 py-1.5 rounded-full text-white shadow-sm backdrop-blur-sm">
-                    <i class="fa-solid fa-circle text-celeste-400 text-[9px] mr-1"></i> Sistema Activo
+            
+            <div class="flex items-center gap-4 text-xs font-medium">
+                <!-- Tasa / Ticker estilo Topbar -->
+                <div class="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-slate-600 text-[11px]">
+                    <span class="font-bold text-slate-400">BCV</span> <span class="font-semibold text-brand-600">55.50</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="font-bold text-slate-400">EURO</span> <span class="font-semibold text-brand-600">60.12</span>
+                    <span class="text-slate-300">|</span>
+                    <span class="font-bold text-slate-400">USDT</span> <span class="font-semibold text-brand-600">56.20</span>
+                </div>
+                <span class="bg-brand-50 border border-brand-200/80 px-3 py-1.5 rounded-full text-brand-700 shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle text-brand-500 text-[8px]"></i> Sistema Activo
                 </span>
             </div>
         </div>
@@ -57,32 +89,39 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
 
-        <!-- Banner Visual / Header Hero con la nueva imagen -->
-        <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-navy-900 text-white">
-            <img src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcSoVOovA_BIyQDPCJLJmXAPcz6ule3MQ5Qs6gjb0yu4QkDnws_U8OyGI6bwSXyURqBhwhdR5PYfylibsOI" alt="Maritime Shipping" class="absolute inset-0 w-full h-full object-cover object-center opacity-30">
-            <div class="relative z-10 p-6 md:p-8 bg-gradient-to-r from-navy-950 via-navy-900/90 to-transparent">
-                <span class="inline-block px-3 py-1 bg-celeste-500/20 text-celeste-400 border border-celeste-500/30 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">
-                    Módulo de Cotizaciones
+        <!-- Banner Visual / Header Hero con el azul claro pastel de Heroline Shipping -->
+        <div class="relative rounded-2xl overflow-hidden shadow-sm border border-brand-200/60 bg-gradient-to-r from-hero-start via-[#D8ECFD] to-hero-end text-slate-800 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="space-y-1">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+                    Módulo de Cotizaciones · Data & Reports
                 </span>
-                <h2 class="text-2xl md:text-3xl font-bold text-white">Gestión de Requisiciones Marítimas</h2>
-                <p class="text-slate-300 text-sm mt-1 max-w-xl">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+                    Gestión de <span class="text-brand-600">Requisiciones Marítimas</span>
+                </h2>
+                <p class="text-slate-600 text-xs md:text-sm max-w-xl">
                     Administre costos, estimación de venta e ítems requeridos por buques mercantes con precisión operativa.
                 </p>
+            </div>
+            <div>
+                <span class="inline-block bg-brand-100/80 border border-brand-300/60 text-brand-700 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm">
+                    Analista (Cotizador)
+                </span>
             </div>
         </div>
 
         <!-- Form & Items Panel -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="bg-navy-900 px-6 py-4 border-b border-slate-800 flex justify-between items-center">
-                <h3 class="text-white font-semibold text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-file-pen text-celeste-400"></i> Registro de Cotización
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+            <div class="bg-white px-6 py-4 border-b border-slate-100 flex flex-wrap justify-between items-center gap-3">
+                <h3 class="text-slate-900 font-bold text-sm flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-brand-500"></div>
+                    Registro de Cotización
                 </h3>
                 <div class="flex gap-2">
-                    <button type="button" onclick="pegarDesdeExcel()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-celeste-600 hover:bg-celeste-500 transition flex items-center gap-1.5 shadow-sm" title="Puedes hacer clic o presionar Ctrl+V">
-                        <i class="fa-solid fa-file-excel text-sm"></i> Pegar desde Excel
+                    <button type="button" onclick="pegarDesdeExcel()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 border border-brand-200/60 transition flex items-center gap-1.5 shadow-sm" title="Puedes hacer clic o presionar Ctrl+V">
+                        <i class="fa-solid fa-file-excel text-brand-600"></i> Pegar desde Excel
                     </button>
-                    <button type="button" onclick="agregarFilaVacia()" class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-navy-800 hover:bg-navy-950 transition flex items-center gap-1.5 border border-celeste-500/30">
-                        <i class="fa-solid fa-plus text-celeste-400"></i> Agregar Ítem
+                    <button type="button" onclick="agregarFilaVacia()" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-700 transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-plus text-xs"></i> Agregar Ítem
                     </button>
                 </div>
             </div>
@@ -91,31 +130,31 @@
                 <!-- Datos del Buque y Requisición -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-navy-900 mb-1 uppercase tracking-wider">Nombre del Buque</label>
-                        <input type="text" id="nombre_buque" placeholder="Ej. MV PACIFIC STAR" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-celeste-500 focus:border-celeste-500 outline-none transition">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Nombre del Buque</label>
+                        <input type="text" id="nombre_buque" placeholder="Ej. MV PACIFIC STAR" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-navy-900 mb-1 uppercase tracking-wider">Código Requisición</label>
-                        <input type="text" id="codigo_requisicion" placeholder="Ej. REQ-2026-089" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-celeste-500 focus:border-celeste-500 outline-none transition">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Código Requisición</label>
+                        <input type="text" id="codigo_requisicion" placeholder="Ej. REQ-2026-089" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-navy-900 mb-1 uppercase tracking-wider">Condición de Pago</label>
-                        <select id="condicion_pago" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-celeste-500 focus:border-celeste-500 outline-none transition bg-white">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Condición de Pago</label>
+                        <select id="condicion_pago" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
                             <option value="100%">100% Adelantado</option>
                             <option value="50% - 50%">50% / 50%</option>
                             <option value="Credito 30 Dias">Crédito 30 Días</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-navy-900 mb-1 uppercase tracking-wider">Observaciones</label>
-                        <input type="text" id="observaciones" placeholder="Opcional..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-celeste-500 focus:border-celeste-500 outline-none transition">
+                        <label class="block text-[11px] font-bold text-slate-500 mb-1.5 uppercase tracking-wider">Observaciones</label>
+                        <input type="text" id="observaciones" placeholder="Opcional..." class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
                     </div>
                 </div>
 
                 <!-- Tabla de Ítems -->
-                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <div class="overflow-x-auto border border-slate-200/80 rounded-xl">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-navy-900 text-white uppercase tracking-wider text-[11px]">
+                        <thead class="bg-slate-50 text-slate-500 font-bold uppercase tracking-wider text-[10px] border-b border-slate-200">
                             <tr>
                                 <th class="p-3 text-center w-12">#</th>
                                 <th class="p-3">Descripción (EN)</th>
@@ -127,39 +166,39 @@
                                 <th class="p-3 text-center w-12"><i class="fa-solid fa-gear"></i></th>
                             </tr>
                         </thead>
-                        <tbody id="tabla-items-body" class="divide-y divide-slate-200 bg-white">
+                        <tbody id="tabla-items-body" class="divide-y divide-slate-100 bg-white">
                             <!-- Filas dinámicas -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Barra Resumen de Cálculo -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs">
-                    <div>
-                        <span class="text-slate-500 block uppercase text-[10px] font-bold">Total Ítems:</span>
-                        <span id="resumen-cant-items" class="text-sm font-bold text-navy-900">0</span>
+                <!-- Barra Resumen de Cálculo (Cards al estilo Heroline Shortcuts / Stats) -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
+                    <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-slate-400 block uppercase text-[10px] font-bold tracking-wider mb-1">Total Ítems</span>
+                        <span id="resumen-cant-items" class="text-base font-extrabold text-slate-900">0</span>
                     </div>
-                    <div>
-                        <span class="text-slate-500 block uppercase text-[10px] font-bold">Total Costo Estimado:</span>
-                        <span id="resumen-total-costo" class="text-sm font-bold text-navy-800">$ 0.00</span>
+                    <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-slate-400 block uppercase text-[10px] font-bold tracking-wider mb-1">Total Costo Estimado</span>
+                        <span id="resumen-total-costo" class="text-base font-extrabold text-slate-700">$ 0.00</span>
                     </div>
-                    <div>
-                        <span class="text-slate-500 block uppercase text-[10px] font-bold">Total Venta Cotizada:</span>
-                        <span id="resumen-total-venta" class="text-sm font-bold text-celeste-600">$ 0.00</span>
+                    <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-slate-400 block uppercase text-[10px] font-bold tracking-wider mb-1">Total Venta Cotizada</span>
+                        <span id="resumen-total-venta" class="text-base font-extrabold text-brand-600">$ 0.00</span>
                     </div>
-                    <div>
-                        <span class="text-slate-500 block uppercase text-[10px] font-bold">Utilidad Bruta Estimada:</span>
-                        <span id="resumen-utilidad" class="text-sm font-bold text-celeste-600">$ 0.00 (0.0%)</span>
+                    <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
+                        <span class="text-slate-400 block uppercase text-[10px] font-bold tracking-wider mb-1">Utilidad Bruta</span>
+                        <span id="resumen-utilidad" class="text-base font-extrabold text-brand-600">$ 0.00 (0.0%)</span>
                     </div>
                 </div>
 
                 <!-- Botones de Acción -->
                 <div class="flex flex-wrap justify-between items-center gap-3 pt-2 border-t border-slate-100">
-                    <button type="button" onclick="limpiarFormulario()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">
+                    <button type="button" onclick="limpiarFormulario()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 bg-slate-100 hover:bg-slate-200 transition">
                         <i class="fa-solid fa-broom mr-1"></i> Limpiar Campos
                     </button>
                     <div class="flex gap-2">
-                        <button type="button" onclick="guardarCotizacion()" class="px-5 py-2.5 rounded-lg text-xs font-bold text-white bg-celeste-600 hover:bg-celeste-500 shadow-md shadow-celeste-500/20 transition flex items-center gap-2">
+                        <button type="button" onclick="guardarCotizacion()" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-500/10 transition flex items-center gap-2">
                             <i class="fa-solid fa-floppy-disk"></i> Guardar y Generar Cotización
                         </button>
                     </div>
@@ -168,27 +207,27 @@
         </div>
 
         <!-- Vista Previa Card (Resultado) -->
-        <div id="card-resultado-cotizacion" class="hidden bg-white rounded-2xl shadow-md border border-celeste-500/30 overflow-hidden">
-            <div class="bg-navy-900 text-white p-6 border-b border-slate-800 flex flex-wrap justify-between items-center gap-4">
+        <div id="card-resultado-cotizacion" class="hidden bg-white rounded-2xl shadow-sm border border-brand-200/80 overflow-hidden">
+            <div class="bg-gradient-to-r from-hero-start via-[#D8ECFD] to-hero-end p-6 border-b border-brand-200/60 flex flex-wrap justify-between items-center gap-4 text-slate-800">
                 <div>
-                    <span class="text-celeste-400 font-semibold text-xs tracking-widest uppercase">Vista Previa General</span>
-                    <h3 id="preview-titulo-buque" class="text-xl font-bold text-white">MV CONTAINER SHIP</h3>
-                    <p id="preview-fecha" class="text-xs text-slate-400 mt-0.5"></p>
+                    <span class="text-brand-700 font-bold text-[11px] tracking-widest uppercase block mb-1">Vista Previa General</span>
+                    <h3 id="preview-titulo-buque" class="text-xl font-extrabold text-slate-900">MV CONTAINER SHIP</h3>
+                    <p id="preview-fecha" class="text-xs text-slate-500 mt-0.5"></p>
                 </div>
                 <div class="text-right">
-                    <span id="preview-badge-cod" class="bg-celeste-500/20 text-celeste-400 border border-celeste-500/30 px-3 py-1 rounded-full text-xs font-bold"></span>
-                    <div class="text-xl font-extrabold text-celeste-400 mt-1" id="preview-total-venta">$ 0.00</div>
+                    <span id="preview-badge-cod" class="bg-white/80 text-brand-700 border border-brand-200 px-3 py-1 rounded-full text-xs font-bold shadow-sm"></span>
+                    <div class="text-2xl font-extrabold text-brand-700 mt-2" id="preview-total-venta">$ 0.00</div>
                 </div>
             </div>
             
             <div class="p-6 space-y-4">
-                <div class="text-xs text-slate-600">
-                    <strong>Condición de Pago:</strong> <span id="preview-condicion-pago" class="text-navy-900 font-medium"></span>
+                <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+                    <strong>Condición de Pago:</strong> <span id="preview-condicion-pago" class="text-slate-900 font-semibold"></span>
                 </div>
 
-                <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <div class="overflow-x-auto border border-slate-200/80 rounded-xl">
                     <table class="w-full text-xs text-left">
-                        <thead class="bg-slate-100 text-slate-700 font-bold">
+                        <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] border-b border-slate-200">
                             <tr>
                                 <th class="p-2.5 text-center">#</th>
                                 <th class="p-2.5">Desc. EN</th>
@@ -199,16 +238,16 @@
                                 <th class="p-2.5 text-right">Venta Total ($)</th>
                             </tr>
                         </thead>
-                        <tbody id="preview-tabla-items" class="divide-y divide-slate-200"></tbody>
+                        <tbody id="preview-tabla-items" class="divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
 
-                <div class="text-xs text-slate-500 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <div class="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
                     <strong>Observaciones:</strong> <span id="preview-observaciones"></span>
                 </div>
 
                 <div class="flex justify-end">
-                    <button type="button" onclick="cerrarVistaPrevia()" class="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">
+                    <button type="button" onclick="cerrarVistaPrevia()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">
                         Cerrar Vista Previa
                     </button>
                 </div>
@@ -236,7 +275,6 @@
             });
         });
 
-        // Función invocada por el botón "Pegar desde Excel"
         async function pegarDesdeExcel() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -276,30 +314,30 @@
             const tbody = document.getElementById('tabla-items-body');
             const tr = document.createElement('tr');
             tr.id = `row-item-${itemCounter}`;
-            tr.className = 'row-item hover:bg-slate-50 transition';
+            tr.className = 'row-item hover:bg-slate-50/80 transition';
 
             tr.innerHTML = `
                 <td class="p-2 text-center font-bold text-slate-400 row-number">${tbody.children.length + 1}</td>
                 <td class="p-2">
-                    <input type="text" placeholder="English description" class="item-desc-en w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="text" placeholder="English description" class="item-desc-en w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-brand-500 focus:border-brand-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="text" placeholder="Descripción en español" class="item-desc-es w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="text" placeholder="Descripción en español" class="item-desc-es w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-brand-500 focus:border-brand-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="1" min="1" value="1" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="1" min="1" value="1" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-brand-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="text" value="PCS" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="text" value="PCS" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-brand-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-brand-500 outline-none">
                 </td>
                 <td class="p-2">
-                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                    <input type="number" step="0.01" min="0" value="0.00" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-brand-500 outline-none">
                 </td>
                 <td class="p-2 text-center">
-                    <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
+                    <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-slate-400 hover:text-red-500 font-bold p-1 transition" title="Eliminar ítem">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
                 </td>
@@ -319,7 +357,6 @@
                 if (!line.trim()) return;
                 const cols = line.split('\t');
 
-                // Mapeo directo de columnas desde Excel
                 const descEn = cols[0] ? cols[0].trim() : '';
                 const descEs = cols[1] ? cols[1].trim() : '';
                 const cant = limpiarNumero(cols[2]) || 1;
@@ -330,30 +367,30 @@
                 itemCounter++;
                 const tr = document.createElement('tr');
                 tr.id = `row-item-${itemCounter}`;
-                tr.className = 'row-item hover:bg-slate-50 transition';
+                tr.className = 'row-item hover:bg-slate-50/80 transition';
 
                 tr.innerHTML = `
                     <td class="p-2 text-center font-bold text-slate-400 row-number"></td>
                     <td class="p-2">
-                        <input type="text" value="${descEn}" class="item-desc-en w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="text" value="${descEn}" class="item-desc-en w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="text" value="${descEs}" class="item-desc-es w-full px-2 py-1.5 rounded border border-slate-200 text-xs focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="text" value="${descEs}" class="item-desc-es w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="1" min="1" value="${cant}" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="1" min="1" value="${cant}" oninput="actualizarTotales()" class="item-cantidad w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-center font-medium focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="text" value="${medida}" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="text" value="${medida}" onblur="this.value = normalizarUnidad(this.value)" class="item-medida w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs text-center font-medium uppercase focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${costoVal.toFixed(2)}" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${costoVal.toFixed(2)}" oninput="actualizarTotales()" class="item-costo w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2">
-                        <input type="number" step="0.01" min="0" value="${ventaVal.toFixed(2)}" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-celeste-500 outline-none">
+                        <input type="number" step="0.01" min="0" value="${ventaVal.toFixed(2)}" oninput="actualizarTotales()" class="item-venta w-full px-2 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-right focus:ring-1 focus:ring-brand-500 outline-none">
                     </td>
                     <td class="p-2 text-center">
-                        <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-navy-900 hover:text-celeste-600 font-bold p-1 transition" title="Eliminar ítem">
+                        <button type="button" onclick="eliminarFila('row-item-${itemCounter}')" class="text-slate-400 hover:text-red-500 font-bold p-1 transition" title="Eliminar ítem">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
                     </td>
@@ -408,9 +445,9 @@
             utilidadEl.textContent = `$ ${utilidad.toFixed(2)} (${porcentaje.toFixed(1)}%)`;
             
             if (utilidad < 0) {
-                utilidadEl.className = 'text-sm font-bold text-red-500';
+                utilidadEl.className = 'text-base font-extrabold text-red-500';
             } else {
-                utilidadEl.className = 'text-sm font-bold text-celeste-600';
+                utilidadEl.className = 'text-base font-extrabold text-brand-600';
             }
         }
 
@@ -477,7 +514,7 @@
                     <td class="p-2.5 text-center font-semibold">${cant}</td>
                     <td class="p-2.5 text-center text-slate-500">${medida}</td>
                     <td class="p-2.5 text-right font-medium text-slate-600">$ ${itemCostoTotal.toFixed(2)}</td>
-                    <td class="p-2.5 text-right font-bold text-celeste-600">$ ${itemVentaTotal.toFixed(2)}</td>
+                    <td class="p-2.5 text-right font-bold text-brand-600">$ ${itemVentaTotal.toFixed(2)}</td>
                 `;
                 previewTbody.appendChild(prevRow);
             });
