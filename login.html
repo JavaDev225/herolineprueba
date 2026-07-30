@@ -103,6 +103,12 @@
                         <p class="text-xs text-slate-500 mt-1">Valide su identidad mediante su número de cédula.</p>
                     </div>
 
+                    <!-- Mensaje de Alerta por Cédula Incorrecta -->
+                    <div id="alert_error" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-red-500 text-sm flex-shrink-0"></i>
+                        <span id="mensaje_error">Número de cédula incorrecto o no registrado.</span>
+                    </div>
+
                     <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-5">
                         <!-- Indicador del Miembro Seleccionado -->
                         <div>
@@ -122,7 +128,7 @@
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <i class="fa-solid fa-address-card text-xs"></i>
                                 </span>
-                                <input type="text" id="cedula" required placeholder="ej. 24123456" pattern="[0-9]{5,9}" title="Ingrese solo números" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
+                                <input type="text" id="cedula" required placeholder="ej. 31616195" pattern="[0-9]{5,9}" title="Ingrese solo números" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
                             </div>
                         </div>
 
@@ -256,10 +262,10 @@
                 url: "homeanalista.html",
                 colorBadge: "bg-brand-50 text-brand-600 border-brand-200",
                 equipo: [
-                    { nombre: "Luis Chirino", cargo: "Coordinador" },
-                    { nombre: "Luz Zambrano", cargo: "Analista de Operaciones" },
-                    { nombre: "Natalia Germán", cargo: "Analista de Operaciones" },
-                    { nombre: "Lizandra Lázaro", cargo: "Analista de Operaciones" }
+                    { nombre: "Luis Chirino", cargo: "Coordinador", cedula: "31616195" },
+                    { nombre: "Luz Zambrano", cargo: "Analista de Operaciones", cedula: null },
+                    { nombre: "Natalia Germán", cargo: "Analista de Operaciones", cedula: "31581122" },
+                    { nombre: "Lizandra Lázaro", cargo: "Analista de Operaciones", cedula: null }
                 ]
             },
             operaciones: {
@@ -267,10 +273,10 @@
                 url: "operaciones.html",
                 colorBadge: "bg-emerald-50 text-emerald-600 border-emerald-200",
                 equipo: [
-                    { nombre: "Enmanuel Coello", cargo: "Gerente de Operaciones" },
-                    { nombre: "Carlos Gil", cargo: "Operador Logístico" },
-                    { nombre: "Alex Chirinos", cargo: "Operador Logístico" },
-                    { nombre: "Engelberth Guanipa", cargo: "Operador en Muelle" }
+                    { nombre: "Enmanuel Coello", cargo: "Gerente de Operaciones", cedula: null },
+                    { nombre: "Carlos Gil", cargo: "Operador Logístico", cedula: null },
+                    { nombre: "Alex Chirinos", cargo: "Operador Logístico", cedula: null },
+                    { nombre: "Engelberth Guanipa", cargo: "Operador en Muelle", cedula: null }
                 ]
             },
             administracion: {
@@ -278,7 +284,7 @@
                 url: "administracion.html",
                 colorBadge: "bg-amber-50 text-amber-600 border-amber-200",
                 equipo: [
-                    { nombre: "Henmary Irausquin", cargo: "Gerente Administrativo" }
+                    { nombre: "Henmary Irausquin", cargo: "Gerente Administrativo", cedula: null }
                 ]
             },
             agenciamiento: {
@@ -286,11 +292,11 @@
                 url: "agenciamiento.html",
                 colorBadge: "bg-indigo-50 text-indigo-600 border-indigo-200",
                 equipo: [
-                    { nombre: "Massiell", cargo: "Analista Naviero" },
-                    { nombre: "Anaibeth Sánchez", cargo: "Coordinadora" },
-                    { nombre: "Fabiola Vasquez", cargo: "Analista Naviero" },
-                    { nombre: "Angel", cargo: "Analista Naviero" },
-                    { nombre: "Eiberth", cargo: "Agente Naviero" }
+                    { nombre: "Massiell", cargo: "Analista Naviero", cedula: null },
+                    { nombre: "Anaibeth Sánchez", cargo: "Coordinadora", cedula: null },
+                    { nombre: "Fabiola Vasquez", cargo: "Analista Naviero", cedula: null },
+                    { nombre: "Angel", cargo: "Analista Naviero", cedula: null },
+                    { nombre: "Eiberth", cargo: "Agente Naviero", cedula: null }
                 ]
             },
             presidencia: {
@@ -298,20 +304,32 @@
                 url: "presidencia.html",
                 colorBadge: "bg-slate-900 text-amber-400 border-slate-700",
                 equipo: [
-                    { nombre: "Brian Chirinos", cargo: "Vice-Presidente" },
-                    { nombre: "Victor Vasquez", cargo: "Presidente" }
+                    { nombre: "Brian Chirinos", cargo: "Vice-Presidente", cedula: null },
+                    { nombre: "Victor Vasquez", cargo: "Presidente", cedula: null }
                 ]
             }
         };
 
         let moduloActualClave = 'analistas';
-        let usuarioSeleccionado = null;
+        let usuarioObjetoSeleccionado = null;
+
+        function ocultarError() {
+            document.getElementById('alert_error').classList.add('hidden');
+        }
+
+        function mostrarError(mensaje) {
+            const alertBox = document.getElementById('alert_error');
+            document.getElementById('mensaje_error').innerText = mensaje;
+            alertBox.classList.remove('hidden');
+        }
 
         // Abrir el listado del personal correspondiente al hacer clic en un módulo
         function abrirModulo(claveModulo) {
             moduloActualClave = claveModulo;
             const data = personalData[claveModulo];
             
+            ocultarError();
+
             // Ocultar grid de módulos y mostrar panel de personal
             document.getElementById('grid_modulos').classList.add('hidden');
             document.getElementById('panel_personal').classList.remove('hidden');
@@ -321,7 +339,7 @@
 
             // Limpiar input y estado previo
             document.getElementById('personal_seleccionado').value = '';
-            usuarioSeleccionado = null;
+            usuarioObjetoSeleccionado = null;
             desactivarBotonIngreso();
 
             // Renderizar tarjetas del equipo
@@ -331,7 +349,7 @@
             data.equipo.forEach(miembro => {
                 const card = document.createElement('div');
                 card.className = "tarjeta-persona group bg-white/90 hover:bg-white p-3 rounded-xl border border-slate-200/80 hover:border-brand-500 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3";
-                card.onclick = () => seleccionarPersona(miembro.nombre, card);
+                card.onclick = () => seleccionarPersona(miembro, card);
 
                 card.innerHTML = `
                     <div class="w-9 h-9 rounded-full ${data.colorBadge} border flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:scale-105 transition">
@@ -349,6 +367,7 @@
 
         // Volver a la lista de módulos
         function volverAModulos() {
+            ocultarError();
             document.getElementById('grid_modulos').classList.remove('hidden');
             document.getElementById('panel_personal').classList.add('hidden');
             document.getElementById('titulo_seccion_derecha').innerText = 'Seleccione Módulo';
@@ -356,9 +375,10 @@
         }
 
         // Seleccionar una persona del módulo
-        function seleccionarPersona(nombre, elementoTarjeta) {
-            usuarioSeleccionado = nombre;
-            document.getElementById('personal_seleccionado').value = nombre;
+        function seleccionarPersona(miembro, elementoTarjeta) {
+            ocultarError();
+            usuarioObjetoSeleccionado = miembro;
+            document.getElementById('personal_seleccionado').value = miembro.nombre;
 
             // Marcar visualmente la tarjeta elegida
             document.querySelectorAll('.tarjeta-persona').forEach(el => {
@@ -395,20 +415,33 @@
         // Submit del formulario
         function iniciarSesion(event) {
             event.preventDefault();
+            ocultarError();
             
-            const cedula = document.getElementById('cedula').value.trim();
+            const cedulaIngresada = document.getElementById('cedula').value.trim();
 
-            if(!usuarioSeleccionado) {
-                alert("Por favor seleccione su nombre en el panel derecho.");
+            if(!usuarioObjetoSeleccionado) {
+                mostrarError("Por favor seleccione su usuario en el panel derecho.");
                 return;
             }
 
-            if(!cedula) {
-                alert("Por favor ingrese su número de cédula.");
+            if(!cedulaIngresada) {
+                mostrarError("Por favor ingrese su número de cédula.");
                 return;
             }
 
-            // Redirección directa según el módulo activo
+            // Validar si el usuario tiene cédula registrada
+            if(!usuarioObjetoSeleccionado.cedula) {
+                mostrarError("Este usuario aún no tiene un número de cédula configurado en el sistema.");
+                return;
+            }
+
+            // Validación estricta del número de cédula
+            if(cedulaIngresada !== usuarioObjetoSeleccionado.cedula) {
+                mostrarError("Cédula ingresada incorrecta para el usuario seleccionado.");
+                return;
+            }
+
+            // Redirección directa según el módulo activo tras validación exitosa
             const urlDestino = personalData[moduloActualClave].url;
             window.location.href = urlDestino;
         }
