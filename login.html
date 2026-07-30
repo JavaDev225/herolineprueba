@@ -86,50 +86,38 @@
                 Plataforma Operativa de <span class="text-brand-600">Personal Interno</span>
             </h2>
             <p class="text-xs md:text-sm text-slate-500 font-medium">
-                Seleccione su departamento, confirme su nombre e ingrese su número de cédula para acceder.
+                Seleccione su departamento en el panel derecho, identifíquese e ingrese su cédula para acceder.
             </p>
         </div>
 
         <!-- Card Principal de Login -->
         <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
             
-            <!-- Panel Izquierdo: Selección y Validación de Cédula -->
+            <!-- Panel Izquierdo: Validación y Acceso -->
             <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col justify-between bg-white">
                 <div>
                     <div class="mb-6">
                         <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-id-card text-brand-600"></i> Autenticación
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1">Valide su identidad mediante su cédula de identidad.</p>
+                        <p class="text-xs text-slate-500 mt-1">Valide su identidad mediante su número de cédula.</p>
                     </div>
 
-                    <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-4">
-                        <!-- Selector de Módulo -->
+                    <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-5">
+                        <!-- Indicador del Miembro Seleccionado -->
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">1. Módulo Destino</label>
-                            <select id="modulo_select" onchange="cambiarModuloDesdeSelect()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
-                                <option value="analistas">Módulo Analista (Cotizaciones)</option>
-                                <option value="operaciones">Módulo Operaciones</option>
-                                <option value="administracion">Módulo Administración</option>
-                                <option value="agenciamiento">Módulo Agenciamiento</option>
-                                <option value="presidencia">Módulo Presidencia</option>
-                            </select>
-                        </div>
-
-                        <!-- Selector del Miembro Seleccionado (Indicador Visual) -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">2. Personal Seleccionado</label>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">1. Usuario Seleccionado</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <i class="fa-solid fa-user-check text-xs"></i>
                                 </span>
-                                <input type="text" id="personal_seleccionado" readonly placeholder="Seleccione su nombre del panel derecho..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-brand-700 outline-none cursor-default">
+                                <input type="text" id="personal_seleccionado" readonly placeholder="Seleccione su nombre del panel..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-brand-700 outline-none cursor-default">
                             </div>
                         </div>
 
                         <!-- Ingreso Único de Cédula -->
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">3. Número de Cédula</label>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">2. Número de Cédula</label>
                             <div class="relative">
                                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                     <i class="fa-solid fa-address-card text-xs"></i>
@@ -151,7 +139,7 @@
                 </div>
             </div>
 
-            <!-- Panel Derecho: Módulos y Personal -->
+            <!-- Panel Derecho: Selección de Módulos y Personal -->
             <div class="lg:col-span-7 bg-gradient-to-br from-hero-start via-[#D8ECFD] to-hero-end p-6 md:p-8 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
@@ -159,12 +147,12 @@
                             <i class="fa-solid fa-users-gear text-brand-600"></i>
                             <span id="titulo_seccion_derecha">Seleccione Módulo</span>
                         </h3>
-                        <span class="text-[10px] font-bold bg-white/80 text-brand-700 px-2.5 py-1 rounded-full border border-brand-200 shadow-sm">
-                            Paso 1 y 2
+                        <span id="badge_paso" class="text-[10px] font-bold bg-white/80 text-brand-700 px-2.5 py-1 rounded-full border border-brand-200 shadow-sm">
+                            Paso 1: Módulo
                         </span>
                     </div>
 
-                    <!-- Grid de Tarjetas de Módulos (Paso 1) -->
+                    <!-- Grid de Tarjetas de Módulos -->
                     <div id="grid_modulos" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         
                         <!-- 1. Módulo Analista -->
@@ -229,7 +217,7 @@
 
                     </div>
 
-                    <!-- Panel Desplegable de Personal (Paso 2 - Inicialmente Oculto) -->
+                    <!-- Panel Desplegable de Personal -->
                     <div id="panel_personal" class="hidden space-y-3">
                         <div class="flex items-center justify-between">
                             <p class="text-xs font-semibold text-slate-700">Haga clic sobre su nombre para identificarse:</p>
@@ -238,7 +226,7 @@
                             </button>
                         </div>
                         
-                        <div id="contenedor_tarjetas_personal" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div id="contenedor_tarjetas_personal" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[260px] overflow-y-auto pr-1">
                             <!-- Se llena dinámicamente con JS -->
                         </div>
                     </div>
@@ -262,13 +250,11 @@
 
     <!-- Script de Lógica -->
     <script>
-        // Datos del personal por departamento
         const personalData = {
             analistas: {
                 nombreModulo: "Módulo Analista",
                 url: "homeanalista.html",
                 colorBadge: "bg-brand-50 text-brand-600 border-brand-200",
-                icono: "fa-calculator",
                 equipo: [
                     { nombre: "Luis Chirino", cargo: "Analista de Operaciones" },
                     { nombre: "Luz Zambrano", cargo: "Analista de Cotizaciones" },
@@ -280,7 +266,6 @@
                 nombreModulo: "Módulo Operaciones",
                 url: "operaciones.html",
                 colorBadge: "bg-emerald-50 text-emerald-600 border-emerald-200",
-                icono: "fa-anchor",
                 equipo: [
                     { nombre: "Enmanuel Coello", cargo: "Coordinador de Operaciones" },
                     { nombre: "Carlos Gil", cargo: "Supervisor de Puerto" },
@@ -292,7 +277,6 @@
                 nombreModulo: "Módulo Administración",
                 url: "administracion.html",
                 colorBadge: "bg-amber-50 text-amber-600 border-amber-200",
-                icono: "fa-file-invoice-dollar",
                 equipo: [
                     { nombre: "Henmary Irausquin", cargo: "Gerente Administrativo" }
                 ]
@@ -301,7 +285,6 @@
                 nombreModulo: "Módulo Agenciamiento",
                 url: "agenciamiento.html",
                 colorBadge: "bg-indigo-50 text-indigo-600 border-indigo-200",
-                icono: "fa-ship",
                 equipo: [
                     { nombre: "Massiell", cargo: "Agente Marítimo Senior" },
                     { nombre: "Anaibeth Sánchez", cargo: "Coordinadora de Trámites" },
@@ -314,7 +297,6 @@
                 nombreModulo: "Módulo Presidencia",
                 url: "presidencia.html",
                 colorBadge: "bg-slate-900 text-amber-400 border-slate-700",
-                icono: "fa-user-tie",
                 equipo: [
                     { nombre: "Brian Chirinos", cargo: "Director / Presidencia" },
                     { nombre: "Victor Vasquez", cargo: "Ejecutivo Principal" }
@@ -325,28 +307,19 @@
         let moduloActualClave = 'analistas';
         let usuarioSeleccionado = null;
 
-        // Cambiar desplegable desde el select
-        function cambiarModuloDesdeSelect() {
-            const select = document.getElementById('modulo_select');
-            abrirModulo(select.value);
-        }
-
-        // Abrir el listado del personal correspondiente
+        // Abrir el listado del personal correspondiente al hacer clic en un módulo
         function abrirModulo(claveModulo) {
             moduloActualClave = claveModulo;
             const data = personalData[claveModulo];
             
-            // Sincronizar select
-            document.getElementById('modulo_select').value = claveModulo;
-            
             // Ocultar grid de módulos y mostrar panel de personal
             document.getElementById('grid_modulos').classList.add('hidden');
-            const panelPersonal = document.getElementById('panel_personal');
-            panelPersonal.classList.remove('hidden');
+            document.getElementById('panel_personal').classList.remove('hidden');
 
-            document.getElementById('titulo_seccion_derecha').innerText = `Personal: ${data.nombreModulo}`;
+            document.getElementById('titulo_seccion_derecha').innerText = data.nombreModulo;
+            document.getElementById('badge_paso').innerText = 'Paso 2: Personal';
 
-            // Limpiar input y estado
+            // Limpiar input y estado previo
             document.getElementById('personal_seleccionado').value = '';
             usuarioSeleccionado = null;
             desactivarBotonIngreso();
@@ -374,27 +347,27 @@
             });
         }
 
-        // Volver a la vista general de módulos
+        // Volver a la lista de módulos
         function volverAModulos() {
             document.getElementById('grid_modulos').classList.remove('hidden');
             document.getElementById('panel_personal').classList.add('hidden');
             document.getElementById('titulo_seccion_derecha').innerText = 'Seleccione Módulo';
+            document.getElementById('badge_paso').innerText = 'Paso 1: Módulo';
         }
 
-        // Seleccionar una persona
+        // Seleccionar una persona del módulo
         function seleccionarPersona(nombre, elementoTarjeta) {
             usuarioSeleccionado = nombre;
             document.getElementById('personal_seleccionado').value = nombre;
 
-            // Marcar visualmente la tarjeta seleccionada
+            // Marcar visualmente la tarjeta elegida
             document.querySelectorAll('.tarjeta-persona').forEach(el => {
                 el.classList.remove('ring-2', 'ring-brand-500', 'bg-white', 'selected');
             });
             elementoTarjeta.classList.add('ring-2', 'ring-brand-500', 'bg-white', 'selected');
 
-            // Enfocar campo de cédula
-            const inputCedula = document.getElementById('cedula');
-            inputCedula.focus();
+            // Dar foco automático al campo de cédula
+            document.getElementById('cedula').focus();
 
             activarBotonIngreso();
         }
@@ -419,7 +392,7 @@
             btn.className = "w-full py-3 rounded-xl text-xs font-bold text-white bg-slate-300 cursor-not-allowed transition flex items-center justify-center gap-2";
         }
 
-        // Lógica de inicio de sesión
+        // Submit del formulario
         function iniciarSesion(event) {
             event.preventDefault();
             
@@ -435,9 +408,8 @@
                 return;
             }
 
+            // Redirección directa según el módulo activo
             const urlDestino = personalData[moduloActualClave].url;
-            
-            // Redirección al módulo correspondiente
             window.location.href = urlDestino;
         }
     </script>
