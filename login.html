@@ -86,58 +86,60 @@
                 Plataforma Operativa de <span class="text-brand-600">Personal Interno</span>
             </h2>
             <p class="text-xs md:text-sm text-slate-500 font-medium">
-                Seleccione su departamento o módulo asignado para ingresar a la consola de gestión correspondiente.
+                Seleccione su departamento, confirme su nombre e ingrese su número de cédula para acceder.
             </p>
         </div>
 
         <!-- Card Principal de Login -->
         <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
             
-            <!-- Panel Izquierdo: Credenciales -->
+            <!-- Panel Izquierdo: Selección y Validación de Cédula -->
             <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col justify-between bg-white">
                 <div>
                     <div class="mb-6">
                         <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-lock text-brand-600"></i> Autenticación
+                            <i class="fa-solid fa-id-card text-brand-600"></i> Autenticación
                         </h3>
-                        <p class="text-xs text-slate-500 mt-1">Ingrese sus credenciales de usuario institucional.</p>
+                        <p class="text-xs text-slate-500 mt-1">Valide su identidad mediante su cédula de identidad.</p>
                     </div>
 
                     <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-4">
+                        <!-- Selector de Módulo -->
                         <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">Usuario / Correo</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                    <i class="fa-regular fa-user text-xs"></i>
-                                </span>
-                                <input type="text" id="usuario" required placeholder="ej. analista@heroline.com" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">Contraseña</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                    <i class="fa-solid fa-key text-xs"></i>
-                                </span>
-                                <input type="password" id="password" required placeholder="••••••••••••" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
-                            </div>
-                        </div>
-
-                        <!-- Selector Interno de Módulo Físico -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">Módulo Destino</label>
-                            <select id="modulo_select" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
-                                <option value="homeanalista.html">Módulo Analista (Cotizaciones)</option>
-                                <option value="operaciones.html">Módulo Operaciones</option>
-                                <option value="administracion.html">Módulo Administración</option>
-                                <option value="agenciamiento.html">Módulo Agenciamiento</option>
-                                <option value="presidencia.html">Módulo Presidencia</option>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">1. Módulo Destino</label>
+                            <select id="modulo_select" onchange="cambiarModuloDesdeSelect()" class="w-full px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
+                                <option value="analistas">Módulo Analista (Cotizaciones)</option>
+                                <option value="operaciones">Módulo Operaciones</option>
+                                <option value="administracion">Módulo Administración</option>
+                                <option value="agenciamiento">Módulo Agenciamiento</option>
+                                <option value="presidencia">Módulo Presidencia</option>
                             </select>
                         </div>
 
+                        <!-- Selector del Miembro Seleccionado (Indicador Visual) -->
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">2. Personal Seleccionado</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-user-check text-xs"></i>
+                                </span>
+                                <input type="text" id="personal_seleccionado" readonly placeholder="Seleccione su nombre del panel derecho..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-brand-700 outline-none cursor-default">
+                            </div>
+                        </div>
+
+                        <!-- Ingreso Único de Cédula -->
+                        <div>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">3. Número de Cédula</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                    <i class="fa-solid fa-address-card text-xs"></i>
+                                </span>
+                                <input type="text" id="cedula" required placeholder="ej. 24123456" pattern="[0-9]{5,9}" title="Ingrese solo números" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
+                            </div>
+                        </div>
+
                         <div class="pt-2">
-                            <button type="submit" class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2">
+                            <button type="submit" id="btn_ingresar" disabled class="w-full py-3 rounded-xl text-xs font-bold text-white bg-slate-300 cursor-not-allowed transition flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-right-to-bracket text-sm"></i> Ingresar al Sistema
                             </button>
                         </div>
@@ -149,82 +151,98 @@
                 </div>
             </div>
 
-            <!-- Panel Derecho: Selección Rápida de Módulos -->
+            <!-- Panel Derecho: Módulos y Personal -->
             <div class="lg:col-span-7 bg-gradient-to-br from-hero-start via-[#D8ECFD] to-hero-end p-6 md:p-8 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-extrabold text-slate-900 tracking-wider uppercase">
-                            Módulos del Sistema
+                        <h3 class="text-sm font-extrabold text-slate-900 tracking-wider uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-users-gear text-brand-600"></i>
+                            <span id="titulo_seccion_derecha">Seleccione Módulo</span>
                         </h3>
                         <span class="text-[10px] font-bold bg-white/80 text-brand-700 px-2.5 py-1 rounded-full border border-brand-200 shadow-sm">
-                            Selección Directa
+                            Paso 1 y 2
                         </span>
                     </div>
 
-                    <!-- Grid de Tarjetas de Módulos -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <!-- Grid de Tarjetas de Módulos (Paso 1) -->
+                    <div id="grid_modulos" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         
                         <!-- 1. Módulo Analista -->
-                        <div onclick="seleccionarModulo('homeanalista.html', 'Analista')" class="module-card group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
+                        <div onclick="abrirModulo('analistas')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
                                 <i class="fa-solid fa-calculator text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-brand-600 transition">Módulo Analista</h4>
-                                <p class="text-[10px] text-slate-500 line-clamp-1">Cotizaciones, tarifarios e ítems.</p>
+                                <p class="text-[10px] text-slate-500">Cotizaciones y tarifarios</p>
                             </div>
                             <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-600 group-hover:translate-x-0.5 transition"></i>
                         </div>
 
                         <!-- 2. Módulo Operaciones -->
-                        <div onclick="seleccionarModulo('operaciones.html', 'Operaciones')" class="module-card group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
+                        <div onclick="abrirModulo('operaciones')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
                                 <i class="fa-solid fa-anchor text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-emerald-600 transition">Módulo Operaciones</h4>
-                                <p class="text-[10px] text-slate-500 line-clamp-1">Maniobras, muelles y logística.</p>
+                                <p class="text-[10px] text-slate-500">Maniobras y logística</p>
                             </div>
                             <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition"></i>
                         </div>
 
                         <!-- 3. Módulo Administración -->
-                        <div onclick="seleccionarModulo('administracion.html', 'Administración')" class="module-card group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
+                        <div onclick="abrirModulo('administracion')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
                                 <i class="fa-solid fa-file-invoice-dollar text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-amber-600 transition">Módulo Administración</h4>
-                                <p class="text-[10px] text-slate-500 line-clamp-1">Facturación, pagos y divisas.</p>
+                                <p class="text-[10px] text-slate-500">Facturación y divisas</p>
                             </div>
                             <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-amber-600 group-hover:translate-x-0.5 transition"></i>
                         </div>
 
                         <!-- 4. Módulo Agenciamiento -->
-                        <div onclick="seleccionarModulo('agenciamiento.html', 'Agenciamiento')" class="module-card group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
+                        <div onclick="abrirModulo('agenciamiento')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
                                 <i class="fa-solid fa-ship text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition">Módulo Agenciamiento</h4>
-                                <p class="text-[10px] text-slate-500 line-clamp-1">Trámites de buques y puertos.</p>
+                                <p class="text-[10px] text-slate-500">Trámites de buques</p>
                             </div>
                             <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition"></i>
                         </div>
 
                         <!-- 5. Módulo Presidencia -->
-                        <div onclick="seleccionarModulo('presidencia.html', 'Presidencia')" class="module-card group sm:col-span-2 bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
+                        <div onclick="abrirModulo('presidencia')" class="group sm:col-span-2 bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
                             <div class="w-10 h-10 rounded-lg bg-slate-900 text-amber-400 border border-slate-700 flex items-center justify-center font-bold group-hover:scale-105 transition">
                                 <i class="fa-solid fa-user-tie text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-slate-900 transition">Módulo Presidencia</h4>
-                                <p class="text-[10px] text-slate-500">Reportes gerenciales, métricas globales y utilidades brutos.</p>
+                                <p class="text-[10px] text-slate-500">Reportes gerenciales y métricas</p>
                             </div>
                             <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 group-hover:translate-x-0.5 transition"></i>
                         </div>
 
                     </div>
+
+                    <!-- Panel Desplegable de Personal (Paso 2 - Inicialmente Oculto) -->
+                    <div id="panel_personal" class="hidden space-y-3">
+                        <div class="flex items-center justify-between">
+                            <p class="text-xs font-semibold text-slate-700">Haga clic sobre su nombre para identificarse:</p>
+                            <button onclick="volverAModulos()" class="text-[11px] text-brand-700 hover:underline font-bold flex items-center gap-1">
+                                <i class="fa-solid fa-arrow-left"></i> Volver a módulos
+                            </button>
+                        </div>
+                        
+                        <div id="contenedor_tarjetas_personal" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <!-- Se llena dinámicamente con JS -->
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Footer Informativo en el Panel -->
@@ -244,35 +262,183 @@
 
     <!-- Script de Lógica -->
     <script>
-        // Función para seleccionar desde los cuadros de la derecha
-        function seleccionarModulo(url, nombre) {
-            const select = document.getElementById('modulo_select');
-            select.value = url;
-            
-            // Notificación visual rápida
-            const usuarioInput = document.getElementById('usuario');
-            if(!usuarioInput.value.trim()){
-                usuarioInput.value = `usuario.${nombre.toLowerCase()}@heroline.com`;
+        // Datos del personal por departamento
+        const personalData = {
+            analistas: {
+                nombreModulo: "Módulo Analista",
+                url: "homeanalista.html",
+                colorBadge: "bg-brand-50 text-brand-600 border-brand-200",
+                icono: "fa-calculator",
+                equipo: [
+                    { nombre: "Luis Chirino", cargo: "Analista de Operaciones" },
+                    { nombre: "Luz Zambrano", cargo: "Analista de Cotizaciones" },
+                    { nombre: "Natalia Germán", cargo: "Analista de Datos" },
+                    { nombre: "Lizandra Lázaro", cargo: "Analista de Tarifas" }
+                ]
+            },
+            operaciones: {
+                nombreModulo: "Módulo Operaciones",
+                url: "operaciones.html",
+                colorBadge: "bg-emerald-50 text-emerald-600 border-emerald-200",
+                icono: "fa-anchor",
+                equipo: [
+                    { nombre: "Enmanuel Coello", cargo: "Coordinador de Operaciones" },
+                    { nombre: "Carlos Gil", cargo: "Supervisor de Puerto" },
+                    { nombre: "Alex Chirinos", cargo: "Inspector Logístico" },
+                    { nombre: "Engelberth Guanipa", cargo: "Especialista en Muelle" }
+                ]
+            },
+            administracion: {
+                nombreModulo: "Módulo Administración",
+                url: "administracion.html",
+                colorBadge: "bg-amber-50 text-amber-600 border-amber-200",
+                icono: "fa-file-invoice-dollar",
+                equipo: [
+                    { nombre: "Henmary Irausquin", cargo: "Gerente Administrativo" }
+                ]
+            },
+            agenciamiento: {
+                nombreModulo: "Módulo Agenciamiento",
+                url: "agenciamiento.html",
+                colorBadge: "bg-indigo-50 text-indigo-600 border-indigo-200",
+                icono: "fa-ship",
+                equipo: [
+                    { nombre: "Massiell", cargo: "Agente Marítimo Senior" },
+                    { nombre: "Anaibeth Sánchez", cargo: "Coordinadora de Trámites" },
+                    { nombre: "Fabiola Vasquez", cargo: "Agente de Puerto" },
+                    { nombre: "Angel", cargo: "Asistente de Agenciamiento" },
+                    { nombre: "Eiberth", cargo: "Operador Documental" }
+                ]
+            },
+            presidencia: {
+                nombreModulo: "Módulo Presidencia",
+                url: "presidencia.html",
+                colorBadge: "bg-slate-900 text-amber-400 border-slate-700",
+                icono: "fa-user-tie",
+                equipo: [
+                    { nombre: "Brian Chirinos", cargo: "Director / Presidencia" },
+                    { nombre: "Victor Vasquez", cargo: "Ejecutivo Principal" }
+                ]
             }
+        };
+
+        let moduloActualClave = 'analistas';
+        let usuarioSeleccionado = null;
+
+        // Cambiar desplegable desde el select
+        function cambiarModuloDesdeSelect() {
+            const select = document.getElementById('modulo_select');
+            abrirModulo(select.value);
+        }
+
+        // Abrir el listado del personal correspondiente
+        function abrirModulo(claveModulo) {
+            moduloActualClave = claveModulo;
+            const data = personalData[claveModulo];
             
-            // Enfocar campo clave o redirigir
-            document.getElementById('password').focus();
+            // Sincronizar select
+            document.getElementById('modulo_select').value = claveModulo;
+            
+            // Ocultar grid de módulos y mostrar panel de personal
+            document.getElementById('grid_modulos').classList.add('hidden');
+            const panelPersonal = document.getElementById('panel_personal');
+            panelPersonal.classList.remove('hidden');
+
+            document.getElementById('titulo_seccion_derecha').innerText = `Personal: ${data.nombreModulo}`;
+
+            // Limpiar input y estado
+            document.getElementById('personal_seleccionado').value = '';
+            usuarioSeleccionado = null;
+            desactivarBotonIngreso();
+
+            // Renderizar tarjetas del equipo
+            const contenedor = document.getElementById('contenedor_tarjetas_personal');
+            contenedor.innerHTML = '';
+
+            data.equipo.forEach(miembro => {
+                const card = document.createElement('div');
+                card.className = "tarjeta-persona group bg-white/90 hover:bg-white p-3 rounded-xl border border-slate-200/80 hover:border-brand-500 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3";
+                card.onclick = () => seleccionarPersona(miembro.nombre, card);
+
+                card.innerHTML = `
+                    <div class="w-9 h-9 rounded-full ${data.colorBadge} border flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:scale-105 transition">
+                        ${getIniciales(miembro.nombre)}
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <h5 class="font-bold text-xs text-slate-900 group-hover:text-brand-600 truncate transition">${miembro.nombre}</h5>
+                        <p class="text-[10px] text-slate-500 truncate">${miembro.cargo}</p>
+                    </div>
+                    <i class="fa-solid fa-check text-xs text-transparent group-[.selected]:text-brand-600 transition"></i>
+                `;
+                contenedor.appendChild(card);
+            });
+        }
+
+        // Volver a la vista general de módulos
+        function volverAModulos() {
+            document.getElementById('grid_modulos').classList.remove('hidden');
+            document.getElementById('panel_personal').classList.add('hidden');
+            document.getElementById('titulo_seccion_derecha').innerText = 'Seleccione Módulo';
+        }
+
+        // Seleccionar una persona
+        function seleccionarPersona(nombre, elementoTarjeta) {
+            usuarioSeleccionado = nombre;
+            document.getElementById('personal_seleccionado').value = nombre;
+
+            // Marcar visualmente la tarjeta seleccionada
+            document.querySelectorAll('.tarjeta-persona').forEach(el => {
+                el.classList.remove('ring-2', 'ring-brand-500', 'bg-white', 'selected');
+            });
+            elementoTarjeta.classList.add('ring-2', 'ring-brand-500', 'bg-white', 'selected');
+
+            // Enfocar campo de cédula
+            const inputCedula = document.getElementById('cedula');
+            inputCedula.focus();
+
+            activarBotonIngreso();
+        }
+
+        function getIniciales(nombre) {
+            const partes = nombre.split(' ');
+            if(partes.length >= 2) {
+                return (partes[0][0] + partes[1][0]).toUpperCase();
+            }
+            return nombre.substring(0, 2).toUpperCase();
+        }
+
+        function activarBotonIngreso() {
+            const btn = document.getElementById('btn_ingresar');
+            btn.disabled = false;
+            btn.className = "w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer";
+        }
+
+        function desactivarBotonIngreso() {
+            const btn = document.getElementById('btn_ingresar');
+            btn.disabled = true;
+            btn.className = "w-full py-3 rounded-xl text-xs font-bold text-white bg-slate-300 cursor-not-allowed transition flex items-center justify-center gap-2";
         }
 
         // Lógica de inicio de sesión
         function iniciarSesion(event) {
             event.preventDefault();
             
-            const moduloDestino = document.getElementById('modulo_select').value;
-            const usuario = document.getElementById('usuario').value;
+            const cedula = document.getElementById('cedula').value.trim();
 
-            if(!usuario.trim()) {
-                alert("Por favor ingrese su usuario.");
+            if(!usuarioSeleccionado) {
+                alert("Por favor seleccione su nombre en el panel derecho.");
                 return;
             }
 
+            if(!cedula) {
+                alert("Por favor ingrese su número de cédula.");
+                return;
+            }
+
+            const urlDestino = personalData[moduloActualClave].url;
+            
             // Redirección al módulo correspondiente
-            window.location.href = moduloDestino;
+            window.location.href = urlDestino;
         }
     </script>
 </body>
