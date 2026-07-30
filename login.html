@@ -263,10 +263,10 @@
                 colorBadge: "bg-brand-50 text-brand-600 border-brand-200",
                 equipo: [
                     { nombre: "Luis Chirino", cargo: "Coordinador", cedula: "31616195" },
-                    { nombre: "Luz Zambrano", cargo: "Analista de Operaciones", cedula: 28772017 },
+                    { nombre: "Luz Zambrano", cargo: "Analista de Operaciones", cedula: "28772017" },
                     { nombre: "Natalia Germán", cargo: "Analista de Operaciones", cedula: "31581122" },
-                    { nombre: "Lizandra Lázaro", cargo: "Analista de Operaciones", cedula: 26436502 }
-                    { nombre: "David Chirino", cargo: "Analista de Operaciones", cedula: 28573780 }
+                    { nombre: "Lizandra Lázaro", cargo: "Analista de Operaciones", cedula: "26436502" },
+                    { nombre: "David Chirino", cargo: "Analista de Operaciones", cedula: "28573780" }
                 ]
             },
             operaciones: {
@@ -274,9 +274,9 @@
                 url: "operaciones.html",
                 colorBadge: "bg-emerald-50 text-emerald-600 border-emerald-200",
                 equipo: [
-                    { nombre: "Enmanuel Coello", cargo: "Gerente de Operaciones", cedula: 24426227 },
-                    { nombre: "Carlos Gil", cargo: "Operador Logístico", cedula: 28742053 },
-                    { nombre: "Alex Chirinos", cargo: "Operador Logístico", cedula: 27590354 },
+                    { nombre: "Enmanuel Coello", cargo: "Gerente de Operaciones", cedula: "24426227" },
+                    { nombre: "Carlos Gil", cargo: "Operador Logístico", cedula: "28742053" },
+                    { nombre: "Alex Chirinos", cargo: "Operador Logístico", cedula: "27590354" },
                     { nombre: "Engelberth Guanipa", cargo: "Operador en Muelle", cedula: null }
                 ]
             },
@@ -436,8 +436,8 @@
                 return;
             }
 
-            // Validación estricta del número de cédula
-            if(cedulaIngresada !== usuarioObjetoSeleccionado.cedula) {
+            // Validación estricta del número de cédula (convertimos a String por seguridad)
+            if(cedulaIngresada !== String(usuarioObjetoSeleccionado.cedula)) {
                 mostrarError("Cédula ingresada incorrecta para el usuario seleccionado.");
                 return;
             }
