@@ -56,22 +56,19 @@
 </head>
 <body class="bg-[#F6F9FC] text-slate-800 antialiased min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar (Estilo Heroline Shipping) -->
+    <!-- Top Navigation Bar -->
     <header class="bg-white text-slate-800 shadow-sm border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <!-- Icono a la izquierda junto al texto QUOTATIONS PANEL -->
             <div class="flex items-center gap-3">
                 <div class="bg-brand-50 text-brand-600 p-2 rounded-xl font-bold border border-brand-100 flex items-center justify-center">
                     <i class="fa-solid fa-ship text-lg"></i>
                 </div>
                 <div>
                     <h1 class="font-bold tracking-tight text-base text-slate-900 leading-none">QUOTATIONS PANEL</h1>
-                    
                 </div>
             </div>
             
             <div class="flex items-center gap-4 text-xs font-medium">
-                <!-- Tasa / Ticker estilo Topbar -->
                 <div class="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-slate-600 text-[11px]">
                     <span class="font-bold text-slate-400">BCV</span> <span class="font-semibold text-brand-600">55.50</span>
                     <span class="text-slate-300">|</span>
@@ -86,7 +83,7 @@
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-6">
 
-        <!-- Banner Visual / Header Hero con el azul claro pastel de Heroline Shipping -->
+        <!-- Banner Visual / Header Hero -->
         <div class="relative rounded-2xl overflow-hidden shadow-sm border border-brand-200/60 bg-gradient-to-r from-hero-start via-[#D8ECFD] to-hero-end text-slate-800 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div class="space-y-1">
                 <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
@@ -163,7 +160,7 @@
                     </table>
                 </div>
 
-                <!-- Barra Resumen de Cálculo (Cards al estilo Heroline Shortcuts / Stats) -->
+                <!-- Barra Resumen de Cálculo -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                     <div class="bg-slate-50/80 p-3.5 rounded-xl border border-slate-200/80">
                         <span class="text-slate-400 block uppercase text-[10px] font-bold tracking-wider mb-1">Total Ítems</span>
@@ -197,7 +194,7 @@
             </div>
         </div>
 
-        <!-- Vista Previa Card (Resultado) -->
+        <!-- Vista Previa Card -->
         <div id="card-resultado-cotizacion" class="hidden bg-white rounded-2xl shadow-sm border border-brand-200/80 overflow-hidden">
             <div class="bg-gradient-to-r from-hero-start via-[#D8ECFD] to-hero-end p-6 border-b border-brand-200/60 flex flex-wrap justify-between items-center gap-4 text-slate-800">
                 <div>
@@ -280,15 +277,31 @@
             }
         }
 
+        // --- FUNCIÓN AJUSTADA PARA FORMAS DE NÚMEROS LATINOAMERICANOS/EUROPEOS Y ANGLOSAJONES ---
         function limpiarNumero(valor) {
             if (typeof valor === 'number') return valor;
             if (!valor) return 0;
-            let limpio = valor.toString().replace(/[$€Bs\s]/g, '');
-            if (limpio.includes(',') && limpio.includes('.')) {
-                limpio = limpio.replace(/,/g, ''); 
-            } else if (limpio.includes(',') && !limpio.includes('.')) {
+            
+            // Eliminar símbolos de moneda y espacios
+            let limpio = valor.toString().replace(/[$€Bs\s]/g, '').trim();
+            
+            // Si tiene punto de miles y coma decimal (Ej: "1.014,00")
+            if (limpio.includes('.') && limpio.includes(',')) {
+                limpio = limpio.replace(/\./g, '').replace(',', '.'); 
+            } 
+            // Si solo tiene comas (Ej: "1014,00" o "1,014")
+            else if (limpio.includes(',') && !limpio.includes('.')) {
                 limpio = limpio.replace(',', '.'); 
             }
+            // Si solo tiene puntos pero con formato de miles explícito (Ej: "1.014" sin decimales)
+            else if (limpio.includes('.') && !limpio.includes(',')) {
+                const partes = limpio.split('.');
+                // Si la última parte tiene 3 dígitos, asumimos que el punto era separador de miles
+                if (partes.length > 1 && partes[partes.length - 1].length === 3) {
+                    limpio = limpio.replace(/\./g, '');
+                }
+            }
+            
             return parseFloat(limpio) || 0;
         }
 
