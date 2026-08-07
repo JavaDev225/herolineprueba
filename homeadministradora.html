@@ -12,34 +12,17 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#F0F9FF',
-                            100: '#E0F2FE',
-                            200: '#BAE6FD',
-                            300: '#7DD3FC',
-                            400: '#38BDF8',
-                            500: '#0EA5E9',
-                            600: '#0284C7',
-                            700: '#0369A1',
-                            800: '#075985',
-                            900: '#0C4A6E',
+                            50: '#F0F9FF', 100: '#E0F2FE', 200: '#BAE6FD', 300: '#7DD3FC',
+                            400: '#38BDF8', 500: '#0EA5E9', 600: '#0284C7', 700: '#0369A1',
+                            800: '#075985', 900: '#0C4A6E',
                         },
                         hero: {
-                            start: '#D2E8FA',
-                            end: '#CCE3F9',
-                            badge: '#B2D8FA',
-                            accent: '#0D9488'
+                            start: '#D2E8FA', end: '#CCE3F9', badge: '#B2D8FA', accent: '#0D9488'
                         },
                         slate: {
-                            50: '#F8FAFC',
-                            100: '#F1F5F9',
-                            200: '#E2E8F0',
-                            300: '#CBD5E1',
-                            400: '#94A3B8',
-                            500: '#64748B',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1E293B',
-                            900: '#0F172A'
+                            50: '#F8FAFC', 100: '#F1F5F9', 200: '#E2E8F0', 300: '#CBD5E1',
+                            400: '#94A3B8', 500: '#64748B', 600: '#475569', 700: '#334155',
+                            800: '#1E293B', 900: '#0F172A'
                         }
                     }
                 }
@@ -54,32 +37,38 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 
-    <!-- Script de Control de Acceso y Validación de Rol -->
+    <!-- Script de Control de Acceso por Cédula (REEMPLAZADO AQUÍ) -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Obtener sesión del usuario (Guardada durante el Login)
-            const sessionUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null');
-
-            // Cédula autorizada explícitamente para Henmary Irausquin
+            // Cédula autorizada
             const ALLOWED_CEDULA = '28573780';
 
-            // Convertir a String para evitar fallos si en el login se guardó como valor numérico
-            const userId = sessionUser?.id ? String(sessionUser.id) : '';
-            const userCedula = sessionUser?.cedula ? String(sessionUser.cedula) : '';
+            // Obtener datos del usuario desde la sesión
+            const sessionUser = JSON.parse(
+                localStorage.getItem('currentUser') || 
+                sessionStorage.getItem('currentUser') || 
+                'null'
+            );
 
-            // Validación de acceso: Permite ingresar si el rol es 'administradora' O si coincide la cédula (en id O en cedula)
-            const isRoleValid = sessionUser && sessionUser.role === 'administradora';
-            const isCedulaValid = sessionUser && (userId === ALLOWED_CEDULA || userCedula === ALLOWED_CEDULA);
+            // Extraer y normalizar la cédula guardada en sesión
+            const userCedula = sessionUser?.cedula ? String(sessionUser.cedula).trim() : 
+                               sessionUser?.id ? String(sessionUser.id).trim() : '';
 
-            if (!sessionUser || (!isRoleValid && !isCedulaValid)) {
-                alert('Acceso no autorizado. Debe iniciar sesión con credenciales de Administradora.');
+            // Validación estricta: Coincidencia exacta de la cédula
+            if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
+                alert('Acceso denegado. La cédula ingresada no corresponde a la Administradora.');
+                
+                // Limpiar datos inválidos y reorientar al Login
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('currentUser');
                 window.location.href = 'login.html';
-            } else {
-                // Inyectar dinámicamente el nombre de la administradora en la interfaz
-                const nameContainer = document.getElementById('admin-name');
-                if (nameContainer) {
-                    nameContainer.textContent = sessionUser.fullName || 'Henmary Irausquin';
-                }
+                return;
+            }
+
+            // Inyección del nombre si la validación es correcta
+            const nameContainer = document.getElementById('admin-name');
+            if (nameContainer) {
+                nameContainer.textContent = sessionUser.fullName || 'Henmary Irausquin';
             }
         });
 
@@ -90,230 +79,3 @@
         }
     </script>
 </head>
-<body class="bg-[#F6F9FC] text-slate-800 antialiased min-h-screen flex flex-col">
-
-    <!-- Top Navigation Bar -->
-    <header class="bg-white text-slate-800 shadow-sm border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="bg-brand-50 text-brand-600 p-2 rounded-xl font-bold border border-brand-100 flex items-center justify-center">
-                    <i class="fa-solid fa-user-shield text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold tracking-tight text-base text-slate-900 leading-none">ADMIN PORTAL</h1>
-                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Portal de Administración</span>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 text-xs font-medium">
-                <div class="hidden md:flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-full text-slate-600 text-[11px]">
-                    <span class="font-bold text-slate-400">BCV</span> <span class="font-semibold text-brand-600">55.50</span>
-                    <span class="text-slate-300">|</span>
-                    <span class="font-bold text-slate-400">EURO</span> <span class="font-semibold text-brand-600">60.12</span>
-                    <span class="text-slate-300">|</span>
-                    <span class="font-bold text-slate-400">USDT</span> <span class="font-semibold text-brand-600">56.20</span>
-                </div>
-                
-                <div class="flex items-center gap-3 pl-2 border-l border-slate-200">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-xs border border-amber-200" title="Henmary Irausquin">
-                            HI
-                        </div>
-                        <span class="hidden lg:inline text-xs font-bold text-slate-700" id="admin-name">Henmary Irausquin</span>
-                    </div>
-                    <!-- Botón de Cerrar Sesión -->
-                    <button onclick="logout()" class="flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg font-semibold text-xs transition-colors duration-150" title="Cerrar Sesión">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span class="hidden sm:inline">Salir</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full space-y-8">
-
-        <!-- Banner Visual / Header Hero -->
-        <div class="relative rounded-2xl overflow-hidden shadow-sm border border-brand-200/60 bg-gradient-to-r from-hero-start via-[#D8ECFD] to-hero-end text-slate-800 p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div class="space-y-1">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">
-                    Bienvenida, <span class="text-brand-600">Henmary Irausquin</span>
-                </h2>
-                <p class="text-xs text-slate-600 max-w-xl">
-                    Revisa las cotizaciones enviadas y aprobadas por el Coordinador de Analistas para su validación final, emisión formal o facturación.
-                </p>
-            </div>
-            <div>
-                <span class="inline-flex items-center gap-2 bg-brand-100/80 border border-brand-300/60 text-brand-700 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Control Administrativo
-                </span>
-            </div>
-        </div>
-
-        <!-- Métrica de Resumen Rápido -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4 w-full max-w-xs">
-                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold border border-amber-100 shrink-0">
-                    <i class="fa-solid fa-clock"></i>
-                </div>
-                <div>
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Pendientes de Revisión</span>
-                    <span class="text-lg font-extrabold text-slate-900">3 Por Revisar</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sección Principal de Módulos del Administrador -->
-        <div class="space-y-4">
-            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-brand-500"></div>
-                Módulos Administrativos
-            </h3>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                
-                <!-- MÓDULO PRINCIPAL: PANEL DE REVISIÓN -->
-                <a href="#" class="group bg-white rounded-2xl border-2 border-brand-300 hover:border-brand-500 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col justify-between p-6 relative">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-brand-50 rounded-bl-full -z-0 group-hover:scale-110 transition-transform"></div>
-                    
-                    <div class="space-y-3 z-10">
-                        <div class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl shadow-md shadow-brand-500/20 group-hover:bg-brand-700 transition-colors">
-                            <i class="fa-solid fa-clipboard-check"></i>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="inline-block text-[10px] font-bold tracking-wider uppercase text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full">
-                                Aprobaciones Coordinación
-                            </span>
-                            <span class="flex h-2.5 w-2.5 relative">
-                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
-                            </span>
-                        </div>
-                        <h4 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition-colors">
-                            PANEL DE REVISIÓN
-                        </h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Recibe y gestiona las cotizaciones procesadas por el analista y avaladas previamente por el Coordinador.
-                        </p>
-                    </div>
-
-                    <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between z-10">
-                        <span class="text-xs font-bold text-brand-600 group-hover:translate-x-1 transition-transform flex items-center gap-1.5">
-                            Revisar Cotizaciones <i class="fa-solid fa-arrow-right text-[10px]"></i>
-                        </span>
-                        <i class="fa-solid fa-chevron-right text-slate-300 group-hover:text-brand-500 transition-colors"></i>
-                    </div>
-                </a>
-
-                <!-- MÓDULO SECUNDARIO: CONTROL FINANCIERO / FACTURACIÓN -->
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between opacity-75 hover:opacity-100 transition-opacity">
-                    <div class="space-y-3">
-                        <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-xl border border-slate-200">
-                            <i class="fa-solid fa-file-invoice-dollar"></i>
-                        </div>
-                        <span class="inline-block text-[10px] font-bold tracking-wider uppercase text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                            Finanzas
-                        </span>
-                        <h4 class="text-lg font-bold text-slate-900">
-                            BILLING & INVOICING
-                        </h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Emisión de facturas proforma, seguimiento de estados de pago y reportes de cobro de servicios prestados.
-                        </p>
-                    </div>
-
-                    <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-400">
-                        <span>Próximamente</span>
-                        <i class="fa-solid fa-lock text-slate-300"></i>
-                    </div>
-                </div>
-
-                <!-- MÓDULO SECUNDARIO: REPORTES GENERALES -->
-                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 flex flex-col justify-between opacity-75 hover:opacity-100 transition-opacity">
-                    <div class="space-y-3">
-                        <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-xl border border-slate-200">
-                            <i class="fa-solid fa-chart-line"></i>
-                        </div>
-                        <span class="inline-block text-[10px] font-bold tracking-wider uppercase text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full">
-                            Reportes
-                        </span>
-                        <h4 class="text-lg font-bold text-slate-900">
-                            EXECUTIVE REPORTS
-                        </h4>
-                        <p class="text-xs text-slate-500 leading-relaxed">
-                            Consolidado general de operaciones, volúmenes de cotización y desempeño por analistas.
-                        </p>
-                    </div>
-
-                    <div class="pt-6 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-400">
-                        <span>Próximamente</span>
-                        <i class="fa-solid fa-lock text-slate-300"></i>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Tabla Informativa: Cotizaciones recibidas del Coordinador -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
-                <h3 class="text-slate-900 font-bold text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-user-check text-brand-600"></i>
-                    Cotizaciones Recibidas del Coordinador
-                </h3>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-slate-500 font-bold uppercase text-[10px] border-b border-slate-200">
-                        <tr>
-                            <th class="p-3">Código</th>
-                            <th class="p-3">Buque</th>
-                            <th class="p-3">Analista Emisor</th>
-                            <th class="p-3">Validado Por</th>
-                            <th class="p-3 text-right">Monto Total</th>
-                            <th class="p-3 text-center">Estado Coord.</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="p-3 font-bold text-brand-600">REQ-2026-090</td>
-                            <td class="p-3 font-semibold text-slate-900">MV CARIBBEAN SEA</td>
-                            <td class="p-3">Analista Operativo</td>
-                            <td class="p-3 text-slate-500">Coordinador de Analistas</td>
-                            <td class="p-3 text-right font-bold text-slate-900">$ 8,450.00</td>
-                            <td class="p-3 text-center">
-                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center justify-center gap-1 w-max mx-auto">
-                                    <i class="fa-solid fa-circle-check text-[9px]"></i> Aprobado
-                                </span>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="p-3 font-bold text-brand-600">REQ-2026-089</td>
-                            <td class="p-3 font-semibold text-slate-900">NEPTUNE EXPRESS</td>
-                            <td class="p-3">Analista Operativo</td>
-                            <td class="p-3 text-slate-500">Coordinador de Analistas</td>
-                            <td class="p-3 text-right font-bold text-slate-900">$ 15,200.00</td>
-                            <td class="p-3 text-center">
-                                <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold flex items-center justify-center gap-1 w-max mx-auto">
-                                    <i class="fa-solid fa-circle-check text-[9px]"></i> Aprobado
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-xs">
-            Operations Hub &copy; 2026 - Módulo de Administración (Henmary Irausquin)
-        </div>
-    </footer>
-
-</body>
-</html>
