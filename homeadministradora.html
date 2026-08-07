@@ -63,10 +63,14 @@
             // Cédula autorizada explícitamente para Henmary Irausquin
             const ALLOWED_CEDULA = '28573780';
 
-            // Validación de acceso: Permite ingresar si el rol es 'administradora' O si coincide la cédula
+            // Convertir a String para evitar fallos si en el login se guardó como valor numérico
+            const userId = sessionUser?.id ? String(sessionUser.id) : '';
+            const userCedula = sessionUser?.cedula ? String(sessionUser.cedula) : '';
+
+            // Validación de acceso: Permite ingresar si el rol es 'administradora' O si coincide la cédula (en id O en cedula)
             const isRoleValid = sessionUser && sessionUser.role === 'administradora';
-            const isCedulaValid = sessionUser && (sessionUser.id === ALLOWED_CEDULA || sessionUser.cedula === ALLOWED_CEDULA);
-            
+            const isCedulaValid = sessionUser && (userId === ALLOWED_CEDULA || userCedula === ALLOWED_CEDULA);
+
             if (!sessionUser || (!isRoleValid && !isCedulaValid)) {
                 alert('Acceso no autorizado. Debe iniciar sesión con credenciales de Administradora.');
                 window.location.href = 'login.html';
