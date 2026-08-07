@@ -65,8 +65,8 @@
 
             // Validación de acceso: Permite ingresar si el rol es 'administradora' O si coincide la cédula
             const isRoleValid = sessionUser && sessionUser.role === 'administradora';
-            const isCedulaValid = sessionUser && (sessionUser.id === ALLOWED_CEDULA && sessionUser.cedula === ALLOWED_CEDULA);
-
+            const isCedulaValid = sessionUser && (sessionUser.id === ALLOWED_CEDULA || sessionUser.cedula === ALLOWED_CEDULA);
+            
             if (!sessionUser || (!isRoleValid && !isCedulaValid)) {
                 alert('Acceso no autorizado. Debe iniciar sesión con credenciales de Administradora.');
                 window.location.href = 'login.html';
