@@ -38,44 +38,50 @@
     </style>
 
     <!-- Script de Control de Acceso por Cédula (REEMPLAZADO AQUÍ) -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Cédula autorizada
-            const ALLOWED_CEDULA = '28573780';
+    <!-- Script de Control de Acceso por Cédula (VERSIÓN CORREGIDA) -->
+<script>
+    (function checkAuth() {
+        const ALLOWED_CEDULA = '28573780';
 
-            // Obtener datos del usuario desde la sesión
-            const sessionUser = JSON.parse(
-                localStorage.getItem('currentUser') || 
-                sessionStorage.getItem('currentUser') || 
-                'null'
-            );
+        // Obtener datos crudos de sesión
+        const rawUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+        const sessionUser = rawUser ? JSON.parse(rawUser) : null;
 
-            // Extraer y normalizar la cédula guardada en sesión
-            const userCedula = sessionUser?.cedula ? String(sessionUser.cedula).trim() : 
-                               sessionUser?.id ? String(sessionUser.id).trim() : '';
+        // Inspección en consola para diagnóstico
+        console.log('Datos de usuario en sesión:', sessionUser);
 
-            // Validación estricta: Coincidencia exacta de la cédula
-            if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
-                alert('Acceso denegado. La cédula ingresada no corresponde a la Administradora.');
-                
-                // Limpiar datos inválidos y reorientar al Login
-                localStorage.removeItem('currentUser');
-                sessionStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-                return;
-            }
+        // Buscar la cédula en cualquier campo común donde haya sido guardada
+        const userCedula = sessionUser ? String(
+            sessionUser.cedula || 
+            sessionUser.id || 
+            sessionUser.username || 
+            sessionUser.identityCard || 
+            ''
+        ).replace(/\D/g, '') : ''; // Elimina puntos, espacios o guiones accidentalmente guardados
 
-            // Inyección del nombre si la validación es correcta
-            const nameContainer = document.getElementById('admin-name');
-            if (nameContainer) {
-                nameContainer.textContent = sessionUser.fullName || 'Henmary Irausquin';
-            }
-        });
-
-        function logout() {
+        // Validación estricta sin caracteres especiales
+        if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
+            alert(`Acceso denegado. Cédula detectada: "${userCedula}". Se requiere: "${ALLOWED_CEDULA}".`);
+            
             localStorage.removeItem('currentUser');
             sessionStorage.removeItem('currentUser');
             window.location.href = 'login.html';
+            return;
         }
-    </script>
+
+        // Inyectar nombre al cargar el DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameContainer = document.getElementById('admin-name');
+            if (nameContainer) {
+                nameContainer.textContent = sessionUser.fullName || sessionUser.name || 'Henmary Irausquin';
+            }
+        });
+    })();
+
+    function logout() {
+        localStorage.removeItem('currentUser');
+        sessionStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+    }
+</script>
 </head>
