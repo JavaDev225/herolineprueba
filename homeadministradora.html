@@ -50,6 +50,12 @@
         // Inspección en consola para diagnóstico
         console.log('Datos de usuario en sesión:', sessionUser);
 
+        const userToSave = {
+    cedula: '28573780', // Debe ser string o número limpio sin puntos
+    fullName: 'Henmary Irausquin',
+    role: 'administradora'
+};
+
         // Buscar la cédula en cualquier campo común donde haya sido guardada
         const userCedula = sessionUser ? String(
             sessionUser.cedula || 
@@ -83,5 +89,7 @@
         sessionStorage.removeItem('currentUser');
         window.location.href = 'login.html';
     }
+
+    
 </script>
 </head>
