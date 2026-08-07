@@ -37,49 +37,41 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 
-    <!-- Control de Acceso por Cédula Estricto -->
-    <script>
-        (function checkAuth() {
-            const ALLOWED_CEDULA = "12345678";
+    function iniciarSesion(event) {
+    event.preventDefault();
+    ocultarError();
+    
+    const cedulaIngresada = document.getElementById('cedula').value.trim();
 
-            // 1. Lectura de la sesión guardada en localStorage o sessionStorage
-            const rawUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-            const sessionUser = rawUser ? JSON.parse(rawUser) : null;
+    if (!usuarioObjetoSeleccionado) {
+        mostrarError("Por favor seleccione su usuario en el panel derecho.");
+        return;
+    }
 
-            // 2. Extraer y limpiar la cédula (elimina puntos, guiones o espacios accidentalmente ingresados)
-            const userCedula = sessionUser ? String(
-                sessionUser.cedula || 
-                sessionUser.id || 
-                sessionUser.username || 
-                sessionUser.identityCard || 
-                ''
-            ).replace(/\D/g, '') : '';
+    if (!cedulaIngresada) {
+        mostrarError("Por favor ingrese su número de cédula.");
+        return;
+    }
 
-            // 3. Validación: Si no hay usuario o la cédula NO coincide con Henmary Irausquin
-            if (!sessionUser || userCedula == ALLOWED_CEDULA) {
-                alert('Acceso denegado. Se requieren credenciales de Administradora autorizada.');
-                
-                // Limpiar cualquier residuo de sesión inválida y redirigir al login
-                localStorage.removeItem('currentUser');
-                sessionStorage.removeItem('currentUser');
-                window.location.href = 'login.html';
-                return;
-            }
+    if (!usuarioObjetoSeleccionado.cedula) {
+        mostrarError("Este usuario aún no tiene un número de cédula configurado en el sistema.");
+        return;
+    }
 
-            // 4. Si la cédula es correcta, inyecta los datos de Henmary cuando el HTML termine de cargar
-            document.addEventListener('DOMContentLoaded', () => {
-                const nameContainer = document.getElementById('admin-name');
-                if (nameContainer) {
-                    nameContainer.textContent = sessionUser.fullName || 'Henmary Irausquin';
-                }
-            });
-        })();
+    if (cedulaIngresada !== String(usuarioObjetoSeleccionado.cedula)) {
+        mostrarError("Cédula ingresada incorrecta para el usuario seleccionado.");
+        return;
+    }
 
-        // Función global para cerrar sesión
-        function logout() {
-            localStorage.removeItem('currentUser');
-            sessionStorage.removeItem('currentUser');
-            window.location.href = 'login.html';
-        }
-    </script>
-</head>
+    // === PASO CLAVE: Guardar la sesión activa ===
+    localStorage.setItem('currentUser', JSON.stringify({
+        nombre: usuarioObjetoSeleccionado.nombre,
+        cargo: usuarioObjetoSeleccionado.cargo,
+        cedula: usuarioObjetoSeleccionado.cedula,
+        modulo: moduloActualClave
+    }));
+
+    // Redirección al archivo destino
+    const urlDestino = personalData[moduloActualClave].url;
+    window.location.href = urlDestino;
+}
