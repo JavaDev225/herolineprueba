@@ -60,8 +60,14 @@
             // Obtener sesión del usuario (Guardada durante el Login)
             const sessionUser = JSON.parse(localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser') || 'null');
 
-            // Validación de acceso restringido a Administradora (Henmary Irausquin)
-            if (!sessionUser || sessionUser.role !== 'administradora') {
+            // Cédula autorizada explícitamente para Henmary Irausquin
+            const ALLOWED_CEDULA = '28573780';
+
+            // Validación de acceso: Permite ingresar si el rol es 'administradora' O si coincide la cédula
+            const isRoleValid = sessionUser && sessionUser.role === 'administradora';
+            const isCedulaValid = sessionUser && (sessionUser.id === ALLOWED_CEDULA || sessionUser.cedula === ALLOWED_CEDULA);
+
+            if (!sessionUser || (!isRoleValid && !isCedulaValid)) {
                 alert('Acceso no autorizado. Debe iniciar sesión con credenciales de Administradora.');
                 window.location.href = 'login.html';
             } else {
