@@ -37,59 +37,49 @@
         body { font-family: 'Inter', sans-serif; }
     </style>
 
-    <!-- Script de Control de Acceso por Cédula (REEMPLAZADO AQUÍ) -->
-    <!-- Script de Control de Acceso por Cédula (VERSIÓN CORREGIDA) -->
-<script>
-    (function checkAuth() {
-        const ALLOWED_CEDULA = '28573780';
+    <!-- Control de Acceso por Cédula Estricto -->
+    <script>
+        (function checkAuth() {
+            const ALLOWED_CEDULA = '28573780';
 
-        // Obtener datos crudos de sesión
-        const rawUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
-        const sessionUser = rawUser ? JSON.parse(rawUser) : null;
+            // 1. Lectura de la sesión guardada en localStorage o sessionStorage
+            const rawUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+            const sessionUser = rawUser ? JSON.parse(rawUser) : null;
 
-        // Inspección en consola para diagnóstico
-        console.log('Datos de usuario en sesión:', sessionUser);
+            // 2. Extraer y limpiar la cédula (elimina puntos, guiones o espacios accidentalmente ingresados)
+            const userCedula = sessionUser ? String(
+                sessionUser.cedula || 
+                sessionUser.id || 
+                sessionUser.username || 
+                sessionUser.identityCard || 
+                ''
+            ).replace(/\D/g, '') : '';
 
-        const userToSave = {
-    cedula: '28573780', // Debe ser string o número limpio sin puntos
-    fullName: 'Henmary Irausquin',
-    role: 'administradora'
-};
+            // 3. Validación: Si no hay usuario o la cédula NO coincide con Henmary Irausquin
+            if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
+                alert('Acceso denegado. Se requieren credenciales de Administradora autorizada.');
+                
+                // Limpiar cualquier residuo de sesión inválida y redirigir al login
+                localStorage.removeItem('currentUser');
+                sessionStorage.removeItem('currentUser');
+                window.location.href = 'login.html';
+                return;
+            }
 
-        // Buscar la cédula en cualquier campo común donde haya sido guardada
-        const userCedula = sessionUser ? String(
-            sessionUser.cedula || 
-            sessionUser.id || 
-            sessionUser.username || 
-            sessionUser.identityCard || 
-            ''
-        ).replace(/\D/g, '') : ''; // Elimina puntos, espacios o guiones accidentalmente guardados
+            // 4. Si la cédula es correcta, inyecta los datos de Henmary cuando el HTML termine de cargar
+            document.addEventListener('DOMContentLoaded', () => {
+                const nameContainer = document.getElementById('admin-name');
+                if (nameContainer) {
+                    nameContainer.textContent = sessionUser.fullName || 'Henmary Irausquin';
+                }
+            });
+        })();
 
-        // Validación estricta sin caracteres especiales
-        if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
-            alert(`Acceso denegado. Cédula detectada: "${userCedula}". Se requiere: "${ALLOWED_CEDULA}".`);
-            
+        // Función global para cerrar sesión
+        function logout() {
             localStorage.removeItem('currentUser');
             sessionStorage.removeItem('currentUser');
             window.location.href = 'login.html';
-            return;
         }
-
-        // Inyectar nombre al cargar el DOM
-        document.addEventListener('DOMContentLoaded', () => {
-            const nameContainer = document.getElementById('admin-name');
-            if (nameContainer) {
-                nameContainer.textContent = sessionUser.fullName || sessionUser.name || 'Henmary Irausquin';
-            }
-        });
-    })();
-
-    function logout() {
-        localStorage.removeItem('currentUser');
-        sessionStorage.removeItem('currentUser');
-        window.location.href = 'login.html';
-    }
-
-    
-</script>
+    </script>
 </head>
