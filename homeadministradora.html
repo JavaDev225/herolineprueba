@@ -56,7 +56,7 @@
             ).replace(/\D/g, '') : '';
 
             // 3. Validación: Si no hay usuario o la cédula NO coincide con Henmary Irausquin
-            if (!sessionUser || userCedula !== ALLOWED_CEDULA) {
+            if (!sessionUser || userCedula == ALLOWED_CEDULA) {
                 alert('Acceso denegado. Se requieren credenciales de Administradora autorizada.');
                 
                 // Limpiar cualquier residuo de sesión inválida y redirigir al login
