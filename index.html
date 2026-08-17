@@ -12,16 +12,16 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#F0F7FF',
-                            100: '#E0EFFE',
-                            200: '#BAE0FD',
-                            300: '#75BFFB',
-                            400: '#1A85CA',
-                            500: '#0B59A1',
-                            600: '#0B3B7B',
-                            700: '#0A2E61',
-                            800: '#072045',
-                            900: '#04122B',
+                            50: '#F0F9FF',
+                            100: '#E0F2FE',
+                            200: '#BAE6FD',
+                            300: '#7DD3FC',
+                            400: '#38BDF8',
+                            500: '#0EA5E9',
+                            600: '#0284C7',
+                            700: '#0369A1',
+                            800: '#075985',
+                            900: '#0C4A6E',
                         },
                         slate: {
                             50: '#F8FAFC',
@@ -53,26 +53,19 @@
             from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* Fondo con Marca de Agua Ajustada */
-        .watermark-bg {
-            background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.92) 0%, rgba(240, 247, 255, 0.95) 100%), url('logoheroline.png');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 450px auto;
-        }
     </style>
 </head>
-<body class="watermark-bg text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
+<body class="bg-[#F6F9FC] text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
 
     <!-- Header Marítimo Corporativo -->
-    <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50">
+    <header class="w-full bg-white border-b border-slate-200 py-3.5 px-6 shadow-sm">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-white p-1.5 rounded-xl border border-slate-200 shadow-xs flex items-center justify-center">
-                    <img src="logoheroline.png" alt="Heroline Logo" class="h-8 w-auto object-contain">
+                <div class="bg-brand-50 text-brand-600 p-2.5 rounded-xl font-bold border border-brand-100 flex items-center justify-center shadow-xs">
+                    <i class="fa-solid fa-ship text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold tracking-tight text-base text-brand-600 leading-none">HEROLINE SHIPPING</h1>
+                    <h1 class="font-bold tracking-tight text-base text-slate-900 leading-none">HEROLINE SHIPPING</h1>
                     <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">External Agency Platform</span>
                 </div>
             </div>
@@ -80,17 +73,17 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-md mx-auto px-4 py-8 flex-grow flex flex-col justify-center w-full relative z-10">
+    <main class="max-w-md mx-auto px-4 py-8 flex-grow flex flex-col justify-center w-full">
         
         <!-- Hero Banner / Título Principal Bilingüe -->
         <div class="text-center max-w-3xl mx-auto mb-8 space-y-2 fade-in">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-brand-200 text-brand-600 text-xs font-bold mb-2 shadow-xs backdrop-blur-sm">
-                <i class="fa-solid fa-building-circle-check text-brand-400"></i> Portal Empresarial Externo
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-bold mb-2">
+                <i class="fa-solid fa-building-circle-check"></i> Portal Empresarial Externo
             </div>
             <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
                 Welcome to the platform of external application
             </h2>
-            <p class="text-sm font-bold text-brand-400 tracking-wide">
+            <p class="text-sm font-semibold text-brand-600 tracking-wide">
                 Bienvenido a la plataforma de aplicaciones externas
             </p>
             <p class="text-xs text-slate-500 font-medium max-w-xl mx-auto pt-1">
@@ -98,8 +91,8 @@
             </p>
         </div>
 
-        <!-- Card Principal de Login con Soporte de Contraste -->
-        <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/80 overflow-hidden p-6 md:p-8 relative">
+        <!-- Card Principal de Login -->
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden p-6 md:p-8 relative">
             <div>
                 <div class="mb-6 flex items-center justify-between">
                     <div>
@@ -121,7 +114,7 @@
     </main>
 
     <!-- Footer General -->
-    <footer class="w-full bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 text-center text-[11px] text-slate-400 relative z-10">
+    <footer class="w-full bg-white border-t border-slate-200 py-3 text-center text-[11px] text-slate-400">
         Plataforma Corporativa de Agenciamiento Marítimo · Todos los derechos reservados
     </footer>
 
@@ -138,14 +131,15 @@
             error: null
         };
 
+        // Normalizador utilitario de Cédula
         const cleanCedula = (val) => val.replace(/[\s.]/g, '').trim();
 
         /**
-         * Componentes de UI
+         * Componentes de UI (Templates Virtuales)
          */
         const ComponentTemplates = {
             alert: (mensaje) => `
-                <div class="mb-4 p-3.5 rounded-xl bg-red-50/90 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2.5 fade-in">
+                <div class="mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2.5 fade-in">
                     <i class="fa-solid fa-circle-exclamation text-red-500 text-base flex-shrink-0"></i>
                     <span>${mensaje}</span>
                 </div>
@@ -166,7 +160,7 @@
                                 id="cedula_input" 
                                 required 
                                 autocomplete="off"
-                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-400/30 focus:border-brand-600 outline-none transition tracking-widest"
+                                class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition tracking-widest"
                             >
                         </div>
                         <p class="text-[10px] text-slate-400 mt-1">Ingrese su número de documento para validar su rol.</p>
@@ -174,7 +168,7 @@
 
                     <button 
                         type="submit" 
-                        class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-600/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                        class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket text-sm"></i> Validar Cédula
                     </button>
@@ -209,7 +203,7 @@
                                     id="password_input" 
                                     required 
                                     placeholder="••••••••" 
-                                    class="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50/80 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-400/30 focus:border-brand-600 outline-none transition"
+                                    class="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition"
                                 >
                                 <button type="button" id="btn_toggle_eye" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
                                     <i id="icono_pass_eye" class="fa-solid fa-eye text-xs"></i>
@@ -219,7 +213,7 @@
 
                         <button 
                             type="submit" 
-                            class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-600/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                            class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
                         >
                             <i class="fa-solid fa-key text-sm"></i> Ingresar al Sistema
                         </button>
@@ -243,8 +237,10 @@
             const container = document.getElementById('step_container');
             const alertContainer = document.getElementById('alert_container');
 
+            // Renderizar Alerta si existe
             alertContainer.innerHTML = AppState.error ? ComponentTemplates.alert(AppState.error) : '';
 
+            // Renderizar Vista Actual mediante reemplazo fluido
             if (AppState.currentStep === 'CEDULA') {
                 container.innerHTML = ComponentTemplates.stepCedula();
                 bindCedulaEvents();
@@ -254,6 +250,9 @@
             }
         }
 
+        /**
+         * Asignación Dinámica de Eventos por Componente
+         */
         function bindCedulaEvents() {
             const input = document.getElementById('cedula_input');
             const form = document.getElementById('form_cedula');
@@ -261,6 +260,7 @@
             if (!input || !form) return;
             input.focus();
 
+            // Evaluación en tiempo real por entrada de teclado
             input.addEventListener('input', (e) => {
                 if (AppState.error) {
                     AppState.error = null;
@@ -272,6 +272,7 @@
                 }
             });
 
+            // Envío manual del formulario de cédula
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (cleanCedula(input.value) === AppState.cedulaTarget) {
@@ -293,6 +294,7 @@
             if (!passInput || !form) return;
             passInput.focus();
 
+            // Alternar Visibilidad de Contraseña
             btnToggleEye?.addEventListener('click', () => {
                 const icono = document.getElementById('icono_pass_eye');
                 if (passInput.type === 'password') {
@@ -304,12 +306,14 @@
                 }
             });
 
+            // Botón Regresar
             btnBack?.addEventListener('click', () => {
                 AppState.error = null;
                 AppState.currentStep = 'CEDULA';
                 renderUI();
             });
 
+            // Envío del formulario de contraseña
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 if (passInput.value.trim() === AppState.passwordTarget) {
@@ -321,6 +325,7 @@
             });
         }
 
+        // Inicializar Renderizador al cargar el DOM
         document.addEventListener('DOMContentLoaded', () => {
             renderUI();
         });
