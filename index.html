@@ -127,7 +127,7 @@
             currentStep: 'CEDULA', // 'CEDULA' | 'PASSWORD'
             cedulaTarget: '31616195',
             passwordTarget: 'Coord1010',
-            redirectUrl: 'homeanalista.html',
+            redirectUrl: './homeanalista.html',
             error: null
         };
 
@@ -156,9 +156,10 @@
                                 <i class="fa-solid fa-id-card text-sm"></i>
                             </span>
                             <input 
-                                type="password" 
+                                type="text" 
                                 id="cedula_input" 
                                 required 
+                                placeholder="Ej: 31616195"
                                 autocomplete="off"
                                 class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition tracking-widest"
                             >
