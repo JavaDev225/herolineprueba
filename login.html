@@ -220,82 +220,43 @@
                 </div>
             </div>
 
-            <!-- Panel Derecho: Módulos del Sistema Operativo -->
+            <!-- Panel Derecho: Exclusivo Módulo de Coordinación -->
             <div class="lg:col-span-7 bg-gradient-to-br from-hero-start via-[#D8ECFD] to-hero-end p-6 md:p-8 flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-5">
                         <h3 class="text-xs font-extrabold text-slate-900 tracking-wider uppercase flex items-center gap-2">
-                            <i class="fa-solid fa-cubes-stacked text-brand-600 text-sm"></i>
-                            <span>Módulos de la Plataforma</span>
+                            <i class="fa-solid fa-user-shield text-brand-600 text-sm"></i>
+                            <span>Módulo Habilitado</span>
                         </h3>
                         <span class="text-[10px] font-bold bg-white/90 text-brand-700 px-3 py-1 rounded-full border border-brand-200 shadow-xs">
                             Heroline Systems v2.6
                         </span>
                     </div>
 
-                    <!-- Grid de Módulos Empresariales -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                        
-                        <!-- 1. Módulo Analista -->
-                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-calculator text-base"></i>
+                    <!-- Módulo Único Activo -->
+                    <div class="space-y-4">
+                        <div class="bg-white p-5 rounded-2xl border border-brand-200 shadow-sm flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center font-bold flex-shrink-0">
+                                <i class="fa-solid fa-user-gear text-xl"></i>
                             </div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-brand-600 transition">Módulo Analista</h4>
-                                <p class="text-[10px] text-slate-500 font-medium">Cotizaciones y tarifarios</p>
+                            <div class="flex-grow space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-extrabold text-sm text-slate-900">Módulo de Coordinación</h4>
+                                    <span class="text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                                        Activo
+                                    </span>
+                                </div>
+                                <p class="text-xs text-slate-500 font-medium leading-relaxed">
+                                    Gestión operativa, control de cotizaciones, tarifas y supervisión general del sistema de agenciamiento.
+                                </p>
                             </div>
-                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
-                        <!-- 2. Módulo Operaciones -->
-                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-anchor text-base"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-emerald-600 transition">Módulo Operaciones</h4>
-                                <p class="text-[10px] text-slate-500 font-medium">Maniobras y logística</p>
-                            </div>
-                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
+                        <!-- Indicador Informativo -->
+                        <div class="p-4 rounded-xl bg-white/60 border border-slate-200/60 text-slate-600 text-xs flex items-center gap-3">
+                            <i class="fa-solid fa-circle-info text-brand-600 text-base flex-shrink-0"></i>
+                            <span>Acceso restringido únicamente para personal autorizado del área de Coordinación.</span>
                         </div>
-
-                        <!-- 3. Módulo Administración -->
-                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-file-invoice-dollar text-base"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-amber-600 transition">Módulo Administración</h4>
-                                <p class="text-[10px] text-slate-500 font-medium">Facturación y divisas</p>
-                            </div>
-                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
-                        </div>
-
-                        <!-- 4. Módulo Agenciamiento -->
-                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-ship text-base"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition">Módulo Agenciamiento</h4>
-                                <p class="text-[10px] text-slate-500 font-medium">Trámites de buques</p>
-                            </div>
-                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
-                        </div>
-
-                        <!-- 5. Módulo Presidencia -->
-                        <div class="group sm:col-span-2 bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
-                            <div class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 border border-slate-700 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
-                                <i class="fa-solid fa-user-tie text-base"></i>
-                            </div>
-                            <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 transition">Módulo Presidencia</h4>
-                                <p class="text-[10px] text-slate-500 font-medium">Reportes gerenciales y control</p>
-                            </div>
-                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
-                        </div>
-
                     </div>
                 </div>
 
@@ -318,7 +279,6 @@
 
     <!-- Script de Lógica -->
     <script>
-        // Constantes requeridas
         const CEDULA_COORDINADOR = "31616195";
         const PASS_COORDINADOR = "Coord1010";
         const URL_DESTINO_ANALISTA = "homeanalista.html";
@@ -333,12 +293,10 @@
             alertBox.classList.remove('hidden');
         }
 
-        // Limpia formato (quita puntos y espacios)
         function normalizarCedula(valor) {
             return valor.replace(/[\s.]/g, '').trim();
         }
 
-        // Evaluación dinámica en tiempo real según el usuario escribe
         function evaluarEntradaCedula(val) {
             ocultarError();
             const cedulaLimpia = normalizarCedula(val);
@@ -347,7 +305,6 @@
             }
         }
 
-        // Cambio de div dinámico al confirmar la cédula 31.616.195
         function activarModoCoordinador() {
             ocultarError();
             document.getElementById('div_paso_cedula').classList.add('hidden');
@@ -376,7 +333,6 @@
             const passIngresada = document.getElementById('password_input').value.trim();
 
             if (passIngresada === PASS_COORDINADOR) {
-                // Redirección exitosa
                 window.location.href = URL_DESTINO_ANALISTA;
             } else {
                 mostrarError("Contraseña incorrecta. Por favor intente nuevamente.");
