@@ -46,27 +46,38 @@
             }
         }
     </script>
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FontAwesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
+        .fade-in {
+            animation: fadeIn 0.35s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-[#F6F9FC] text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
 
-    <!-- Header Marítimo Sutil -->
+    <!-- Header Marítimo Corporativo -->
     <header class="w-full bg-white border-b border-slate-200 py-3.5 px-6 shadow-sm">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-brand-50 text-brand-600 p-2 rounded-xl font-bold border border-brand-100 flex items-center justify-center">
-                    <i class="fa-solid fa-ship text-lg"></i>
+                <div class="bg-brand-50 text-brand-600 p-2.5 rounded-xl font-bold border border-brand-100 flex items-center justify-center shadow-xs">
+                    <i class="fa-solid fa-ship text-xl"></i>
                 </div>
                 <div>
                     <h1 class="font-bold tracking-tight text-base text-slate-900 leading-none">HEROLINE SHIPPING</h1>
-                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Agency System</span>
+                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">External Agency Platform</span>
                 </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                <i class="fa-solid fa-shield-halved text-brand-600"></i>
+                <span>Acceso Seguro SSL</span>
             </div>
         </div>
     </header>
@@ -74,167 +85,225 @@
     <!-- Main Container -->
     <main class="max-w-6xl mx-auto px-4 py-8 flex-grow flex flex-col justify-center w-full">
         
-        <!-- Hero Banner / Presentación -->
-        <div class="text-center max-w-2xl mx-auto mb-8 space-y-2">
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                Plataforma Operativa de <span class="text-brand-600">Personal Interno</span>
+        <!-- Hero Banner / Título Principal Bilingüe -->
+        <div class="text-center max-w-3xl mx-auto mb-8 space-y-2 fade-in">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-bold mb-2">
+                <i class="fa-solid fa-building-circle-check"></i> Portal Empresarial Externo
+            </div>
+            <h2 class="text-2xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                Welcome to the platform of external application
             </h2>
-            <p class="text-xs md:text-sm text-slate-500 font-medium">
-                Seleccione su departamento en el panel derecho, identifíquese e ingrese su cédula para acceder.
+            <p class="text-sm md:text-base font-semibold text-brand-600 tracking-wide">
+                Bienvenido a la plataforma de aplicaciones externas
+            </p>
+            <p class="text-xs md:text-sm text-slate-500 font-medium max-w-xl mx-auto pt-1">
+                Ingrese su número de cédula de identidad para verificar sus credenciales corporativas y acceder al sistema.
             </p>
         </div>
 
         <!-- Card Principal de Login -->
         <div class="bg-white rounded-2xl shadow-xl border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
             
-            <!-- Panel Izquierdo: Validación y Acceso -->
-            <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col justify-between bg-white">
+            <!-- Panel Izquierdo: Formulario de Autenticación Dinámico -->
+            <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-slate-100 flex flex-col justify-between bg-white relative">
                 <div>
-                    <div class="mb-6">
-                        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-id-card text-brand-600"></i> Autenticación
-                        </h3>
-                        <p class="text-xs text-slate-500 mt-1">Valide su identidad mediante su número de cédula.</p>
+                    <div class="mb-6 flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-user-lock text-brand-600"></i> Autenticación
+                            </h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Identificación de Usuario</p>
+                        </div>
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Sistema Activo"></span>
                     </div>
 
-                    <!-- Mensaje de Alerta por Cédula Incorrecta -->
-                    <div id="alert_error" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2">
-                        <i class="fa-solid fa-circle-exclamation text-red-500 text-sm flex-shrink-0"></i>
-                        <span id="mensaje_error">Número de cédula incorrecto o no registrado.</span>
+                    <!-- Mensaje de Alerta General -->
+                    <div id="alert_error" class="hidden mb-4 p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2.5 fade-in">
+                        <i class="fa-solid fa-circle-exclamation text-red-500 text-base flex-shrink-0"></i>
+                        <span id="mensaje_error">Cédula o contraseña incorrecta.</span>
                     </div>
 
-                    <form id="loginForm" onsubmit="iniciarSesion(event)" class="space-y-5">
-                        <!-- Indicador del Miembro Seleccionado -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">1. Usuario Seleccionado</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                    <i class="fa-solid fa-user-check text-xs"></i>
-                                </span>
-                                <input type="text" id="personal_seleccionado" readonly placeholder="Seleccione su nombre del panel..." class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold text-brand-700 outline-none cursor-default">
+                    <!-- ESTADO 1: Formulario de Cédula -->
+                    <div id="div_paso_cedula" class="space-y-5">
+                        <form onsubmit="validarCedulaForm(event)" class="space-y-4">
+                            <div>
+                                <label for="cedula_input" class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">
+                                    Cédula de Identidad
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fa-solid fa-id-card text-sm"></i>
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        id="cedula_input" 
+                                        required 
+                                        placeholder="Ej. 31.616.195" 
+                                        autocomplete="off"
+                                        oninput="evaluarEntradaCedula(this.value)"
+                                        class="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition"
+                                    >
+                                </div>
+                                <p class="text-[10px] text-slate-400 mt-1">Ingrese su número de documento para validar su rol.</p>
                             </div>
-                        </div>
 
-                        <!-- Ingreso Único de Cédula -->
-                        <div>
-                            <label class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">2. Número de Cédula</label>
-                            <div class="relative">
-                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                                    <i class="fa-solid fa-address-card text-xs"></i>
-                                </span>
-                                <input type="text" id="cedula" required placeholder="ej. 12345678" pattern="[0-9]{5,9}" title="Ingrese solo números" class="w-full pl-9 pr-3 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition">
-                            </div>
-                        </div>
-
-                        <div class="pt-2">
-                            <button type="submit" id="btn_ingresar" disabled class="w-full py-3 rounded-xl text-xs font-bold text-white bg-slate-300 cursor-not-allowed transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-right-to-bracket text-sm"></i> Ingresar al Sistema
+                            <button 
+                                type="submit" 
+                                id="btn_verificar_cedula"
+                                class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                <i class="fa-solid fa-arrow-right-to-bracket text-sm"></i> Validar Cédula
                             </button>
+                        </form>
+                    </div>
+
+                    <!-- ESTADO 2: Div que cambia al validar la Cédula 31.616.195 -->
+                    <div id="div_paso_password" class="hidden space-y-5 fade-in">
+                        <!-- Banner de Bienvenida Personalizado -->
+                        <div class="p-4 rounded-xl bg-brand-50 border border-brand-200 text-brand-900 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-xs">
+                                    LC
+                                </div>
+                                <h4 class="font-extrabold text-xs text-brand-900">Bienvenido Coordinador Luis Chirino.</h4>
+                            </div>
+                            <p class="text-[11px] text-brand-700 font-medium pt-1">
+                                Por favor, ingrese su contraseña para el ingreso.
+                            </p>
                         </div>
-                    </form>
+
+                        <form onsubmit="iniciarSesionFinal(event)" class="space-y-4">
+                            <div>
+                                <label for="password_input" class="block text-[11px] font-bold text-slate-600 mb-1.5 uppercase tracking-wider">
+                                    Contraseña de Acceso
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                        <i class="fa-solid fa-lock text-sm"></i>
+                                    </span>
+                                    <input 
+                                        type="password" 
+                                        id="password_input" 
+                                        required 
+                                        placeholder="••••••••" 
+                                        class="w-full pl-10 pr-10 py-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-900 focus:bg-white focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 outline-none transition"
+                                    >
+                                    <button type="button" onclick="togglePasswordVisibilidad()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600">
+                                        <i id="icono_pass_eye" class="fa-solid fa-eye text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button 
+                                type="submit" 
+                                class="w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer"
+                            >
+                                <i class="fa-solid fa-key text-sm"></i> Ingresar al Sistema
+                            </button>
+
+                            <button 
+                                type="button" 
+                                onclick="restablecerFormulario()" 
+                                class="w-full text-center text-[11px] text-slate-500 hover:text-brand-600 font-bold transition flex items-center justify-center gap-1.5 pt-1"
+                            >
+                                <i class="fa-solid fa-arrow-left"></i> Modificar Cédula
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-                    <p class="text-[11px] text-slate-400 font-medium">¿Problemas con sus accesos? <a href="#" class="text-brand-600 hover:underline font-bold">Contactar a Soporte</a></p>
+                <div class="mt-8 pt-4 border-t border-slate-100 text-center">
+                    <p class="text-[11px] text-slate-400 font-medium">
+                        ¿Problemas con sus accesos corporativos? <a href="#" class="text-brand-600 hover:underline font-bold">Contactar a Soporte TI</a>
+                    </p>
                 </div>
             </div>
 
-            <!-- Panel Derecho: Selección de Módulos y Personal -->
+            <!-- Panel Derecho: Módulos del Sistema Operativo -->
             <div class="lg:col-span-7 bg-gradient-to-br from-hero-start via-[#D8ECFD] to-hero-end p-6 md:p-8 flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-sm font-extrabold text-slate-900 tracking-wider uppercase flex items-center gap-2">
-                            <i class="fa-solid fa-users-gear text-brand-600"></i>
-                            <span id="titulo_seccion_derecha">Seleccione Módulo Correspondiente</span>
+                    <div class="flex items-center justify-between mb-5">
+                        <h3 class="text-xs font-extrabold text-slate-900 tracking-wider uppercase flex items-center gap-2">
+                            <i class="fa-solid fa-cubes-stacked text-brand-600 text-sm"></i>
+                            <span>Módulos de la Plataforma</span>
                         </h3>
-                        <span id="badge_paso" class="text-[10px] font-bold bg-white/80 text-brand-700 px-2.5 py-1 rounded-full border border-brand-200 shadow-sm">
-                            Paso 1: Módulo
+                        <span class="text-[10px] font-bold bg-white/90 text-brand-700 px-3 py-1 rounded-full border border-brand-200 shadow-xs">
+                            Heroline Systems v2.6
                         </span>
                     </div>
 
-                    <!-- Grid de Tarjetas de Módulos -->
-                    <div id="grid_modulos" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <!-- Grid de Módulos Empresariales -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                         
                         <!-- 1. Módulo Analista -->
-                        <div onclick="abrirModulo('analistas')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
+                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-calculator text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-brand-600 transition">Módulo Analista</h4>
-                                <p class="text-[10px] text-slate-500">Cotizaciones y tarifarios</p>
+                                <p class="text-[10px] text-slate-500 font-medium">Cotizaciones y tarifarios</p>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-brand-600 group-hover:translate-x-0.5 transition"></i>
+                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
                         <!-- 2. Módulo Operaciones -->
-                        <div onclick="abrirModulo('operaciones')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
+                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-anchor text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-emerald-600 transition">Módulo Operaciones</h4>
-                                <p class="text-[10px] text-slate-500">Maniobras y logística</p>
+                                <p class="text-[10px] text-slate-500 font-medium">Maniobras y logística</p>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition"></i>
+                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
                         <!-- 3. Módulo Administración -->
-                        <div onclick="abrirModulo('administracion')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
+                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-file-invoice-dollar text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-amber-600 transition">Módulo Administración</h4>
-                                <p class="text-[10px] text-slate-500">Facturación y divisas</p>
+                                <p class="text-[10px] text-slate-500 font-medium">Facturación y divisas</p>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-amber-600 group-hover:translate-x-0.5 transition"></i>
+                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
                         <!-- 4. Módulo Agenciamiento -->
-                        <div onclick="abrirModulo('agenciamiento')" class="group bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold group-hover:scale-105 transition">
+                        <div class="group bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-ship text-base"></i>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition">Módulo Agenciamiento</h4>
-                                <p class="text-[10px] text-slate-500">Trámites de buques</p>
+                                <p class="text-[10px] text-slate-500 font-medium">Trámites de buques</p>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition"></i>
+                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
                         <!-- 5. Módulo Presidencia -->
-                        <div onclick="abrirModulo('presidencia')" class="group sm:col-span-2 bg-white/90 hover:bg-white p-3.5 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-slate-900 text-amber-400 border border-slate-700 flex items-center justify-center font-bold group-hover:scale-105 transition">
+                        <div class="group sm:col-span-2 bg-white/90 hover:bg-white p-4 rounded-xl border border-slate-200/80 hover:border-brand-400 shadow-xs hover:shadow-md transition cursor-default flex items-center gap-3.5">
+                            <div class="w-10 h-10 rounded-xl bg-slate-900 text-amber-400 border border-slate-700 flex items-center justify-center font-bold flex-shrink-0 group-hover:scale-105 transition">
                                 <i class="fa-solid fa-user-tie text-base"></i>
                             </div>
                             <div class="flex-grow">
-                                <h4 class="font-bold text-xs text-slate-900 group-hover:text-slate-900 transition">Módulo Presidencia</h4>
-                                <p class="text-[10px] text-slate-500">Reportes gerenciales</p>
+                                <h4 class="font-bold text-xs text-slate-900 transition">Módulo Presidencia</h4>
+                                <p class="text-[10px] text-slate-500 font-medium">Reportes gerenciales y control</p>
                             </div>
-                            <i class="fa-solid fa-chevron-right text-xs text-slate-300 group-hover:text-slate-900 group-hover:translate-x-0.5 transition"></i>
+                            <i class="fa-solid fa-lock text-xs text-slate-300"></i>
                         </div>
 
                     </div>
-
-                    <!-- Panel Desplegable de Personal -->
-                    <div id="panel_personal" class="hidden space-y-3">
-                        <div class="flex items-center justify-between">
-                            <p class="text-xs font-semibold text-slate-700">Haga clic sobre su nombre para identificarse:</p>
-                            <button onclick="volverAModulos()" class="text-[11px] text-brand-700 hover:underline font-bold flex items-center gap-1">
-                                <i class="fa-solid fa-arrow-left"></i> Volver a módulos
-                            </button>
-                        </div>
-                        
-                        <div id="contenedor_tarjetas_personal" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[260px] overflow-y-auto pr-1">
-                            <!-- Se llena dinámicamente con JS -->
-                        </div>
-                    </div>
-
                 </div>
 
-                <!-- Footer Informativo en el Panel -->
-                <div class="mt-6 pt-4 border-t border-brand-200/60 flex items-center justify-end text-[11px] text-slate-600 font-medium">
+                <!-- Footer Informativo del Panel -->
+                <div class="mt-6 pt-4 border-t border-brand-200/60 flex items-center justify-between text-[11px] text-slate-600 font-medium">
+                    <span class="flex items-center gap-1.5 text-slate-500">
+                        <i class="fa-solid fa-network-wired text-brand-600"></i> Servidor de Tiempo Real
+                    </span>
                     <span>Heroline Shipping © 2026</span>
                 </div>
             </div>
@@ -249,63 +318,10 @@
 
     <!-- Script de Lógica -->
     <script>
-        const personalData = {
-            analistas: {
-                nombreModulo: "Módulo Analista",
-                url: "homeanalista.html",
-                colorBadge: "bg-brand-50 text-brand-600 border-brand-200",
-                equipo: [
-                    { nombre: "Luis Chirino", cargo: "Coordinador", cedula: "31616195" },
-                    { nombre: "Luz Zambrano", cargo: "Analista de Operaciones", cedula: "28772017" },
-                    { nombre: "Natalia Germán", cargo: "Analista de Operaciones", cedula: "31581122" },
-                    { nombre: "Lizandra Lázaro", cargo: "Analista de Operaciones", cedula: "26436502" },
-                    { nombre: "David Chirino", cargo: "Analista de Operaciones", cedula: "28573780" }
-                ]
-            },
-            operaciones: {
-                nombreModulo: "Módulo Operaciones",
-                url: "operaciones.html",
-                colorBadge: "bg-emerald-50 text-emerald-600 border-emerald-200",
-                equipo: [
-                    { nombre: "Enmanuel Coello", cargo: "Gerente de Operaciones", cedula: "24426227" },
-                    { nombre: "Carlos Gil", cargo: "Operador Logístico", cedula: "28742053" },
-                    { nombre: "Alex Chirinos", cargo: "Operador Logístico", cedula: "27590354" },
-                    { nombre: "Engelberth Guanipa", cargo: "Operador Logístico", cedula: "25848535" }
-                ]
-            },
-            administracion: {
-                nombreModulo: "Módulo Administración",
-                url: "homeadministradora.html",
-                colorBadge: "bg-amber-50 text-amber-600 border-amber-200",
-                equipo: [
-                    { nombre: "Henmary Irausquin", cargo: "Administradora", cedula: "12345678" }
-                ]
-            },
-            agenciamiento: {
-                nombreModulo: "Módulo Agenciamiento",
-                url: "agenciamiento.html",
-                colorBadge: "bg-indigo-50 text-indigo-600 border-indigo-200",
-                equipo: [
-                    { nombre: "Massiell", cargo: "Analista Naviero", cedula: null },
-                    { nombre: "Anaibeth Sánchez", cargo: "Coordinadora", cedula: null },
-                    { nombre: "Fabiola Vasquez", cargo: "Analista Naviero", cedula: null },
-                    { nombre: "Angel González", cargo: "Analista Naviero", cedula: "28651687" },
-                    { nombre: "Heyberth Bustillo", cargo: "Agente Naviero", cedula: "31810731" }
-                ]
-            },
-            presidencia: {
-                nombreModulo: "Módulo Presidencia",
-                url: "presidencia.html",
-                colorBadge: "bg-slate-900 text-amber-400 border-slate-700",
-                equipo: [
-                    { nombre: "Brian Chirinos", cargo: "Vice-Presidente", cedula: null },
-                    { nombre: "Victor Vasquez", cargo: "Presidente", cedula: null }
-                ]
-            }
-        };
-
-        let moduloActualClave = 'analistas';
-        let usuarioObjetoSeleccionado = null;
+        // Constantes requeridas
+        const CEDULA_COORDINADOR = "31616195";
+        const PASS_COORDINADOR = "Coord1010";
+        const URL_DESTINO_ANALISTA = "homeanalista.html";
 
         function ocultarError() {
             document.getElementById('alert_error').classList.add('hidden');
@@ -317,127 +333,76 @@
             alertBox.classList.remove('hidden');
         }
 
-        // Abrir el listado del personal correspondiente al hacer clic en un módulo
-        function abrirModulo(claveModulo) {
-            moduloActualClave = claveModulo;
-            const data = personalData[claveModulo];
-            
+        // Limpia formato (quita puntos y espacios)
+        function normalizarCedula(valor) {
+            return valor.replace(/[\s.]/g, '').trim();
+        }
+
+        // Evaluación dinámica en tiempo real según el usuario escribe
+        function evaluarEntradaCedula(val) {
+            ocultarError();
+            const cedulaLimpia = normalizarCedula(val);
+            if (cedulaLimpia === CEDULA_COORDINADOR) {
+                activarModoCoordinador();
+            }
+        }
+
+        // Cambio de div dinámico al confirmar la cédula 31.616.195
+        function activarModoCoordinador() {
+            ocultarError();
+            document.getElementById('div_paso_cedula').classList.add('hidden');
+            document.getElementById('div_paso_password').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('password_input').focus();
+            }, 100);
+        }
+
+        function validarCedulaForm(e) {
+            e.preventDefault();
+            const val = document.getElementById('cedula_input').value;
+            const cedulaLimpia = normalizarCedula(val);
+
+            if (cedulaLimpia === CEDULA_COORDINADOR) {
+                activarModoCoordinador();
+            } else {
+                mostrarError("Número de cédula no registrado o sin permisos para esta plataforma.");
+            }
+        }
+
+        function iniciarSesionFinal(e) {
+            e.preventDefault();
             ocultarError();
 
-            // Ocultar grid de módulos y mostrar panel de personal
-            document.getElementById('grid_modulos').classList.add('hidden');
-            document.getElementById('panel_personal').classList.remove('hidden');
+            const passIngresada = document.getElementById('password_input').value.trim();
 
-            document.getElementById('titulo_seccion_derecha').innerText = data.nombreModulo;
-            document.getElementById('badge_paso').innerText = 'Paso 2: Personal';
-
-            // Limpiar input y estado previo
-            document.getElementById('personal_seleccionado').value = '';
-            usuarioObjetoSeleccionado = null;
-            desactivarBotonIngreso();
-
-            // Renderizar tarjetas del equipo
-            const contenedor = document.getElementById('contenedor_tarjetas_personal');
-            contenedor.innerHTML = '';
-
-            data.equipo.forEach(miembro => {
-                const card = document.createElement('div');
-                card.className = "tarjeta-persona group bg-white/90 hover:bg-white p-3 rounded-xl border border-slate-200/80 hover:border-brand-500 shadow-sm hover:shadow-md transition cursor-pointer flex items-center gap-3";
-                card.onclick = () => seleccionarPersona(miembro, card);
-
-                card.innerHTML = `
-                    <div class="w-9 h-9 rounded-full ${data.colorBadge} border flex items-center justify-center font-bold text-xs flex-shrink-0 group-hover:scale-105 transition">
-                        ${getIniciales(miembro.nombre)}
-                    </div>
-                    <div class="flex-grow min-w-0">
-                        <h5 class="font-bold text-xs text-slate-900 group-hover:text-brand-600 truncate transition">${miembro.nombre}</h5>
-                        <p class="text-[10px] text-slate-500 truncate">${miembro.cargo}</p>
-                    </div>
-                    <i class="fa-solid fa-check text-xs text-transparent group-[.selected]:text-brand-600 transition"></i>
-                `;
-                contenedor.appendChild(card);
-            });
+            if (passIngresada === PASS_COORDINADOR) {
+                // Redirección exitosa
+                window.location.href = URL_DESTINO_ANALISTA;
+            } else {
+                mostrarError("Contraseña incorrecta. Por favor intente nuevamente.");
+            }
         }
 
-        // Volver a la lista de módulos
-        function volverAModulos() {
+        function restablecerFormulario() {
             ocultarError();
-            document.getElementById('grid_modulos').classList.remove('hidden');
-            document.getElementById('panel_personal').classList.add('hidden');
-            document.getElementById('titulo_seccion_derecha').innerText = 'Seleccione Módulo';
-            document.getElementById('badge_paso').innerText = 'Paso 1: Módulo';
+            document.getElementById('password_input').value = '';
+            document.getElementById('div_paso_password').classList.add('hidden');
+            document.getElementById('div_paso_cedula').classList.remove('hidden');
+            document.getElementById('cedula_input').focus();
         }
 
-        // Seleccionar una persona del módulo
-        function seleccionarPersona(miembro, elementoTarjeta) {
-            ocultarError();
-            usuarioObjetoSeleccionado = miembro;
-            document.getElementById('personal_seleccionado').value = miembro.nombre;
-
-            // Marcar visualmente la tarjeta elegida
-            document.querySelectorAll('.tarjeta-persona').forEach(el => {
-                el.classList.remove('ring-2', 'ring-brand-500', 'bg-white', 'selected');
-            });
-            elementoTarjeta.classList.add('ring-2', 'ring-brand-500', 'bg-white', 'selected');
-
-            // Dar foco automático al campo de cédula
-            document.getElementById('cedula').focus();
-
-            activarBotonIngreso();
-        }
-
-        function getIniciales(nombre) {
-            const partes = nombre.split(' ');
-            if(partes.length >= 2) {
-                return (partes[0][0] + partes[1][0]).toUpperCase();
+        function togglePasswordVisibilidad() {
+            const passInput = document.getElementById('password_input');
+            const icono = document.getElementById('icono_pass_eye');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icono.classList.remove('fa-eye');
+                icono.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icono.classList.remove('fa-eye-slash');
+                icono.classList.add('fa-eye');
             }
-            return nombre.substring(0, 2).toUpperCase();
-        }
-
-        function activarBotonIngreso() {
-            const btn = document.getElementById('btn_ingresar');
-            btn.disabled = false;
-            btn.className = "w-full py-3 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 active:bg-brand-800 shadow-md shadow-brand-500/20 transition flex items-center justify-center gap-2 cursor-pointer";
-        }
-
-        function desactivarBotonIngreso() {
-            const btn = document.getElementById('btn_ingresar');
-            btn.disabled = true;
-            btn.className = "w-full py-3 rounded-xl text-xs font-bold text-white bg-slate-300 cursor-not-allowed transition flex items-center justify-center gap-2";
-        }
-
-        // Submit del formulario
-        function iniciarSesion(event) {
-            event.preventDefault();
-            ocultarError();
-            
-            const cedulaIngresada = document.getElementById('cedula').value.trim();
-
-            if(!usuarioObjetoSeleccionado) {
-                mostrarError("Por favor seleccione su usuario en el panel derecho.");
-                return;
-            }
-
-            if(!cedulaIngresada) {
-                mostrarError("Por favor ingrese su número de cédula.");
-                return;
-            }
-
-            // Validar si el usuario tiene cédula registrada
-            if(!usuarioObjetoSeleccionado.cedula) {
-                mostrarError("Este usuario aún no tiene un número de cédula configurado en el sistema.");
-                return;
-            }
-
-            // Validación estricta del número de cédula (convertimos a String por seguridad)
-            if(cedulaIngresada !== String(usuarioObjetoSeleccionado.cedula)) {
-                mostrarError("Cédula ingresada incorrecta para el usuario seleccionado.");
-                return;
-            }
-
-            // Redirección directa según el módulo activo tras validación exitosa
-            const urlDestino = personalData[moduloActualClave].url;
-            window.location.href = urlDestino;
         }
     </script>
 </body>
