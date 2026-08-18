@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Solicitud Externa | Heroline Shipping Platform</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -39,9 +40,12 @@
             }
         }
     </script>
+    <!-- FontAwesome 6.5.1 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- Librerías para Generación de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -63,6 +67,7 @@
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-brand-50/40 to-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
 
+    <!-- Header Corporativo -->
     <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             
@@ -89,10 +94,12 @@
         </div>
     </header>
 
+    <!-- Main Content Container -->
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full relative z-10 fade-in">
         
         <form id="formSolicitud" onsubmit="guardarEImprimir(event)" class="space-y-6">
             
+            <!-- Encabezado de Formulario -->
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
                 <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
@@ -110,7 +117,9 @@
                     </div>
                 </div>
 
+                <!-- Datos Generales -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Nombre del Buque -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="nombreBuque">
                             Nombre del Buque <span class="text-red-500">*</span>
@@ -129,6 +138,7 @@
                         </div>
                     </div>
 
+                    <!-- Nombre del Área -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="areaDestino">
                             Nombre del Área <span class="text-red-500">*</span>
@@ -147,6 +157,7 @@
                         </div>
                     </div>
 
+                    <!-- Nombre del Responsable -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="responsable">
                             Nombre del Responsable <span class="text-red-500">*</span>
@@ -167,6 +178,7 @@
                 </div>
             </div>
 
+            <!-- Tabla de Ítems / Materiales -->
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                     <div>
@@ -187,6 +199,7 @@
                     </button>
                 </div>
 
+                <!-- Tabla Responsive -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
@@ -199,11 +212,13 @@
                             </tr>
                         </thead>
                         <tbody id="contenedorItems" class="divide-y divide-slate-100">
-                            </tbody>
+                            <!-- Filas generadas dinámicamente -->
+                        </tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- Footer de Acciones del Formulario -->
             <div class="flex items-center justify-end gap-3 pt-2 no-print">
                 <button 
                     type="button" 
@@ -225,13 +240,15 @@
 
     </main>
 
+    <!-- Footer General -->
     <footer class="w-full bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 text-center text-[11px] text-slate-400 relative z-10 no-print">
         Plataforma Corporativa de Agenciamiento Marítimo · Heroline Shipping
     </footer>
 
+    <!-- Lógica JavaScript y Generación de PDF -->
     <script>
         let contadorItems = 0;
-        let secuenciaSolicitud = 864; // Correlativo (Ej: 00-0864) [cite: 6]
+        let secuenciaSolicitud = 864;
 
         document.addEventListener('DOMContentLoaded', () => {
             const hoy = new Date();
@@ -326,7 +343,7 @@
         }
 
         /**
-         * Genera el PDF conservando la maquetación exacta del documento de referencia
+         * Generación del PDF ajustada estrictamente
          */
         function guardarEImprimir(e) {
             e.preventDefault();
@@ -334,7 +351,7 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
-            // 1. Obtención de variables ingresadas por el usuario
+            // 1. Obtención de datos ingresados en los inputs
             const buque = document.getElementById('nombreBuque').value.trim();
             const area = document.getElementById('areaDestino').value.trim();
             const responsable = document.getElementById('responsable').value.trim();
@@ -345,8 +362,8 @@
             const anio = String(ahora.getFullYear()).slice(-2);
             const anioCompleto = ahora.getFullYear();
 
-            const fechaPDF = `${anio}-${mes}-${dia}`; // Formato YY-MM-DD del PDF original [cite: 7]
-            const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(4, '0')}`; // Formato 00-0863 [cite: 6]
+            const fechaPDF = `${anio}-${mes}-${dia}`;
+            const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(4, '0')}`;
             secuenciaSolicitud++;
 
             // Ítems de la tabla
@@ -360,20 +377,20 @@
                 dataItems.push([index + 1, desc, cant, unid]);
             });
 
-            // --- CABECERA ESTILO HEROLINE SHIPPING ---
-            // Bloque Izquierdo: Información de la Empresa
+            // --- CABECERA ---
+            // Información Empresa (Izquierda)
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(16);
             doc.setTextColor(11, 59, 123);
-            doc.text("Heroline Shipping", 14, 18); [cite: 2]
+            doc.text("Heroline Shipping", 14, 18);[cite: 2]
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(100, 116, 139);
-            doc.text("PA-22, CC Ciudad Del Viento, Falcón, Venezuela", 14, 23); [cite: 3]
-            doc.text("Email: info@herolineshipping.com | Website: www.herolineshipping.com", 14, 27); [cite: 4]
+            doc.text("PA-22, CC Ciudad Del Viento, Falcón, Venezuela", 14, 23);
+            doc.text("Email: info@herolineshipping.com | Website: www.herolineshipping.com", 14, 27);
 
-            // Bloque Derecho: Título, Código y Fecha [cite: 5, 6, 7]
+            // Título, Código y Fecha (Derecha)
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(14);
             doc.setTextColor(11, 59, 123);
@@ -381,57 +398,57 @@
 
             doc.setFontSize(10);
             doc.setTextColor(15, 23, 42);
-            doc.text(numSolicitudCodigo, 196, 23, { align: 'right' }); [cite: 6]
+            doc.text(numSolicitudCodigo, 196, 23, { align: 'right' });
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
             doc.setTextColor(100, 116, 139);
-            doc.text(`DATE: ${fechaPDF}`, 196, 27, { align: 'right' }); [cite: 7]
+            doc.text(`DATE: ${fechaPDF}`, 196, 27, { align: 'right' });
 
-            // Línea Divisoria Estructurada
+            // Línea Divisoria
             doc.setDrawColor(226, 232, 240);
             doc.setLineWidth(0.5);
             doc.line(14, 32, 196, 32);
 
-            // --- BLOQUE CUADRO "CUSTOMER / SERVICE INFORMATION" --- [cite: 1]
+            // --- CUADRO DE INFORMACIÓN GENERAL ---
             doc.setFillColor(248, 250, 252);
             doc.setDrawColor(203, 213, 225);
-            doc.roundedRect(14, 36, 182, 34, 1, 1, 'FD');
+            doc.roundedRect(14, 36, 182, 32, 1, 1, 'FD');
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(8.5);
             doc.setTextColor(11, 59, 123);
             doc.text("INFORMACIÓN DE LA SOLICITUD", 18, 42);
 
+            // Fila 1: Buque
+            doc.setFont('helvetica', 'bold');
             doc.setFontSize(8);
             doc.setTextColor(100, 116, 139);
-            
-            // Fila 1: Buque
-            doc.text("Vessel / Buque:", 18, 49);
+            doc.text("Vessel / Buque:", 18, 48);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(buque, 50, 49);
+            doc.text(buque, 58, 48);
 
             // Fila 2: Área
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
-            doc.text("Área / Departamento:", 18, 56);
+            doc.text("Área / Departamento:", 18, 54);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(area, 50, 56);
+            doc.text(area, 58, 54);
 
             // Fila 3: Responsable
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
-            doc.text("Responsable / Coordinador:", 18, 63);
+            doc.text("Responsable / Coordinador:", 18, 60);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(responsable, 50, 63);
+            doc.text(responsable, 58, 60);
 
-            // --- TABLA DE ÍTEMS / MATERIALES --- 
+            // --- TABLA DE ÍTEMS / MATERIALES ---
             doc.autoTable({
-                startY: 75,
-                head: [['Item', 'Product / Service', 'Qty.', 'Unity']], [cite: 9]
+                startY: 73,
+                head: [['Item', 'Product / Service', 'Qty.', 'Unity']],
                 body: dataItems,
                 theme: 'plain',
                 headStyles: {
@@ -457,8 +474,8 @@
                 margin: { left: 14, right: 14 }
             });
 
-            // --- FIRMAS Y SELLO DE CONFORMIDAD ---
-            let finalY = doc.lastAutoTable.finalY + 30;
+            // --- SECCIÓN DE FIRMAS ---
+            let finalY = doc.lastAutoTable.finalY + 28;
 
             if (finalY > 250) {
                 doc.addPage();
@@ -478,7 +495,7 @@
             doc.setTextColor(100, 116, 139);
             doc.text(responsable, 55, finalY + 9, { align: 'center' });
 
-            // Firma Operaciones / Recepción
+            // Firma Operaciones
             doc.line(125, finalY, 185, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
@@ -486,7 +503,7 @@
             doc.text("OPERACIONES / CONFORMIDAD", 155, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
-            doc.text("Heroline Shipping", 155, finalY + 9, { align: 'center' }); [cite: 2]
+            doc.text("Heroline Shipping", 155, finalY + 9, { align: 'center' });[cite: 2]
 
             // --- PIE DE PÁGINA ---
             const totalPaginas = doc.internal.getNumberOfPages();
@@ -499,7 +516,7 @@
                 doc.text(`Página ${i} de ${totalPaginas}`, 196, 287, { align: 'right' });
             }
 
-            // Descarga de archivo
+            // Descarga del PDF
             const buqueLimpio = buque.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
             const nombrePDF = `QUO_${numSolicitudCodigo} - ${buqueLimpio} - ${anioCompleto}.${mes}.${dia}.pdf`;
             doc.save(nombrePDF);
