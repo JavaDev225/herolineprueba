@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="h-full bg-slate-50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Solicitudes | Heroline Shipping Platform</title>
+    <title>Historial de Solicitudes - Heroline Shipping</title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -11,140 +13,126 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#F0F7FF',
-                            100: '#E0EFFE',
-                            200: '#BAE0FD',
-                            300: '#75BFFB',
-                            400: '#1A85CA',
-                            500: '#0B59A1',
-                            600: '#0B3B7B',
-                            700: '#0A2E61',
-                            800: '#072045',
-                            900: '#04122B',
-                        },
-                        slate: {
-                            50: '#F8FAFC',
-                            100: '#F1F5F9',
-                            200: '#E2E8F0',
-                            300: '#CBD5E1',
-                            400: '#94A3B8',
-                            500: '#64748B',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1E293B',
-                            900: '#0F172A'
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            200: '#bae0fd',
+                            300: '#75bffb',
+                            400: '#389df7',
+                            500: '#0c7de7',
+                            600: '#0b3ba1',
+                            700: '#0b2e61',
+                            800: '#0d284e',
+                            900: '#102242',
                         }
                     }
                 }
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- jsPDF & AutoTable Plugin CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .fade-in {
-            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-brand-50/40 to-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
+<body class="h-full text-slate-800 antialiased selection:bg-brand-500 selection:text-white flex flex-col">
 
-    <!-- Encabezado -->
-    <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Navbar Minimalista -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <a href="homeanalista.html" class="bg-brand-600 text-white w-9 h-9 rounded-xl flex items-center justify-center font-bold text-lg shadow-sm hover:bg-brand-700 transition">
-                    <i class="fa-solid fa-ship text-sm"></i>
-                </a>
+                <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white font-black text-lg shadow-sm shadow-brand-200">
+                    H
+                </div>
                 <div>
-                    <h1 class="font-bold tracking-tight text-base text-brand-600 leading-none">HEROLINE SHIPPING</h1>
-                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">External Agency Platform</span>
+                    <h1 class="text-sm font-extrabold text-slate-900 tracking-tight">Heroline Shipping</h1>
+                    <p class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">Sistema de Solicitudes Externas</p>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="homeanalista.html" class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition flex items-center gap-2">
-                    <i class="fa-solid fa-arrow-left text-sm"></i>
-                    <span>Volver al Panel</span>
+            <nav class="flex items-center gap-2">
+                <a href="solicitudexterna.html" class="px-3 py-1.5 rounded-lg text-xs font-bold text-slate-600 hover:text-brand-600 hover:bg-slate-100 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus text-xs"></i> Nueva Solicitud
                 </a>
-            </div>
+                <a href="historia.html" class="px-3 py-1.5 rounded-lg text-xs font-bold text-brand-600 bg-brand-50 border border-brand-100 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-clock-rotate-left text-xs"></i> Historial
+                </a>
+            </nav>
         </div>
     </header>
 
     <!-- Contenido Principal -->
-    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full relative z-10 fade-in">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
-        <!-- Tarjeta de Título & Filtro -->
-        <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md mb-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-                <div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-brand-50 border border-brand-100 flex items-center justify-center text-brand-600">
-                            <i class="fa-solid fa-rotate-left text-lg"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">Request History</h2>
-                            <p class="text-xs md:text-sm text-brand-600 font-semibold">Historial de Solicitudes Procesadas</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Buscador de Solicitudes -->
-                <div class="relative w-full md:w-72">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
-                        <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                    </span>
-                    <input 
-                        type="text" 
-                        id="inputBusqueda" 
-                        onkeyup="filtrarSolicitudes()"
-                        placeholder="Buscar buque, área, código o analista..." 
-                        class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
-                    >
-                </div>
+        <!-- Encabezado de la Sección -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 tracking-tight">Historial de Solicitudes</h2>
+                <p class="text-xs text-slate-500 mt-1">Consulte, desglose y re-imprima las solicitudes creadas en el sistema.</p>
             </div>
 
-            <!-- Resumen Estadístico Breve -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-5">
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Solicitudes</span>
-                    <span id="statTotal" class="text-lg font-black text-slate-800">0</span>
+            <!-- Filtro de Búsqueda -->
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <input 
+                    type="text" 
+                    id="inputBusqueda" 
+                    onkeyup="filtrarSolicitudes()"
+                    placeholder="Buscar por código, buque o área..." 
+                    class="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition shadow-sm"
+                >
+            </div>
+        </div>
+
+        <!-- Tarjetas de Resumen Rápido -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
+                <div>
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Total Registradas</span>
+                    <span class="text-2xl font-black text-slate-900" id="statTotal">0</span>
                 </div>
-                <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100">
-                    <span class="text-[10px] font-bold text-emerald-600 uppercase tracking-wider block">Estado</span>
-                    <span class="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-1">
-                        <i class="fa-solid fa-circle-check text-[10px]"></i> Sincronizado
-                    </span>
+                <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-base">
+                    <i class="fa-solid fa-folder-closed"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Contenedor Desplegable de Solicitudes -->
-        <div id="listaSolicitudes" class="space-y-4">
-            <!-- Las solicitudes procesadas se inyectarán dinámicamente aquí -->
+        <!-- Lista Desplegable (Accordion Layout) -->
+        <div id="listaSolicitudes" class="space-y-3">
+            <!-- Se llena dinámicamente mediante JavaScript -->
         </div>
 
     </main>
 
-    <!-- Pie de página -->
-    <footer class="w-full bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 text-center text-[11px] text-slate-400 relative z-10">
-        Plataforma Corporativa de Agenciamiento Marítimo · Todos los derechos reservados
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+            &copy; Heroline Shipping - Todos los derechos reservados.
+        </div>
     </footer>
 
+    <!-- Script Principal -->
     <script>
         let todasLasSolicitudes = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             cargarHistorial();
+        });
+
+        // Detectar y reflejar automáticamente solicitudes guardadas desde otras pestañas
+        window.addEventListener('storage', (event) => {
+            if (event.key === 'heroline_solicitudes') {
+                cargarHistorial();
+            }
         });
 
         // Cargar solicitudes guardadas desde localStorage
