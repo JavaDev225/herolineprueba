@@ -149,7 +149,7 @@
 
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="responsable">
-                            Persona Responsable (Coordinador) <span class="text-red-500">*</span>
+                            Persona Responsable (Analista) <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -199,7 +199,7 @@
                             </tr>
                         </thead>
                         <tbody id="contenedorItems" class="divide-y divide-slate-100">
-                            </tbody>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -231,7 +231,7 @@
 
     <script>
         let contadorItems = 0;
-        let secuenciaSolicitud = 864; // Número secuencial simulado para el sistema (Ej: 00-0864)
+        let secuenciaSolicitud = 1; // Inicia la secuencia dinámica en 1 (Ej: 00-001)
 
         // Establecer Fecha Actual en la vista
         document.addEventListener('DOMContentLoaded', () => {
@@ -356,7 +356,10 @@
             const anioCompleto = ahora.getFullYear();
 
             const fechaPDF = `${anioCorto}-${mes}-${dia}`;
-            const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(4, '0')}`;
+            
+            // AJUSTE 1: Formato secuencial de 3 dígitos (Ej: 00-001, 00-002, 00-003)
+            const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(3, '0')}`;
+            const numSecuencialAnterior = secuenciaSolicitud; // Para conservar en el nombre del archivo
             secuenciaSolicitud++;
 
             // Extraer datos de los ítems
@@ -432,7 +435,7 @@
             // Nombre del Responsable
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
-            doc.text("Responsable / Coordinador:", 18, 59);
+            doc.text("Responsable / Analista:", 18, 59);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
             doc.text(responsable, 60, 59);
@@ -477,25 +480,25 @@
             doc.setDrawColor(148, 163, 184);
             doc.setLineWidth(0.4);
             
-            // Firma Responsable
+            // AJUSTE 2: Firma Analista Responsable
             doc.line(25, finalY, 85, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text("RESPONSABLE SOLICITANTE", 55, finalY + 5, { align: 'center' });
+            doc.text("ANALISTA RESPONSABLE", 55, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
             doc.text(responsable, 55, finalY + 9, { align: 'center' });
 
-            // Firma Operaciones
+            // AJUSTE 2: Firma Coordinador (Luis Chirino)
             doc.line(125, finalY, 185, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text("OPERACIONES / CONFORMIDAD", 155, finalY + 5, { align: 'center' });
+            doc.text("COORDINADOR", 155, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
-            doc.text("Heroline Shipping", 155, finalY + 9, { align: 'center' });
+            doc.text("Luis Chirino", 155, finalY + 9, { align: 'center' });
 
             // 6. PIE DE PÁGINA
             const totalPaginas = doc.internal.getNumberOfPages();
@@ -508,9 +511,9 @@
                 doc.text(`Página ${i} de ${totalPaginas}`, 196, 287, { align: 'right' });
             }
 
-            // Descarga del documento
-            const buqueLimpio = buque.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
-            const nombrePDF = `REQ_${numSolicitudCodigo} - ${buqueLimpio} - ${anioCompleto}.${mes}.${dia}.pdf`;
+            // AJUSTE 3: Formato del nombre del PDF descargado -> (00-001) - (Nombre del Buque) - (YYYY.MM.DD).pdf
+            const codigoSolicitudArchivo = `00-${String(numSecuencialAnterior).padStart(3, '0')}`;
+            const nombrePDF = `${codigoSolicitudArchivo} - ${buque} - ${anioCompleto}.${mes}.${dia}.pdf`;
             doc.save(nombrePDF);
         }
 
