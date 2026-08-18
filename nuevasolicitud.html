@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Solicitud Externa | Heroline Shipping Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#F0F7FF',
+                            100: '#E0EFFE',
+                            200: '#BAE0FD',
+                            300: '#75BFFB',
+                            400: '#1A85CA',
+                            500: '#0B59A1',
+                            600: '#0B3B7B',
+                            700: '#0A2E61',
+                            800: '#072045',
+                            900: '#04122B',
+                        },
+                        slate: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            .print-card { border: none !important; shadow: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 via-brand-50/40 to-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
+
+    <!-- Header Corporativo -->
+    <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <div class="flex items-center gap-3">
+                <a href="dashboard.html" class="bg-brand-600 text-white w-9 h-9 rounded-xl flex items-center justify-center font-bold text-lg shadow-sm hover:bg-brand-700 transition">
+                    <i class="fa-solid fa-ship text-sm"></i>
+                </a>
+                <div>
+                    <h1 class="font-bold tracking-tight text-base text-brand-600 leading-none">HEROLINE SHIPPING</h1>
+                    <span class="text-[10px] text-slate-400 font-semibold tracking-wider uppercase">External Agency Platform</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button 
+                    onclick="volverAlPanel()" 
+                    class="px-3.5 py-2 rounded-xl text-xs font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition flex items-center gap-2 cursor-pointer"
+                >
+                    <i class="fa-solid fa-arrow-left text-sm"></i>
+                    <span>Volver al Panel</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full relative z-10 fade-in">
+        
+        <form id="formSolicitud" onsubmit="guardarEImprimir(event)" class="space-y-6">
+            
+            <!-- Encabezado de Formulario -->
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
+                <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2.5">
+                            <i class="fa-solid fa-file-circle-plus text-brand-600"></i>
+                            Nueva Solicitud de Servicio Externo
+                        </h2>
+                        <p class="text-xs md:text-sm text-slate-500 font-medium mt-1">
+                            Complete los datos de la embarcación y detalle el listado de materiales requeridos.
+                        </p>
+                    </div>
+                    <div class="bg-brand-50 border border-brand-100 px-3.5 py-2 rounded-xl text-right self-start md:self-auto">
+                        <span class="block text-[10px] text-brand-500 font-bold uppercase tracking-wider">Fecha de Emisión</span>
+                        <span id="fechaActual" class="text-xs font-extrabold text-brand-700">--/--/----</span>
+                    </div>
+                </div>
+
+                <!-- Datos Generales -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <!-- Nombre del Buque -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="nombreBuque">
+                            Nombre del Buque <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-anchor text-xs"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                id="nombreBuque" 
+                                required 
+                                placeholder="Ej. M/T Caribbean Hero"
+                                class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Área Destino -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="areaDestino">
+                            Área Dirigida <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-building-user text-xs"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                id="areaDestino" 
+                                required 
+                                placeholder="Ej. Operaciones / Mantenimiento"
+                                class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Persona Responsable -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5" for="responsable">
+                            Persona Responsable <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-user-tie text-xs"></i>
+                            </span>
+                            <input 
+                                type="text" 
+                                id="responsable" 
+                                required 
+                                placeholder="Ej. Ing. Carlos Mendoza"
+                                class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabla de Ítems / Materiales -->
+            <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
+                <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-boxes-stacked text-brand-600"></i>
+                            Detalle de Materiales e Insumos
+                        </h3>
+                        <p class="text-xs text-slate-500 font-medium">Agregue los ítems requeridos para la atención de la solicitud.</p>
+                    </div>
+
+                    <button 
+                        type="button" 
+                        onclick="agregarItem()" 
+                        class="no-print px-3.5 py-2 rounded-xl text-xs font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 border border-brand-200 transition flex items-center gap-2 active:scale-95"
+                    >
+                        <i class="fa-solid fa-plus text-xs"></i>
+                        <span>Añadir Ítem</span>
+                    </button>
+                </div>
+
+                <!-- Tabla Responsive -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                                <th class="py-3 px-3 w-16 text-center">Item N°</th>
+                                <th class="py-3 px-3">Descripción del Material</th>
+                                <th class="py-3 px-3 w-32">Cantidad</th>
+                                <th class="py-3 px-3 w-36">Unidad</th>
+                                <th class="py-3 px-3 w-16 text-center no-print">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contenedorItems" class="divide-y divide-slate-100">
+                            <!-- Filas generadas dinámicamente vía Javascript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Botón Secundario de Agregar al final de la lista -->
+                <div class="mt-4 pt-3 border-t border-slate-100 flex justify-start no-print">
+                    <button 
+                        type="button" 
+                        onclick="agregarItem()" 
+                        class="text-xs font-bold text-brand-600 hover:text-brand-800 flex items-center gap-2 px-2 py-1 transition"
+                    >
+                        <i class="fa-solid fa-circle-plus"></i>
+                        <span>Añadir otro renglón</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Footer de Acciones del Formulario -->
+            <div class="flex items-center justify-end gap-3 pt-2 no-print">
+                <button 
+                    type="button" 
+                    onclick="volverAlPanel()" 
+                    class="px-5 py-2.5 rounded-xl text-xs font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200 transition"
+                >
+                    Cancelar
+                </button>
+                <button 
+                    type="submit" 
+                    class="px-6 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-700 shadow-md hover:shadow-lg active:scale-95 transition flex items-center gap-2"
+                >
+                    <i class="fa-solid fa-print"></i>
+                    <span>Guardar e Imprimir Solicitud</span>
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- Footer General -->
+    <footer class="w-full bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 text-center text-[11px] text-slate-400 relative z-10 no-print">
+        Plataforma Corporativa de Agenciamiento Marítimo · Todos los derechos reservados
+    </footer>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        let contadorItems = 0;
+
+        // Establecer Fecha Actual
+        document.addEventListener('DOMContentLoaded', () => {
+            const hoy = new Date();
+            const dia = String(hoy.getDate()).padStart(2, '0');
+            const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+            const anio = hoy.getFullYear();
+            document.getElementById('fechaActual').textContent = `${dia}/${mes}/${anio}`;
+
+            // Agregar al menos 1 renglón inicial
+            agregarItem();
+        });
+
+        /**
+         * Añade una nueva fila de ítem a la tabla con ID auto-incremental
+         */
+        function agregarItem() {
+            contadorItems++;
+            const tbody = document.getElementById('contenedorItems');
+
+            const tr = document.createElement('tr');
+            tr.id = `item-row-${contadorItems}`;
+            tr.className = 'group transition-colors hover:bg-slate-50/80';
+
+            tr.innerHTML = `
+                <td class="py-2.5 px-3 text-center">
+                    <span class="item-id-badge text-xs font-extrabold text-brand-600 bg-brand-50 px-2.5 py-1 rounded-lg border border-brand-100 inline-block w-8">
+                        1
+                    </span>
+                </td>
+                <td class="py-2.5 px-3">
+                    <input 
+                        type="text" 
+                        required 
+                        placeholder="Nombre / Descripción detallada del material"
+                        class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium"
+                    >
+                </td>
+                <td class="py-2.5 px-3">
+                    <input 
+                        type="number" 
+                        min="1" 
+                        step="any" 
+                        required 
+                        placeholder="0.00"
+                        class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium text-right"
+                    >
+                </td>
+                <td class="py-2.5 px-3">
+                    <select required class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium bg-white">
+                        <option value="UNID">UNID (Unidad)</option>
+                        <option value="PKT">PKT (Paquete)</option>
+                        <option value="KG">KG (Kilogramos)</option>
+                        <option value="MTS">MTS (Metros)</option>
+                        <option value="GAL">GAL (Galones)</option>
+                        <option value="TAMB">TAMB (Tambor)</option>
+                        <option value="JUEGO">JUEGO (Set/Kit)</option>
+                    </select>
+                </td>
+                <td class="py-2.5 px-3 text-center no-print">
+                    <button 
+                        type="button" 
+                        onclick="eliminarItem(${contadorItems})" 
+                        title="Eliminar Ítem"
+                        class="text-slate-400 hover:text-red-600 w-7 h-7 rounded-lg hover:bg-red-50 flex items-center justify-center transition mx-auto"
+                    >
+                        <i class="fa-solid fa-trash-can text-xs"></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+            recalcularIDs();
+        }
+
+        /**
+         * Elimina la fila especificada por su número
+         */
+        function eliminarItem(id) {
+            const tbody = document.getElementById('contenedorItems');
+            if (tbody.children.length <= 1) {
+                alert("La solicitud debe contener al menos un material.");
+                return;
+            }
+
+            const fila = document.getElementById(`item-row-${id}`);
+            if (fila) {
+                fila.remove();
+                recalcularIDs();
+            }
+        }
+
+        /**
+         * Re-calcula la autosuma secuencial de IDs para mantener el orden (1, 2, 3...)
+         */
+        function recalcularIDs() {
+            const badges = document.querySelectorAll('.item-id-badge');
+            badges.forEach((badge, index) => {
+                badge.textContent = index + 1;
+            });
+        }
+
+        /**
+         * Acción de guardar e imprimir la solicitud
+         */
+        function guardarEImprimir(e) {
+            e.preventDefault();
+            
+            // Simular guardado
+            console.log("Guardando Solicitud Externa...");
+
+            // Invocar la impresión nativa del navegador
+            window.print();
+        }
+
+        function volverAlPanel() {
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
+</html>
