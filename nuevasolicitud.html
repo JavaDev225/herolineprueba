@@ -379,24 +379,19 @@
 
             // Persistir solicitud en historial local
             // Persistir solicitud para la vista historial.html
-const nuevaSolicitud = {
-    codigo: numSolicitudCodigo,
-    buque: buque,
-    area: area,
-    responsable: responsable,
-    fecha: fechaLegible,
-    items: listaItemsGuardado,
-    estado: 'Procesado'
-};
-
-// 1. Guardar en la clave leída por historial.html
-const historialPrevio = localStorage.getItem('heroline_solicitudes');
-let listaHistorial = historialPrevio ? JSON.parse(historialPrevio) : [];
-listaHistorial.unshift(nuevaSolicitud);
-localStorage.setItem('heroline_solicitudes', JSON.stringify(listaHistorial));
-
-// 2. Mantener respaldo en la clave interna
-localStorage.setItem('heroline_historial_solicitudes', JSON.stringify(listaHistorial));
+            // Persistir solicitud en historial local
+                const historialSolicitudes = JSON.parse(localStorage.getItem('heroline_historial_solicitudes') || '[]');
+                const nuevaSolicitud = {
+                codigo: numSolicitudCodigo,
+                buque: buque,
+                area: area,
+                responsable: responsable,
+                fecha: fechaLegible,
+                items: listaItemsGuardado,
+                    estado: 'Procesado'
+                };
+                historialSolicitudes.unshift(nuevaSolicitud);
+                localStorage.setItem('heroline_historial_solicitudes', JSON.stringify(historialSolicitudes));
             };
             historialSolicitudes.unshift(nuevaSolicitud);
             localStorage.setItem('heroline_historial_solicitudes', JSON.stringify(historialSolicitudes));
