@@ -157,10 +157,10 @@
                         </div>
                     </div>
 
-                    <!-- Persona Responsable -->
+                    <!-- Persona Responsable / Coordinador -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="responsable">
-                            Persona Responsable <span class="text-red-500">*</span>
+                            Persona Responsable (Coordinador) <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -212,7 +212,7 @@
                             </tr>
                         </thead>
                         <tbody id="contenedorItems" class="divide-y divide-slate-100">
-                            <!-- Filas generadas dinámicamente vía Javascript -->
+                            <!-- Filas generadas dinámicamente vía JavaScript -->
                         </tbody>
                     </table>
                 </div>
@@ -248,8 +248,9 @@
     <!-- Lógica JavaScript -->
     <script>
         let contadorItems = 0;
+        let secuenciaSolicitud = 864; // Número secuencial simulado para el sistema (Ej: 00-0864)
 
-        // Establecer Fecha Actual
+        // Establecer Fecha Actual en la vista
         document.addEventListener('DOMContentLoaded', () => {
             const hoy = new Date();
             const dia = String(hoy.getDate()).padStart(2, '0');
@@ -351,7 +352,7 @@
         }
 
         /**
-         * Función para generar un icono de barco en Canvas para insertarlo dinámicamente al PDF
+         * Genera un logo base64 dinámico con el ícono del barco
          */
         function obtenerIconoBarcoBase64() {
             const canvas = document.createElement('canvas');
@@ -359,16 +360,12 @@
             canvas.height = 100;
             const ctx = canvas.getContext('2d');
 
-            // Fondo circular azul
             ctx.fillStyle = '#0B3B7B';
             ctx.beginPath();
             ctx.arc(50, 50, 48, 0, Math.PI * 2);
             ctx.fill();
 
-            // Silueta vectorizada de barco en blanco
             ctx.fillStyle = '#FFFFFF';
-            
-            // Casco del barco
             ctx.beginPath();
             ctx.moveTo(18, 58);
             ctx.lineTo(82, 58);
@@ -377,16 +374,10 @@
             ctx.closePath();
             ctx.fill();
 
-            // Cabina principal
             ctx.fillRect(32, 42, 36, 16);
-            
-            // Nivel superior / Puente
             ctx.fillRect(40, 32, 20, 10);
-
-            // Chimenea
             ctx.fillRect(52, 22, 6, 10);
 
-            // Ocupantes / Ventanillas del casco
             ctx.fillStyle = '#0B3B7B';
             ctx.beginPath();
             ctx.arc(36, 66, 3, 0, Math.PI * 2);
@@ -398,7 +389,7 @@
         }
 
         /**
-         * Acción de guardar e imprimir la solicitud generando el PDF
+         * Acción de guardar e imprimir la solicitud generando el PDF con los requerimientos exactos
          */
         function guardarEImprimir(e) {
             e.preventDefault();
@@ -406,11 +397,25 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
-            // Captura de datos del formulario
+            // 1. OBTENCIÓN DE DATOS Y FECHA/HORA EXACTA
             const buque = document.getElementById('nombreBuque').value.trim();
             const area = document.getElementById('areaDestino').value.trim();
             const responsable = document.getElementById('responsable').value.trim();
-            const fecha = document.getElementById('fechaActual').textContent;
+
+            const ahora = new Date();
+            const dia = String(ahora.getDate()).padStart(2, '0');
+            const mes = String(ahora.getMonth() + 1).padStart(2, '0');
+            const anio = ahora.getFullYear();
+            const horas = String(ahora.getHours()).padStart(2, '0');
+            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+
+            const fechaEmisionTexto = `${dia}/${mes}/${anio}`;
+            const horaEmisionTexto = `${horas}:${minutos}`;
+            const fechaFormatoNombre = `${anio}.${mes}.${dia}`;
+
+            // Número correlativo de solicitud según el sistema
+            const numSolicitudCodigo = `REQ-${String(secuenciaSolicitud).padStart(6, '0')}`;
+            secuenciaSolicitud++; // Incrementar para la siguiente solicitud en sesión
 
             // Extraer ítems de la tabla
             const filasTabla = document.querySelectorAll('#contenedorItems tr');
@@ -423,15 +428,13 @@
                 dataItems.push([index + 1, desc, cant, unid]);
             });
 
-            // 1. ENCABEZADO CORPORATIVO
-            // Agregar ícono del barco
+            // 2. ENCABEZADO DEL DOCUMENTO PDF
             const logoBase64 = obtenerIconoBarcoBase64();
             doc.addImage(logoBase64, 'PNG', 14, 12, 16, 16);
 
-            // Nombre de la Empresa y Subtítulo
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(16);
-            doc.setTextColor(11, 59, 123); // #0B3B7B
+            doc.setTextColor(11, 59, 123);
             doc.text("HEROLINE SHIPPING", 34, 19);
 
             doc.setFont('helvetica', 'bold');
@@ -439,71 +442,71 @@
             doc.setTextColor(100, 116, 139);
             doc.text("AGENCIAMIENTO MARÍTIMO & SERVICIOS OPERATIVOS", 34, 24);
 
-            // Número / Referencia y Fecha (Esquina superior derecha)
+            // N° de Solicitud, Fecha y Hora de Emisión (Derecha)
             doc.setFontSize(9);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(11, 59, 123);
-            doc.text(`SOLICITUD N°: REQ-${Math.floor(1000 + Math.random() * 9000)}`, 196, 18, { align: 'right' });
+            doc.text(`SOLICITUD N°: ${numSolicitudCodigo}`, 196, 17, { align: 'right' });
             
             doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
             doc.setTextColor(71, 85, 105);
-            doc.text(`Fecha: ${fecha}`, 196, 24, { align: 'right' });
+            doc.text(`Fecha Emisión: ${fechaEmisionTexto}`, 196, 22, { align: 'right' });
+            doc.text(`Hora Emisión: ${horaEmisionTexto}`, 196, 26, { align: 'right' });
 
-            // Línea divisoria superior decorativa
+            // Línea divisoria superior
             doc.setDrawColor(11, 59, 123);
             doc.setLineWidth(0.8);
             doc.line(14, 32, 196, 32);
 
-            // 2. TÍTULO DEL DOCUMENTO
+            // 3. TÍTULO PRINCIPAL
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.setTextColor(15, 23, 42);
             doc.text("SOLICITUD DE SERVICIO EXTERNO Y MATERIALES", 105, 41, { align: 'center' });
 
-            // 3. TARJETA DE DATOS GENERALES
-            doc.setFillColor(248, 250, 252); // Fondo Gris/Azulado Claro
-            doc.setDrawColor(226, 232, 240); // Borde
-            doc.roundedRect(14, 46, 182, 28, 2, 2, 'FD');
+            // 4. METADATOS DEL COORDINADOR Y SERVICIO
+            doc.setFillColor(248, 250, 252);
+            doc.setDrawColor(226, 232, 240);
+            doc.roundedRect(14, 46, 182, 30, 2, 2, 'FD');
 
-            // Columna 1: Buque
+            // Fila 1: Buque, Área y Coordinador
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
             doc.text("BUQUE / EMBARCACIÓN:", 18, 53);
-            doc.setFontSize(10);
+            doc.setFontSize(9.5);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(11, 59, 123);
-            doc.text(buque.toUpperCase(), 18, 60);
+            doc.text(buque.toUpperCase(), 18, 59);
 
-            // Columna 2: Área Dirigida
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
             doc.text("ÁREA DIRIGIDA:", 80, 53);
-            doc.setFontSize(10);
+            doc.setFontSize(9.5);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(area, 80, 60);
+            doc.text(area, 80, 59);
 
-            // Columna 3: Responsable
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
             doc.text("COORDINADOR / RESPONSABLE:", 140, 53);
-            doc.setFontSize(10);
+            doc.setFontSize(9.5);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(responsable, 140, 60);
+            doc.text(responsable, 140, 59);
 
-            // Estado de la Solicitud (Banner inferior interno de la tarjeta)
+            // Fila 2: Trazabilidad de Emisión
             doc.setFontSize(8);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(71, 85, 105);
-            doc.text(`Estatus: REGISTRADO | Emisión realizada por Coordinación de Operaciones.`, 18, 69);
+            doc.text(`Registro Emitido: ${fechaEmisionTexto} a las ${horaEmisionTexto} hrs | Estatus: PROCESADO POR COORDINACIÓN`, 18, 70);
 
-            // 4. TABLA DE MATERIALES E INSUMOS
+            // 5. TABLA DE MATERIALES E INSUMOS
             doc.autoTable({
-                startY: 80,
+                startY: 82,
                 head: [['N°', 'DESCRIPCIÓN DEL MATERIAL / INSUMO', 'CANTIDAD', 'UNIDAD']],
                 body: dataItems,
                 theme: 'grid',
@@ -533,16 +536,14 @@
                 margin: { left: 14, right: 14 }
             });
 
-            // 5. BLOQUE DE FIRMAS Y VALIDACIÓN
+            // 6. FIRMAS Y CONFORMIDAD
             let finalY = doc.lastAutoTable.finalY + 35;
 
-            // Si la tabla es muy larga y no caben las firmas, agregar nueva página
             if (finalY > 260) {
                 doc.addPage();
                 finalY = 40;
             }
 
-            // Línea de Firma 1
             doc.setDrawColor(148, 163, 184);
             doc.setLineWidth(0.5);
             doc.line(30, finalY, 85, finalY);
@@ -553,9 +554,8 @@
             doc.text("COORDINACIÓN DE OPERACIONES", 57.5, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
-            doc.text("Heroline Shipping", 57.5, finalY + 9, { align: 'center' });
+            doc.text(responsable, 57.5, finalY + 9, { align: 'center' });
 
-            // Línea de Firma 2
             doc.line(125, finalY, 180, finalY);
 
             doc.setFontSize(8);
@@ -566,20 +566,23 @@
             doc.setTextColor(100, 116, 139);
             doc.text("Firma y Sello del Recibidor", 152.5, finalY + 9, { align: 'center' });
 
-            // 6. PIE DE PÁGINA FIXO
+            // 7. PIE DE PÁGINA FIXO CON HORA DE IMPRESIÓN
             const totalPaginas = doc.internal.getNumberOfPages();
             for (let i = 1; i <= totalPaginas; i++) {
                 doc.setPage(i);
                 doc.setFontSize(7.5);
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(148, 163, 184);
-                doc.text("Documento generado automáticamente por Heroline Shipping External Platform.", 14, 287);
+                doc.text(`Documento generado por la Plataforma de Heroline Shipping el ${fechaEmisionTexto} a las ${horaEmisionTexto}`, 14, 287);
                 doc.text(`Página ${i} de ${totalPaginas}`, 196, 287, { align: 'right' });
             }
 
-            // Descargar el archivo PDF
-            const nombreLimpioBuque = buque.replace(/[^a-zA-Z0-9]/g, "_");
-            doc.save(`Solicitud_Externa_${nombreLimpioBuque}_${fecha.replace(/\//g, "-")}.pdf`);
+            // 8. DESCARGA DEL ARCHIVO CON EL FORMATO SOLICITADO
+            // Estructura: (N° Solicitud) - (Nombre del Buque) - (Fecha Emitida).pdf
+            const nombreBuqueLimpio = buque.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
+            const nombreArchivoPDF = `${numSolicitudCodigo} - ${nombreBuqueLimpio} - ${fechaFormatoNombre}.pdf`;
+
+            doc.save(nombreArchivoPDF);
         }
 
         function volverAlPanel() {
