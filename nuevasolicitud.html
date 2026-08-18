@@ -336,7 +336,7 @@
         }
 
         /**
-         * Generación del PDF ajustada al formato de Heroline Shipping
+         * Generación del PDF ajustada al formato de Heroline Shipping con tonos azules oscuros
          */
         function guardarEImprimir(e) {
             e.preventDefault();
@@ -357,9 +357,9 @@
 
             const fechaPDF = `${anioCorto}-${mes}-${dia}`;
             
-            // AJUSTE 1: Formato secuencial de 3 dígitos (Ej: 00-001, 00-002, 00-003)
+            // Formato secuencial de 3 dígitos (Ej: 00-001, 00-002, 00-003)
             const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(3, '0')}`;
-            const numSecuencialAnterior = secuenciaSolicitud; // Para conservar en el nombre del archivo
+            const numSecuencialAnterior = secuenciaSolicitud;
             secuenciaSolicitud++;
 
             // Extraer datos de los ítems
@@ -373,22 +373,22 @@
                 dataItems.push([index + 1, desc, cant, unid]);
             });
 
-            // 2. CABECERA ESTILO HEROLINE SHIPPING
+            // 2. CABECERA ESTILO HEROLINE SHIPPING (Azul marino / oscuro)
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(16);
-            doc.setTextColor(11, 59, 123);
+            doc.setTextColor(11, 46, 97); // #0A2E61 Azul oscuro
             doc.text("Heroline Shipping", 14, 18);
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text("PA-22, CC Ciudad Del Viento, Falcón, Venezuela", 14, 23);
             doc.text("Email: info@herolineshipping.com | Website: www.herolineshipping.com", 14, 27);
 
             // Título de Documento y Código (Derecha)
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(14);
-            doc.setTextColor(11, 59, 123);
+            doc.setTextColor(11, 46, 97); // #0A2E61 Azul oscuro
             doc.text("SOLICITUD EXTERNA", 196, 18, { align: 'right' });
 
             doc.setFontSize(10);
@@ -397,28 +397,28 @@
 
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text(`DATE: ${fechaPDF}`, 196, 27, { align: 'right' });
 
             // Línea Divisoria Superior
-            doc.setDrawColor(226, 232, 240);
-            doc.setLineWidth(0.5);
+            doc.setDrawColor(186, 224, 253); // #BAE0FD Azul celeste estructurado
+            doc.setLineWidth(0.6);
             doc.line(14, 31, 196, 31);
 
-            // 3. CUADRO DE INFORMACIÓN GENERAL
-            doc.setFillColor(248, 250, 252);
-            doc.setDrawColor(203, 213, 225);
+            // 3. CUADRO DE INFORMACIÓN GENERAL (Fondo azul muy suave con borde azul definido)
+            doc.setFillColor(240, 247, 255); // #F0F7FF Fondo azul celeste claro
+            doc.setDrawColor(117, 191, 251); // #75BFFB Borde celeste visible
             doc.roundedRect(14, 35, 182, 30, 1, 1, 'FD');
 
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(8.5);
-            doc.setTextColor(11, 59, 123);
+            doc.setTextColor(11, 59, 161); // Azul rey más oscuro y contrastado
             doc.text("INFORMACIÓN DE LA SOLICITUD", 18, 41);
 
             // Nombre del Buque
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(8);
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text("Vessel / Buque:", 18, 47);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
@@ -426,7 +426,7 @@
 
             // Nombre del Área
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text("Área / Departamento:", 18, 53);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
@@ -434,21 +434,21 @@
 
             // Nombre del Responsable
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text("Responsable / Analista:", 18, 59);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
             doc.text(responsable, 60, 59);
 
-            // 4. TABLA DE ÍTEMS
+            // 4. TABLA DE ÍTEMS (Encabezado azul rey con letras blancas)
             doc.autoTable({
                 startY: 71,
                 head: [['Item', 'Product / Service', 'Qty.', 'Unity']],
                 body: dataItems,
                 theme: 'plain',
                 headStyles: {
-                    fillColor: [241, 245, 249],
-                    textColor: [11, 59, 123],
+                    fillColor: [11, 59, 161], // Azul oscuro nítido para impresión (#0B59A1)
+                    textColor: [255, 255, 255], // Texto blanco
                     fontStyle: 'bold',
                     fontSize: 8.5,
                     halign: 'left'
@@ -463,8 +463,8 @@
                     fontSize: 8,
                     cellPadding: 3,
                     textColor: [30, 41, 59],
-                    lineColor: [226, 232, 240],
-                    lineWidth: 0.2
+                    lineColor: [186, 224, 253], // Borde azul claro entintado
+                    lineWidth: 0.3
                 },
                 margin: { left: 14, right: 14 }
             });
@@ -477,27 +477,27 @@
                 finalY = 40;
             }
 
-            doc.setDrawColor(148, 163, 184);
+            doc.setDrawColor(100, 116, 139);
             doc.setLineWidth(0.4);
             
-            // AJUSTE 2: Firma Analista Responsable
+            // Firma Analista Responsable
             doc.line(25, finalY, 85, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
             doc.text("ANALISTA RESPONSABLE", 55, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text(responsable, 55, finalY + 9, { align: 'center' });
 
-            // AJUSTE 2: Firma Coordinador (Luis Chirino)
+            // Firma Coordinador (Luis Chirino)
             doc.line(125, finalY, 185, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
             doc.text("COORDINADOR", 155, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100, 116, 139);
+            doc.setTextColor(71, 85, 105);
             doc.text("Luis Chirino", 155, finalY + 9, { align: 'center' });
 
             // 6. PIE DE PÁGINA
@@ -506,12 +506,12 @@
                 doc.setPage(i);
                 doc.setFontSize(7.5);
                 doc.setFont('helvetica', 'normal');
-                doc.setTextColor(148, 163, 184);
+                doc.setTextColor(100, 116, 139);
                 doc.text(`REQ_${numSolicitudCodigo} - ${buque.toUpperCase()} - ${anioCompleto}.${mes}.${dia}`, 14, 287);
                 doc.text(`Página ${i} de ${totalPaginas}`, 196, 287, { align: 'right' });
             }
 
-            // AJUSTE 3: Formato del nombre del PDF descargado -> (00-001) - (Nombre del Buque) - (YYYY.MM.DD).pdf
+            // Formato del nombre del PDF descargado
             const codigoSolicitudArchivo = `00-${String(numSecuencialAnterior).padStart(3, '0')}`;
             const nombrePDF = `${codigoSolicitudArchivo} - ${buque} - ${anioCompleto}.${mes}.${dia}.pdf`;
             doc.save(nombrePDF);
