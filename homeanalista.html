@@ -240,7 +240,13 @@
          * Navegación entre módulos
          */
         function navegarA(modulo) {
-            console.log("Navegando a módulo:", modulo);
+            if (modulo === 'crear') {
+                window.location.href = 'nuevasolicitud.html';
+            } else if (modulo === 'historial') {
+                window.location.href = 'historial.html';
+            } else if (modulo === 'completas') {
+                window.location.href = 'completas.html';
+            }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
