@@ -41,7 +41,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -65,7 +65,7 @@
 
     <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            
+
             <div class="flex items-center gap-3">
                 <a href="homeanalista.html" class="bg-brand-600 text-white w-9 h-9 rounded-xl flex items-center justify-center font-bold text-lg shadow-sm hover:bg-brand-700 transition">
                     <i class="fa-solid fa-ship text-sm"></i>
@@ -90,9 +90,9 @@
     </header>
 
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full relative z-10 fade-in">
-        
+
         <form id="formSolicitud" onsubmit="guardarEImprimir(event)" class="space-y-6">
-            
+
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
                 <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
@@ -231,7 +231,7 @@
 
     <script>
         let contadorItems = 0;
-        let secuenciaSolicitud = 1; // Inicia la secuencia dinámica en 1 (Ej: 00-001)
+        let secuenciaSolicitud = parseInt(localStorage.getItem('heroline_secuencia') || '1', 10);
 
         // Establecer Fecha Actual en la vista
         document.addEventListener('DOMContentLoaded', () => {
@@ -356,22 +356,40 @@
             const anioCompleto = ahora.getFullYear();
 
             const fechaPDF = `${anioCorto}-${mes}-${dia}`;
-            
+            const fechaLegible = `${dia}/${mes}/${anioCompleto}`;
+
             // Formato secuencial de 3 dígitos (Ej: 00-001, 00-002, 00-003)
             const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(3, '0')}`;
             const numSecuencialAnterior = secuenciaSolicitud;
             secuenciaSolicitud++;
+            localStorage.setItem('heroline_secuencia', secuenciaSolicitud);
 
             // Extraer datos de los ítems
             const filasTabla = document.querySelectorAll('#contenedorItems tr');
             const dataItems = [];
+            const listaItemsGuardado = [];
 
             filasTabla.forEach((fila, index) => {
                 const desc = fila.querySelector('.item-desc')?.value || '';
                 const cant = fila.querySelector('.item-cant')?.value || '1';
                 const unid = fila.querySelector('.item-unid')?.value || 'PCS';
                 dataItems.push([index + 1, desc, cant, unid]);
+                listaItemsGuardado.push({ id: index + 1, descripcion: desc, cantidad: cant, unidad: unid });
             });
+
+            // Persistir solicitud en historial local
+            const historialSolicitudes = JSON.parse(localStorage.getItem('heroline_historial_solicitudes') || '[]');
+            const nuevaSolicitud = {
+                codigo: numSolicitudCodigo,
+                buque: buque,
+                area: area,
+                responsable: responsable,
+                fecha: fechaLegible,
+                items: listaItemsGuardado,
+                estado: 'Procesado'
+            };
+            historialSolicitudes.unshift(nuevaSolicitud);
+            localStorage.setItem('heroline_historial_solicitudes', JSON.stringify(historialSolicitudes));
 
             // 2. CABECERA ESTILO HEROLINE SHIPPING (Azul marino / oscuro)
             doc.setFont('helvetica', 'bold');
@@ -479,7 +497,7 @@
 
             doc.setDrawColor(100, 116, 139);
             doc.setLineWidth(0.4);
-            
+
             // Firma Analista Responsable
             doc.line(25, finalY, 85, finalY);
             doc.setFontSize(8);
@@ -515,6 +533,12 @@
             const codigoSolicitudArchivo = `00-${String(numSecuencialAnterior).padStart(3, '0')}`;
             const nombrePDF = `${codigoSolicitudArchivo} - ${buque} - ${anioCompleto}.${mes}.${dia}.pdf`;
             doc.save(nombrePDF);
+
+            // Redirección con mensaje dinámico
+            setTimeout(() => {
+                const mensaje = encodeURIComponent(`La solicitud ${numSolicitudCodigo} para el buque "${buque}" ha sido registrada e impresa con éxito.`);
+                window.location.href = `homeanalista.html?msg=${mensaje}&type=success`;
+            }, 600);
         }
 
         function volverAlPanel() {
