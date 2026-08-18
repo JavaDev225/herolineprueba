@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Solicitud Externa | Heroline Shipping Platform</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -40,12 +39,9 @@
             }
         }
     </script>
-    <!-- FontAwesome 6.5.1 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Librerías para Generación de PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 
@@ -67,7 +63,6 @@
 </head>
 <body class="bg-gradient-to-br from-slate-50 via-brand-50/40 to-slate-100 text-slate-800 antialiased min-h-screen flex flex-col justify-between selection:bg-brand-600 selection:text-white">
 
-    <!-- Header Corporativo -->
     <header class="w-full bg-white/90 backdrop-blur-md border-b border-slate-200/80 py-3.5 px-6 shadow-sm sticky top-0 z-50 no-print">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             
@@ -94,12 +89,10 @@
         </div>
     </header>
 
-    <!-- Main Content Container -->
     <main class="max-w-5xl mx-auto px-4 py-8 flex-grow w-full relative z-10 fade-in">
         
         <form id="formSolicitud" onsubmit="guardarEImprimir(event)" class="space-y-6">
             
-            <!-- Encabezado de Formulario -->
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
                 <div class="border-b border-slate-100 pb-5 mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
@@ -117,9 +110,7 @@
                     </div>
                 </div>
 
-                <!-- Datos Generales -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <!-- Nombre del Buque -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="nombreBuque">
                             Nombre del Buque <span class="text-red-500">*</span>
@@ -132,16 +123,15 @@
                                 type="text" 
                                 id="nombreBuque" 
                                 required 
-                                placeholder="Ej. M/T Nile"
+                                placeholder="Ej. MT_REGINA"
                                 class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
                             >
                         </div>
                     </div>
 
-                    <!-- Área Destino -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="areaDestino">
-                            Área Dirigida <span class="text-red-500">*</span>
+                            Nombre del Área <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -151,16 +141,15 @@
                                 type="text" 
                                 id="areaDestino" 
                                 required 
-                                placeholder="Ej. Caldera"
+                                placeholder="Ej. Máquinas / Caldera / Mantenimiento"
                                 class="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition font-medium"
                             >
                         </div>
                     </div>
 
-                    <!-- Persona Responsable / Coordinador -->
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5" for="responsable">
-                            Persona Responsable (Coordinador) <span class="text-red-500">*</span>
+                            Nombre del Responsable <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -178,7 +167,6 @@
                 </div>
             </div>
 
-            <!-- Tabla de Ítems / Materiales -->
             <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-md print-card">
                 <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
                     <div>
@@ -199,26 +187,23 @@
                     </button>
                 </div>
 
-                <!-- Tabla Responsive -->
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-500 bg-slate-50/50">
-                                <th class="py-3 px-3 w-16 text-center">Item N°</th>
-                                <th class="py-3 px-3">Descripción del Material</th>
-                                <th class="py-3 px-3 w-32">Cantidad</th>
-                                <th class="py-3 px-3 w-36">Unidad</th>
+                                <th class="py-3 px-3 w-16 text-center">Item</th>
+                                <th class="py-3 px-3">Product / Service</th>
+                                <th class="py-3 px-3 w-32 text-center">Qty.</th>
+                                <th class="py-3 px-3 w-36 text-center">Unity</th>
                                 <th class="py-3 px-3 w-16 text-center no-print">Acción</th>
                             </tr>
                         </thead>
                         <tbody id="contenedorItems" class="divide-y divide-slate-100">
-                            <!-- Filas generadas dinámicamente vía JavaScript -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Footer de Acciones del Formulario -->
             <div class="flex items-center justify-end gap-3 pt-2 no-print">
                 <button 
                     type="button" 
@@ -240,17 +225,14 @@
 
     </main>
 
-    <!-- Footer General -->
     <footer class="w-full bg-white/90 backdrop-blur-md border-t border-slate-200/80 py-3 text-center text-[11px] text-slate-400 relative z-10 no-print">
-        Plataforma Corporativa de Agenciamiento Marítimo · Todos los derechos reservados
+        Plataforma Corporativa de Agenciamiento Marítimo · Heroline Shipping
     </footer>
 
-    <!-- Lógica JavaScript -->
     <script>
         let contadorItems = 0;
-        let secuenciaSolicitud = 864; // Número secuencial simulado para el sistema (Ej: 00-0864)
+        let secuenciaSolicitud = 864; // Correlativo (Ej: 00-0864)
 
-        // Establecer Fecha Actual en la vista
         document.addEventListener('DOMContentLoaded', () => {
             const hoy = new Date();
             const dia = String(hoy.getDate()).padStart(2, '0');
@@ -258,13 +240,10 @@
             const anio = hoy.getFullYear();
             document.getElementById('fechaActual').textContent = `${dia}/${mes}/${anio}`;
 
-            // Agregar al menos 1 renglón inicial
+            // Ítem inicial por defecto
             agregarItem();
         });
 
-        /**
-         * Añade una nueva fila de ítem a la tabla con ID auto-incremental
-         */
         function agregarItem() {
             contadorItems++;
             const tbody = document.getElementById('contenedorItems');
@@ -283,29 +262,30 @@
                     <input 
                         type="text" 
                         required 
-                        placeholder="Nombre / Descripción detallada del material"
+                        placeholder="Descripción del Producto o Servicio"
                         class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium item-desc"
                     >
                 </td>
                 <td class="py-2.5 px-3">
                     <input 
                         type="number" 
-                        min="0.01" 
+                        min="1" 
                         step="any" 
                         required 
-                        placeholder="0.00"
-                        class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium text-right item-cant"
+                        placeholder="1"
+                        class="w-full px-3 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium text-center item-cant"
                     >
                 </td>
                 <td class="py-2.5 px-3">
                     <select required class="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none font-medium bg-white item-unid">
-                        <option value="UNID">UNID (Unidad)</option>
+                        <option value="PCS">PCS (Piezas)</option>
                         <option value="PKT">PKT (Paquete)</option>
+                        <option value="SET">SET (Juego / Set)</option>
+                        <option value="UNT">UNT (Unidad)</option>
                         <option value="KG">KG (Kilogramos)</option>
                         <option value="MTS">MTS (Metros)</option>
                         <option value="GAL">GAL (Galones)</option>
                         <option value="TAMB">TAMB (Tambor)</option>
-                        <option value="JUEGO">JUEGO (Set/Kit)</option>
                     </select>
                 </td>
                 <td class="py-2.5 px-3 text-center no-print">
@@ -324,13 +304,10 @@
             recalcularIDs();
         }
 
-        /**
-         * Elimina la fila especificada por su número
-         */
         function eliminarItem(id) {
             const tbody = document.getElementById('contenedorItems');
             if (tbody.children.length <= 1) {
-                alert("La solicitud debe contener al menos un material.");
+                alert("La solicitud debe contener al menos un ítem.");
                 return;
             }
 
@@ -341,9 +318,6 @@
             }
         }
 
-        /**
-         * Re-calcula la autosuma secuencial de IDs para mantener el orden (1, 2, 3...)
-         */
         function recalcularIDs() {
             const badges = document.querySelectorAll('.item-id-badge');
             badges.forEach((badge, index) => {
@@ -352,44 +326,7 @@
         }
 
         /**
-         * Genera un logo base64 dinámico con el ícono del barco
-         */
-        function obtenerIconoBarcoBase64() {
-            const canvas = document.createElement('canvas');
-            canvas.width = 100;
-            canvas.height = 100;
-            const ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#0B3B7B';
-            ctx.beginPath();
-            ctx.arc(50, 50, 48, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.beginPath();
-            ctx.moveTo(18, 58);
-            ctx.lineTo(82, 58);
-            ctx.lineTo(74, 76);
-            ctx.lineTo(26, 76);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.fillRect(32, 42, 36, 16);
-            ctx.fillRect(40, 32, 20, 10);
-            ctx.fillRect(52, 22, 6, 10);
-
-            ctx.fillStyle = '#0B3B7B';
-            ctx.beginPath();
-            ctx.arc(36, 66, 3, 0, Math.PI * 2);
-            ctx.arc(50, 66, 3, 0, Math.PI * 2);
-            ctx.arc(64, 66, 3, 0, Math.PI * 2);
-            ctx.fill();
-
-            return canvas.toDataURL('image/png');
-        }
-
-        /**
-         * Acción de guardar e imprimir la solicitud generando el PDF con los requerimientos exactos
+         * Genera el PDF conservando la maquetación exacta del documento de referencia
          */
         function guardarEImprimir(e) {
             e.preventDefault();
@@ -397,7 +334,7 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
 
-            // 1. OBTENCIÓN DE DATOS Y FECHA/HORA EXACTA
+            // 1. Obtención de variables ingresadas por el usuario
             const buque = document.getElementById('nombreBuque').value.trim();
             const area = document.getElementById('areaDestino').value.trim();
             const responsable = document.getElementById('responsable').value.trim();
@@ -405,189 +342,157 @@
             const ahora = new Date();
             const dia = String(ahora.getDate()).padStart(2, '0');
             const mes = String(ahora.getMonth() + 1).padStart(2, '0');
-            const anio = ahora.getFullYear();
-            const horas = String(ahora.getHours()).padStart(2, '0');
-            const minutos = String(ahora.getMinutes()).padStart(2, '0');
+            const anio = String(ahora.getFullYear()).slice(-2);
+            const anioCompleto = ahora.getFullYear();
 
-            const fechaEmisionTexto = `${dia}/${mes}/${anio}`;
-            const horaEmisionTexto = `${horas}:${minutos}`;
-            const fechaFormatoNombre = `${anio}.${mes}.${dia}`;
+            const fechaPDF = `${anio}-${mes}-${dia}`; // Formato YY-MM-DD del PDF original
+            const numSolicitudCodigo = `00-${String(secuenciaSolicitud).padStart(4, '0')}`; // Formato 00-0863
+            secuenciaSolicitud++;
 
-            // Número correlativo de solicitud según el sistema
-            const numSolicitudCodigo = `REQ-${String(secuenciaSolicitud).padStart(6, '0')}`;
-            secuenciaSolicitud++; // Incrementar para la siguiente solicitud en sesión
-
-            // Extraer ítems de la tabla
+            // Ítems de la tabla
             const filasTabla = document.querySelectorAll('#contenedorItems tr');
             const dataItems = [];
 
             filasTabla.forEach((fila, index) => {
                 const desc = fila.querySelector('.item-desc')?.value || '';
-                const cant = fila.querySelector('.item-cant')?.value || '0';
-                const unid = fila.querySelector('.item-unid')?.value || '';
+                const cant = fila.querySelector('.item-cant')?.value || '1';
+                const unid = fila.querySelector('.item-unid')?.value || 'PCS';
                 dataItems.push([index + 1, desc, cant, unid]);
             });
 
-            // 2. ENCABEZADO DEL DOCUMENTO PDF
-            const logoBase64 = obtenerIconoBarcoBase64();
-            doc.addImage(logoBase64, 'PNG', 14, 12, 16, 16);
-
+            // --- CABECERA ESTILO HEROLINE SHIPPING ---
+            // Bloque Izquierdo: Información de la Empresa
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(16);
             doc.setTextColor(11, 59, 123);
-            doc.text("HEROLINE SHIPPING", 34, 19);
+            doc.text("Heroline Shipping", 14, 18);
 
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(8);
-            doc.setTextColor(100, 116, 139);
-            doc.text("AGENCIAMIENTO MARÍTIMO & SERVICIOS OPERATIVOS", 34, 24);
-
-            // N° de Solicitud, Fecha y Hora de Emisión (Derecha)
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(11, 59, 123);
-            doc.text(`SOLICITUD N°: ${numSolicitudCodigo}`, 196, 17, { align: 'right' });
-            
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(8);
-            doc.setTextColor(71, 85, 105);
-            doc.text(`Fecha Emisión: ${fechaEmisionTexto}`, 196, 22, { align: 'right' });
-            doc.text(`Hora Emisión: ${horaEmisionTexto}`, 196, 26, { align: 'right' });
+            doc.setTextColor(100, 116, 139);
+            doc.text("PA-22, CC Ciudad Del Viento, Falcón, Venezuela", 14, 23);
+            doc.text("Email: info@herolineshipping.com | Website: www.herolineshipping.com", 14, 27);
 
-            // Línea divisoria superior
-            doc.setDrawColor(11, 59, 123);
-            doc.setLineWidth(0.8);
+            // Bloque Derecho: Título, Código y Fecha
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(14);
+            doc.setTextColor(11, 59, 123);
+            doc.text("SOLICITUD EXTERNA", 196, 18, { align: 'right' });
+
+            doc.setFontSize(10);
+            doc.setTextColor(15, 23, 42);
+            doc.text(numSolicitudCodigo, 196, 23, { align: 'right' });
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(8);
+            doc.setTextColor(100, 116, 139);
+            doc.text(`DATE: ${fechaPDF}`, 196, 27, { align: 'right' });
+
+            // Línea Divisoria Estructurada
+            doc.setDrawColor(226, 232, 240);
+            doc.setLineWidth(0.5);
             doc.line(14, 32, 196, 32);
 
-            // 3. TÍTULO PRINCIPAL
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(12);
-            doc.setTextColor(15, 23, 42);
-            doc.text("SOLICITUD DE SERVICIO EXTERNO Y MATERIALES", 105, 41, { align: 'center' });
-
-            // 4. METADATOS DEL COORDINADOR Y SERVICIO
+            // --- BLOQUE CUADRO "CUSTOMER / SERVICE INFORMATION" ---
             doc.setFillColor(248, 250, 252);
-            doc.setDrawColor(226, 232, 240);
-            doc.roundedRect(14, 46, 182, 30, 2, 2, 'FD');
+            doc.setDrawColor(203, 213, 225);
+            doc.roundedRect(14, 36, 182, 34, 1, 1, 'FD');
 
-            // Fila 1: Buque, Área y Coordinador
-            doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
-            doc.setTextColor(100, 116, 139);
-            doc.text("BUQUE / EMBARCACIÓN:", 18, 53);
-            doc.setFontSize(9.5);
-            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8.5);
             doc.setTextColor(11, 59, 123);
-            doc.text(buque.toUpperCase(), 18, 59);
+            doc.text("INFORMACIÓN DE LA SOLICITUD", 18, 42);
 
             doc.setFontSize(8);
-            doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
-            doc.text("ÁREA DIRIGIDA:", 80, 53);
-            doc.setFontSize(9.5);
+            
+            // Fila 1: Buque
+            doc.text("Vessel / Buque:", 18, 49);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(area, 80, 59);
+            doc.text(buque, 50, 49);
 
-            doc.setFontSize(8);
+            // Fila 2: Área
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(100, 116, 139);
-            doc.text("COORDINADOR / RESPONSABLE:", 140, 53);
-            doc.setFontSize(9.5);
+            doc.text("Área / Departamento:", 18, 56);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text(responsable, 140, 59);
+            doc.text(area, 50, 56);
 
-            // Fila 2: Trazabilidad de Emisión
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(71, 85, 105);
-            doc.text(`Registro Emitido: ${fechaEmisionTexto} a las ${horaEmisionTexto} hrs | Estatus: PROCESADO POR COORDINACIÓN`, 18, 70);
+            // Fila 3: Responsable
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 116, 139);
+            doc.text("Responsable / Coordinador:", 18, 63);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(15, 23, 42);
+            doc.text(responsable, 50, 63);
 
-            // 5. TABLA DE MATERIALES E INSUMOS
+            // --- TABLA DE ÍTEMS / MATERIALES ---
             doc.autoTable({
-                startY: 82,
-                head: [['N°', 'DESCRIPCIÓN DEL MATERIAL / INSUMO', 'CANTIDAD', 'UNIDAD']],
+                startY: 75,
+                head: [['Item', 'Product / Service', 'Qty.', 'Unity']],
                 body: dataItems,
-                theme: 'grid',
+                theme: 'plain',
                 headStyles: {
-                    fillColor: [11, 59, 123],
-                    textColor: [255, 255, 255],
+                    fillColor: [241, 245, 249],
+                    textColor: [11, 59, 123],
                     fontStyle: 'bold',
-                    fontSize: 9,
+                    fontSize: 8.5,
                     halign: 'left'
                 },
                 columnStyles: {
-                    0: { halign: 'center', cellWidth: 15 },
-                    1: { cellWidth: 112 },
-                    2: { halign: 'right', cellWidth: 28 },
-                    3: { halign: 'center', cellWidth: 27 }
+                    0: { halign: 'center', cellWidth: 18 },
+                    1: { cellWidth: 114 },
+                    2: { halign: 'center', cellWidth: 25 },
+                    3: { halign: 'center', cellWidth: 25 }
                 },
                 styles: {
-                    fontSize: 8.5,
+                    fontSize: 8,
                     cellPadding: 3,
                     textColor: [30, 41, 59],
                     lineColor: [226, 232, 240],
                     lineWidth: 0.2
                 },
-                alternateRowStyles: {
-                    fillColor: [248, 250, 252]
-                },
                 margin: { left: 14, right: 14 }
             });
 
-            // 6. FIRMAS Y CONFORMIDAD
-            let finalY = doc.lastAutoTable.finalY + 35;
+            // --- FIRMAS Y SELLO DE CONFORMIDAD ---
+            let finalY = doc.lastAutoTable.finalY + 30;
 
-            if (finalY > 260) {
+            if (finalY > 250) {
                 doc.addPage();
                 finalY = 40;
             }
 
             doc.setDrawColor(148, 163, 184);
-            doc.setLineWidth(0.5);
-            doc.line(30, finalY, 85, finalY);
-
+            doc.setLineWidth(0.4);
+            
+            // Firma Responsable
+            doc.line(25, finalY, 85, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text("COORDINACIÓN DE OPERACIONES", 57.5, finalY + 5, { align: 'center' });
+            doc.text("RESPONSABLE SOLICITANTE", 55, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
-            doc.text(responsable, 57.5, finalY + 9, { align: 'center' });
+            doc.text(responsable, 55, finalY + 9, { align: 'center' });
 
-            doc.line(125, finalY, 180, finalY);
-
+            // Firma Operaciones / Recepción
+            doc.line(125, finalY, 185, finalY);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(15, 23, 42);
-            doc.text("RECEPCIÓN / CONFORMIDAD", 152.5, finalY + 5, { align: 'center' });
+            doc.text("OPERACIONES / CONFORMIDAD", 155, finalY + 5, { align: 'center' });
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 116, 139);
-            doc.text("Firma y Sello del Recibidor", 152.5, finalY + 9, { align: 'center' });
+            doc.text("Heroline Shipping", 155, finalY + 9, { align: 'center' });
 
-            // 7. PIE DE PÁGINA FIXO CON HORA DE IMPRESIÓN
+            // --- PIE DE PÁGINA ---
             const totalPaginas = doc.internal.getNumberOfPages();
             for (let i = 1; i <= totalPaginas; i++) {
                 doc.setPage(i);
                 doc.setFontSize(7.5);
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(148, 163, 184);
-                doc.text(`Documento generado por la Plataforma de Heroline Shipping el ${fechaEmisionTexto} a las ${horaEmisionTexto}`, 14, 287);
-                doc.text(`Página ${i} de ${totalPaginas}`, 196, 287, { align: 'right' });
-            }
-
-            // 8. DESCARGA DEL ARCHIVO CON EL FORMATO SOLICITADO
-            // Estructura: (N° Solicitud) - (Nombre del Buque) - (Fecha Emitida).pdf
-            const nombreBuqueLimpio = buque.replace(/[^a-zA-Z0-9]/g, "_").toUpperCase();
-            const nombreArchivoPDF = `${numSolicitudCodigo} - ${nombreBuqueLimpio} - ${fechaFormatoNombre}.pdf`;
-
-            doc.save(nombreArchivoPDF);
-        }
-
-        function volverAlPanel() {
-            window.location.href = "dashboard.html";
-        }
-    </script>
-</body>
-</html>
+                doc.text(`QUO_${numSolicitudCodigo} - ${buque.toUpperCase()} - ${anioCompleto}.${mes}.${dia}`, 14, 2
